@@ -12,15 +12,38 @@ export class HomePage {
 	isAndroid: boolean = false;
 
 	items = [
-		'Bread',
-		'Dairy / Eggs',
-		'Meat',
-		'Dry Goods',
-		'Ferments',
-		'Sweets',
-		'Flowers',
-		'Roots / Storage',
-		'Juice'
+		{
+			label: 'Bread',
+			image: 'bread.jpeg'
+		},
+		{
+			label: 'Dairy / Eggs',
+			image: 'dairy.jpeg'
+		},
+		{
+			label: 'Dry Goods',
+			image: 'drygoods.jpeg'
+		},
+		{
+			label: 'Ferments',
+			image: 'ferments.jpeg'
+		},
+		{
+			label: 'Flowers',
+			image: 'flowers.jpeg'
+		},
+		{
+			label: 'Meat',
+			image: 'meat.jpeg'
+		},
+		{
+			label: 'Roots / Storage',
+			image: 'roots.jpeg'
+		},
+		{
+			label: 'Sweets',
+			image: 'sweets.jpeg'
+		}
 	];
 
 	itemSelected(item: string) {
