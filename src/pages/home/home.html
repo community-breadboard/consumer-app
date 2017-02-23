@@ -1,14 +1,57 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Seacoast Waldorf School <ion-icon name="ios-navigate-outline"></ion-icon></ion-title>
-  </ion-navbar>
+	<ion-navbar>
+		<ion-title>Place Order</ion-title>
+	</ion-navbar>
+	<ion-toolbar no-border-top>
+		<ion-segment [(ngModel)]="segmentTitle">
+			<ion-segment-button value="shop">
+				Shop
+			</ion-segment-button>
+			<ion-segment-button value="pickup">
+				Pickup
+			</ion-segment-button>
+			<ion-segment-button value="preview">
+				Preview
+			</ion-segment-button>
+		</ion-segment>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-	<ion-list>
-      <button ion-item *ngFor="let item of items" (click)="itemSelected(item)">
-        {{ item }}
-      </button>
 
-    </ion-list>
+	<div [ngSwitch]="segmentTitle">
+
+		<ion-list *ngSwitchCase="'shop'">
+			<button ion-item *ngFor="let item of items" (click)="itemSelected(item)">
+				{{ item }}
+			</button>
+
+		</ion-list>
+
+		<div *ngSwitchCase="'pickup'">
+			<ion-card>
+				<img src="../../assets/images/cb_map.png">
+
+				<ion-item>
+					<ion-icon name="pin" item-left large></ion-icon>
+					<strong>Seacoast Waldorf School <ion-icon small name="ios-navigate-outline"></ion-icon></strong>
+					<p>This Tuesday 3-6pm</p>
+				</ion-item>
+				<ion-item>
+					<ion-icon name="pin" item-left large></ion-icon>
+					<strong>Little Harbour School <ion-icon small name="ios-navigate-outline"></ion-icon></strong>
+					<p>This Thursday 2-4pm</p>
+				</ion-item>
+				<ion-item>
+					<ion-icon name="pin" item-left large color="red"></ion-icon>
+					<strong>Tuckaway Farm <ion-icon small name="ios-navigate-outline"></ion-icon></strong>
+					<p>Next Wednesday 2-4pm</p>
+				</ion-item>
+			</ion-card>
+
+		</div>
+		<div *ngSwitchCase="'preview'">Preview</div>
+
+	</div>
+
 </ion-content>
