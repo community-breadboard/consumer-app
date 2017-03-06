@@ -26,7 +26,8 @@
 				<ion-avatar *ngIf="item.image" item-left>
       				<img src="assets/images/{{item.image}}">
     			</ion-avatar>
-				<h2>{{ item.label }} </h2>
+				{{ item.label }}
+				<ion-badge *ngIf="item.amt > 0" style="margin-left:20px">{{item.amt}}</ion-badge>
 			</button>
 
 		</ion-list>
@@ -74,51 +75,96 @@
 			<ion-card>
 				<ion-card-header>
 					Order
+					<span style="float:right">
+						<span *ngIf="showOrderPreview === false">6 items</span>
+						<ion-icon (click)="showOrderPreview = true" *ngIf="showOrderPreview === false" style="margin-left:4px;" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
+						<ion-icon (click)="showOrderPreview = false" *ngIf="showOrderPreview === true" style="margin-left:4px;" ios="ios-arrow-up" md="md-arrow-up"></ion-icon>
+					</span>
 				</ion-card-header>
 
-				<ion-list>
+				<ion-list *ngIf="showOrderPreview">
 					<ion-item>
 						<ion-grid>
 							<ion-row>
-  							  <ion-col width-80>2 loaves Oma's Finest</ion-col>
-  							  <ion-col width-20>$12</ion-col>
-  						  </ion-row>
-						  <ion-row>
-							  <ion-col width-80>1 dozen eggs</ion-col>
-							  <ion-col width-20>$5</ion-col>
-						  </ion-row>
-						  <ion-row>
-							  <ion-col width-80>1 bunch flowers</ion-col>
-							  <ion-col width-20>$10</ion-col>
-						  </ion-row>
-						  <ion-row>
-							  <ion-col width-80>1 pound ground beef</ion-col>
-							  <ion-col width-20>$5</ion-col>
-						  </ion-row>
-						  <ion-row>
-							  <ion-col width-80>1 jar sauerkraut</ion-col>
-							  <ion-col width-20>$10</ion-col>
-						  </ion-row>
+								<ion-col width-80>2 loaves Oma's Best</ion-col>
+								<ion-col width-10>
+									<span style="float:right">$12</span>
+								</ion-col>
+								<ion-col width-10></ion-col>
+							</ion-row>
+							<ion-row>
+								<ion-col width-80>1 dozen eggs</ion-col>
+								<ion-col width-10>
+									<span style="float:right">$5</span>
+								</ion-col>
+								<ion-col width-10></ion-col>
+							</ion-row>
+							<ion-row>
+								<ion-col width-80>1 bunch flowers</ion-col>
+								<ion-col width-10>
+									<span style="float:right">$10</span>
+								</ion-col>
+								<ion-col width-10></ion-col>
+							</ion-row>
+							<ion-row>
+								<ion-col width-80>1 pound ground beef</ion-col>
+								<ion-col width-10>
+									<span style="float:right">$5</span>
+								</ion-col>
+								<ion-col width-10></ion-col>
+							</ion-row>
+							<ion-row>
+								<ion-col width-80>1 jar sauerkraut</ion-col>
+								<ion-col width-10>
+									<span style="float:right">$10</span>
+								</ion-col>
+								<ion-col width-10></ion-col>
+							</ion-row>
 						</ion-grid>
 					</ion-item>
 				</ion-list>
 			</ion-card>
 
+			<ion-card>
+				<ion-card-header>
+					Total
+					<span style="float:right">
+						<span *ngIf="showTotalPreview === false">$42</span>
+						<ion-icon (click)="showTotalPreview = true" *ngIf="showTotalPreview === false" style="margin-left:4px;" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
+						<ion-icon (click)="showTotalPreview = false" *ngIf="showTotalPreview === true" style="margin-left:4px;" ios="ios-arrow-up" md="md-arrow-up"></ion-icon>
+					</span>
+				</ion-card-header>
+
+				<ion-list *ngIf="showTotalPreview">
+					<ion-item>
+						<ion-grid>
+							<ion-row>
+								<ion-col width-80>Account Credit</ion-col>
+								<ion-col width-10>
+									<span style="float:right">$220</span>
+								</ion-col>
+								<ion-col width-10></ion-col>
+							</ion-row>
+							<ion-row>
+								<ion-col width-80>Order Total</ion-col>
+								<ion-col width-10>
+									<span style="float:right">$42</span>
+								</ion-col>
+								<ion-col width-10></ion-col>
+							</ion-row>
+							<ion-row>
+								<ion-col width-80>Projected Balance</ion-col>
+								<ion-col width-10>
+									<span style="float:right">$178</span>
+								</ion-col>
+								<ion-col width-10></ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-item>
+				</ion-list>
+			</ion-card>
 			<ion-row>
-				<ion-col width-50 offset-10>Account Credit</ion-col>
-				<ion-col width-40>$220</ion-col>
-			</ion-row>
-			<ion-row>
-				<ion-col width-50 offset-10>Order Total</ion-col>
-				<ion-col width-40 style="border-bottom-style:solid">$42</ion-col>
-			</ion-row>
-			<ion-row>
-				<ion-col width-50 offset-10>Projected Balance</ion-col>
-				<ion-col width-40>$178</ion-col>
-			</ion-row>
-			<br/>
-			<ion-row>
-				<ion-col width-90 offset-10>
+				<ion-col text-center>
 					<button ion-button color="secondary" round>Place Order</button>
 				</ion-col>
 			</ion-row>

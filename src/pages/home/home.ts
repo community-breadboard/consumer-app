@@ -10,39 +10,49 @@ export class HomePage {
 
 	segmentTitle: string = "shop";
 	isAndroid: boolean = false;
+	showOrderPreview: boolean = true;
+	showTotalPreview: boolean = true;
 
 	items = [
 		{
 			label: 'Bread',
-			image: 'bread.jpeg'
+			image: 'bread.jpeg',
+			amt: 2
 		},
 		{
 			label: 'Dairy / Eggs',
-			image: 'dairy.jpeg'
+			image: 'dairy.jpeg',
+			amt: 1
 		},
 		{
 			label: 'Dry Goods',
-			image: 'drygoods.jpeg'
+			image: 'drygoods.jpeg',
+			amt: 0
 		},
 		{
 			label: 'Ferments',
-			image: 'ferments.jpeg'
+			image: 'ferments.jpeg',
+			amt: 1
 		},
 		{
 			label: 'Flowers',
-			image: 'flowers.jpeg'
+			image: 'flowers.jpeg',
+			amt: 1
 		},
 		{
 			label: 'Meat',
-			image: 'meat.jpeg'
+			image: 'meat.jpeg',
+			amt: 1
 		},
 		{
 			label: 'Roots / Storage',
-			image: 'roots.jpeg'
+			image: 'roots.jpeg',
+			amt: 0
 		},
 		{
 			label: 'Sweets',
-			image: 'sweets.jpeg'
+			image: 'sweets.jpeg',
+			amt: 0
 		}
 	];
 
