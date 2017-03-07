@@ -22,13 +22,29 @@
 	<div [ngSwitch]="segmentTitle">
 
 		<ion-list *ngSwitchCase="'shop'">
-			<button ion-item *ngFor="let item of items" (click)="itemSelected(item)">
-				<ion-avatar *ngIf="item.image" item-left>
-      				<img src="assets/images/{{item.image}}">
-    			</ion-avatar>
-				{{ item.label }}
-				<ion-badge *ngIf="item.amt > 0" style="margin-left:20px">{{item.amt}}</ion-badge>
-			</button>
+			<ion-item *ngFor="let foodCategory of foodCategories">
+
+				<ion-avatar *ngIf="foodCategory.image" item-left style="align-self: flex-start;">
+
+<!--				<ion-avatar *ngIf="foodCategory.image" item-left>
+-->
+<!--					<img src="assets/images/{{foodCategory.image}}" [ngClass]="{'list-expanded': foodCategory.expanded === false }">--->
+					<img src="assets/images/{{foodCategory.image}}">
+				</ion-avatar>
+				{{ foodCategory.label }}
+				<ion-badge *ngIf="foodCategory.amt > 0 && foodCategory.expanded === false" style="margin-left:20px">{{foodCategory.amt}}</ion-badge>
+
+				<ion-icon *ngIf="foodCategory.expanded === true" style="float:right" ios="ios-arrow-up" md="md-arrow-up" (click)="toggle(foodCategory)"></ion-icon>
+				<ion-icon *ngIf="foodCategory.expanded === false" style="float:right" ios="ios-arrow-down" md="md-arrow-down" (click)="toggle(foodCategory)"></ion-icon>
+				<ion-list no-lines *ngIf="foodCategory.expanded === true">
+					<button ion-item *ngFor="let item of foodCategory.items" (click)="openModal()">
+						<ion-icon *ngIf="item.quantity > 0" ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>
+						{{item.name}}
+						<span *ngIf="item.quantity > 0"> ({{item.quantity}} {{item.quantityLabel}})</span>
+					</button>
+				</ion-list>
+
+			</ion-item>
 
 		</ion-list>
 
