@@ -22,30 +22,51 @@
 	<div [ngSwitch]="segmentTitle">
 
 		<ion-list *ngSwitchCase="'shop'">
-			<ion-item *ngFor="let foodCategory of foodCategories">
 
-				<ion-avatar *ngIf="foodCategory.image" item-left style="align-self: flex-start;">
+			<div *ngFor="let foodCategory of foodCategories">
 
-<!--				<ion-avatar *ngIf="foodCategory.image" item-left>
--->
-<!--					<img src="assets/images/{{foodCategory.image}}" [ngClass]="{'list-expanded': foodCategory.expanded === false }">--->
-					<img src="assets/images/{{foodCategory.image}}">
-				</ion-avatar>
-				{{ foodCategory.label }}
-				<ion-badge *ngIf="foodCategory.amt > 0 && foodCategory.expanded === false" style="margin-left:20px">{{foodCategory.amt}}</ion-badge>
+				<div *ngIf="foodCategory.expanded === true">
+					<ion-list-header>
+						<ion-avatar item-left>
+							<img src="assets/images/{{foodCategory.image}}">
+						</ion-avatar>
+						{{foodCategory.label}}
+						<ion-icon (click)="toggle(foodCategory)" style="float:right" ios="ios-arrow-up" md="md-arrow-up"></ion-icon>
+					</ion-list-header>
+					<ion-item-sliding #slidingItem *ngFor="let item of foodCategory.items">
+						<ion-item>
+							<span style="margin-left:12px;"> </span>
+							<ion-icon *ngIf="item.quantity > 0" ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>
+							{{item.name}}
+							<span *ngIf="item.quantity === 1"> ({{item.quantity}} {{item.quantityLabel}})</span>
+							<span *ngIf="item.quantity > 1"> ({{item.quantity}} {{item.quantityLabelPlural}})</span>
+						</ion-item>
+						<ion-item-options>
+							<button ion-button color="secondary" icon-left (click)="add(item, slidingItem)">
+								<ion-icon ios="ios-add" md="md-add"></ion-icon>
+								Add
+							</button>
+							<button *ngIf="item.quantity > 0" ion-button color="primary" icon-left (click)="subtract(item, slidingItem)">
+								<ion-icon ios="ios-remove" md="md-remove"></ion-icon>
+								Subtract
+							</button>
+							<button ion-button color="light" icon-left (click)="openModal(slidingItem)">
+								<ion-icon name="ios-more"></ion-icon>
+								View
+							</button>
+						</ion-item-options>
+					</ion-item-sliding>
+				</div>
+				<ion-item *ngIf="foodCategory.expanded === false">
+					<ion-avatar item-left>
+						<img src="assets/images/{{foodCategory.image}}">
+					</ion-avatar>
+					{{ foodCategory.label }}
+					<ion-badge *ngIf="foodCategory.amt > 0" style="margin-left:20px">{{foodCategory.amt}}</ion-badge>
+					<ion-icon (click)="toggle(foodCategory)" style="float:right" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
 
-				<ion-icon *ngIf="foodCategory.expanded === true" style="float:right" ios="ios-arrow-up" md="md-arrow-up" (click)="toggle(foodCategory)"></ion-icon>
-				<ion-icon *ngIf="foodCategory.expanded === false" style="float:right" ios="ios-arrow-down" md="md-arrow-down" (click)="toggle(foodCategory)"></ion-icon>
-				<ion-list no-lines *ngIf="foodCategory.expanded === true">
-					<button ion-item *ngFor="let item of foodCategory.items" (click)="openModal()">
-						<ion-icon *ngIf="item.quantity > 0" ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>
-						{{item.name}}
-						<span *ngIf="item.quantity > 0"> ({{item.quantity}} {{item.quantityLabel}})</span>
-					</button>
-				</ion-list>
-
-			</ion-item>
-
+				</ion-item>
+			</div>
 		</ion-list>
 
 		<div *ngSwitchCase="'pickup'">

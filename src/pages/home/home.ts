@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
-import { NavController, Platform } from 'ionic-angular';
+import { NavController, Platform, ModalController } from 'ionic-angular';
+
+import { OrderModal } from '../../modals/order/order';
 
 @Component({
   selector: 'page-home',
@@ -13,6 +15,28 @@ export class HomePage {
 	showOrderPreview: boolean = true;
 	showTotalPreview: boolean = true;
 
+	toggle(foodCategory: any) {
+		foodCategory.expanded = !foodCategory.expanded;
+	}
+
+	openModal(slidingItem) {
+		slidingItem.close();
+		let modal = this.modalCtrl.create(OrderModal);
+		modal.present();
+	}
+	add(item, slidingItem) {
+		item.quantity = item.quantity + 1;
+		slidingItem.close();
+	}
+	subtract(item, slidingItem) {
+		item.quantity = item.quantity - 1;
+		slidingItem.close();
+	}
+
+	constructor(public navCtrl: NavController, public modalCtrl: ModalController, platform: Platform) {
+		this.isAndroid = platform.is('android');
+	}
+
 	foodCategories = [
 		{
 			label: 'Bread',
@@ -23,17 +47,20 @@ export class HomePage {
 				{
 					name: 'Oma\'s Best',
 					quantity: 1,
-					quantityLabel: 'loaf'
+					quantityLabel: 'loaf',
+					quantityLabelPlural: 'loaves'
 				},
 				{
 					name: 'Sourdough',
 					quantity: 0,
-					quantityLabel: 'loaf'
+					quantityLabel: 'loaf',
+					quantityLabelPlural: 'loaves'
 				},
 				{
 					name: 'Spent Grain',
 					quantity: 1,
-					quantityLabel: 'loaf'
+					quantityLabel: 'loaf',
+					quantityLabelPlural: 'loaves'
 				}
 			]
 
@@ -45,14 +72,16 @@ export class HomePage {
 			expanded: false,
 			items: [
 				{
-					name: 'Unpasteurized Milk',
+					name: 'Milk',
 					quantity: 1,
-					quantityLabel: 'gallon'
+					quantityLabel: 'gallon',
+					quantityLabelPlural: 'gallons'
 				},
 				{
 					name: 'Eggs',
 					quantity: 0,
-					quantityLabel: 'dozen'
+					quantityLabel: 'dozen',
+					quantityLabelPlural: 'dozen'
 				}
 
 			]
@@ -66,12 +95,14 @@ export class HomePage {
 				{
 					name: 'Rolled Oats',
 					quantity: 0,
-					quantityLabel: 'bag'
+					quantityLabel: 'bag',
+					quantityLabelPlural: 'bags'
 				},
 				{
 					name: 'Brown Rice',
 					quantity: 0,
-					quantityLabel: 'bag'
+					quantityLabel: 'bag',
+					quantityLabelPlural: 'bags'
 				}
 
 			]
@@ -85,12 +116,14 @@ export class HomePage {
 				{
 					name: 'Sauerkraut',
 					quantity: 0,
-					quantityLabel: 'jar'
+					quantityLabel: 'jar',
+					quantityLabelPlural: 'jars'
 				},
 				{
 					name: 'Ruby Kraut',
 					quantity: 1,
-					quantityLabel: 'jar'
+					quantityLabel: 'jar',
+					quantityLabelPlural: 'jars'
 				}
 
 			]
@@ -104,7 +137,8 @@ export class HomePage {
 				{
 					name: 'Assortment',
 					quantity: 1,
-					quantityLabel: 'bunch'
+					quantityLabel: 'bunch',
+					quantityLabelPlural: 'bunches'
 				}
 			]
 		},
@@ -117,12 +151,14 @@ export class HomePage {
 				{
 					name: 'Ground Beef',
 					quantity: 0,
-					quantityLabel: 'pound'
+					quantityLabel: 'pound',
+					quantityLabelPlural: 'pounds'
 				},
 				{
 					name: 'Hot Dogs',
 					quantity: 1,
-					quantityLabel: 'pack'
+					quantityLabel: 'pack',
+					quantityLabelPlural: 'packs'
 				}
 
 			]
@@ -136,7 +172,8 @@ export class HomePage {
 				{
 					name: 'Assortment',
 					quantity: 0,
-					quantityLabel: 'bunch'
+					quantityLabel: 'bunch',
+					quantityLabelPlural: 'bunches'
 				}
 			]
 		},
@@ -149,35 +186,22 @@ export class HomePage {
 				{
 					name: 'Honey',
 					quantity: 0,
-					quantityLabel: 'jar'
+					quantityLabel: 'jar',
+					quantityLabelPlural: 'jars'
 				},
 				{
 					name: 'Jam',
 					quantity: 0,
-					quantityLabel: 'jar'
+					quantityLabel: 'jar',
+					quantityLabelPlural: 'jars'
 				},
 				{
 					name: 'Maple Syrup',
 					quantity: 0,
-					quantityLabel: 'jar'
+					quantityLabel: 'jar',
+					quantityLabelPlural: 'jars'
 				}
 			]
 		}
 	];
-
-	itemSelected(item: string) {
-		console.log("Selected Item", item);
-	}
-
-	toggle(foodCategory: any) {
-		foodCategory.expanded = !foodCategory.expanded;
-		console.log("cat", foodCategory);
-	}
-
-	openModal() {
-		console.log("Open Modal");
-	}
-	constructor(public navCtrl: NavController, platform: Platform) {
-		this.isAndroid = platform.is('android');
-	}
 }
