@@ -39,6 +39,7 @@ export class HomePage {
 				self.state.orderInProgress.pickupLocation = _.cloneDeep(loc);
 			}
 		});
+
 	}
 	toggle(foodCategory: any) {
 		foodCategory.expanded = !foodCategory.expanded;
@@ -58,6 +59,15 @@ export class HomePage {
 		category.amt = category.amt - 1;
 		item.quantity = item.quantity - 1;
 		slidingItem.close();
+	}
+
+	selectPickupLocation(loc) {
+		_.each(this.state.pickupLocations, function(location) {
+			location.selected = false;
+		});
+		loc.selected = true;
+		this.preview();
+		this.segmentTitle = "preview";
 	}
 
 	constructor(public navCtrl: NavController, public modalCtrl: ModalController, platform: Platform) {

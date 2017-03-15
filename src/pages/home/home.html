@@ -71,22 +71,13 @@
 
 		<div *ngSwitchCase="'pickup'">
 			<ion-card>
-				<img src="assets/images/cb_map.png">
-
-				<ion-item>
+				<ion-item *ngFor="let loc of state.pickupLocations" (click)="selectPickupLocation(loc)">
 					<ion-icon name="pin" item-left large></ion-icon>
-					<strong>Seacoast Waldorf <ion-icon small ios="ios-navigate-outline" md="md-navigate"></ion-icon></strong>
-					<p>This Tuesday 3-6pm</p>
-				</ion-item>
-				<ion-item>
-					<ion-icon name="pin" item-left large></ion-icon>
-					<strong>Little Harbour <ion-icon small ios="ios-navigate-outline" md="md-navigate"></ion-icon></strong>
-					<p>This Thursday 2-4pm</p>
-				</ion-item>
-				<ion-item>
-					<ion-icon name="pin" item-left large color="red"></ion-icon>
-					<strong>Tuckaway Farm <ion-icon small ios="ios-navigate-outline" md="md-navigate"></ion-icon></strong>
-					<p>Next Wednesday 2-4pm</p>
+					<p>
+						<ion-icon icon-left *ngIf="loc.selected === true" ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>
+						{{loc.abbreviatedName}} <ion-icon style="padding-left:10px;" small ios="ios-navigate-outline" md="md-navigate"></ion-icon>
+					</p>
+					<strong>{{loc.nextPickup}}</strong>
 				</ion-item>
 			</ion-card>
 
@@ -99,16 +90,16 @@
 				</ion-card-header>
 				<ion-card-content *ngIf="state.orderInProgress.pickupLocation">
 					<p>
-						Seacoast Waldorf School
+						{{state.orderInProgress.pickupLocation.abbreviatedName}}
 						<ion-icon ios="ios-navigate-outline" md="md-navigate" style="padding-left:20px;"></ion-icon>
 					</p>
 					<p>
-						Wed Feb 24, 2-4pm
+						{{state.orderInProgress.pickupLocation.nextPickup}}
 						<ion-icon ios="ios-calendar-outline" md="md-calendar" style="padding-left:20px;"></ion-icon>
 					</p>
 				</ion-card-content>
 				<ion-card-content *ngIf="!state.orderInProgress.pickupLocation">
-					<p color="danger">Please click on PICKUP above to select a pickup location</p>
+					<p ion-text color="danger">Please click on PICKUP above to select a pickup location</p>
 				</ion-card-content>
 			</ion-card>
 
@@ -133,7 +124,7 @@
 					</ion-list>
 				</ion-card-content>
 				<ion-card-content *ngIf="state.orderInProgress.items.length === 0">
-					<p color="danger">Please click on SHOP above to items to your order.</p>
+					<p ion-text color="danger">Please click on SHOP above to items to your order.</p>
 				</ion-card-content>
 
 			</ion-card>
