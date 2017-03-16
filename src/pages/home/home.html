@@ -26,12 +26,12 @@
 			<div *ngFor="let foodCategory of state.foodCategories">
 
 				<div *ngIf="foodCategory.expanded === true">
-					<ion-list-header>
+					<ion-list-header (click)="toggle(foodCategory)">
 						<ion-avatar item-left>
 							<img src="assets/images/{{foodCategory.image}}">
 						</ion-avatar>
 						{{foodCategory.label}}
-						<ion-icon (click)="toggle(foodCategory)" style="float:right" ios="ios-arrow-up" md="md-arrow-up"></ion-icon>
+						<ion-icon style="float:right" ios="ios-arrow-up" md="md-arrow-up"></ion-icon>
 					</ion-list-header>
 					<ion-item-sliding #slidingItem *ngFor="let item of foodCategory.items">
 						<ion-item>
@@ -51,19 +51,19 @@
 								Subtract
 							</button>
 							<button ion-button color="light" icon-left (click)="openModal(slidingItem)">
-								<ion-icon name="ios-more"></ion-icon>
-								View
+								<ion-icon ios="ios-eye" md="md-eye"></ion-icon>
+								Details
 							</button>
 						</ion-item-options>
 					</ion-item-sliding>
 				</div>
-				<ion-item *ngIf="foodCategory.expanded === false">
+				<ion-item *ngIf="foodCategory.expanded === false" (click)="toggle(foodCategory)">
 					<ion-avatar item-left>
 						<img src="assets/images/{{foodCategory.image}}">
 					</ion-avatar>
 					{{ foodCategory.label }}
 					<ion-badge *ngIf="foodCategory.amt > 0" style="margin-left:20px">{{foodCategory.amt}}</ion-badge>
-					<ion-icon (click)="toggle(foodCategory)" style="float:right" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
+					<ion-icon style="float:right" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
 
 				</ion-item>
 			</div>
