@@ -17,8 +17,26 @@ export class HomePage {
 	showOrderPreview: boolean = true;
 	showTotalPreview: boolean = true;
 
-	preview() {
+	userHasSuccessfullyCompletedShoppingStep: boolean = false;
+	userHasSuccessfullyCompletedPickupStep: boolean = false;
 
+	userHasSelectedAtLeastOneItem(): boolean {
+
+		return _.some(this.state.foodCategories, function(foodCategory) {
+			return _.some(foodCategory.items, function(item) {
+				return item.quantity > 0;
+			});
+		});
+	}
+	userHasSelectedAPickupLocation(): boolean {
+		return _.some(this.state.pickupLocations, function(location) {
+			return location.selected === true;
+		});
+	}
+
+	checkout(): void {
+
+		console.log("checkout state=", this.state);
 		this.state.orderInProgress = {
 			items: [],
 			pickupLocation: null,
@@ -40,38 +58,50 @@ export class HomePage {
 			}
 		});
 
+		this.goToSegment('checkout');
 	}
-	toggle(foodCategory: any) {
+	toggle(foodCategory: any): void {
 		foodCategory.expanded = !foodCategory.expanded;
 	}
 
-	openModal(slidingItem) {
+	openModal(slidingItem): void {
 		slidingItem.close();
 		let modal = this.modalCtrl.create(OrderModal);
 		modal.present();
 	}
-	add(category, item, slidingItem) {
+	add(category, item, slidingItem): void {
 		category.amt = category.amt + 1;
 		item.quantity = item.quantity + 1;
 		slidingItem.close();
 	}
-	subtract(category, item, slidingItem) {
+	subtract(category, item, slidingItem): void {
 		category.amt = category.amt - 1;
 		item.quantity = item.quantity - 1;
+		if (!this.userHasSelectedAtLeastOneItem()) {
+			this.userHasSuccessfullyCompletedShoppingStep = false;
+		}
 		slidingItem.close();
 	}
 
-	selectPickupLocation(loc) {
+	selectPickupLocation(loc): void {
 		_.each(this.state.pickupLocations, function(location) {
 			location.selected = false;
 		});
 		loc.selected = true;
-		this.preview();
-		this.segmentTitle = "preview";
+		console.log("pl=", this.state.pickupLocations);
+		this.checkout();
+	}
+
+	goToSegment(segmentTitle): void {
+		console.log("going to ", segmentTitle, " state=", this.state);
+		this.userHasSuccessfullyCompletedShoppingStep = this.userHasSelectedAtLeastOneItem();
+		this.userHasSuccessfullyCompletedPickupStep = this.userHasSelectedAPickupLocation();
+		this.segmentTitle = segmentTitle;
 	}
 
 	constructor(public navCtrl: NavController, public modalCtrl: ModalController, platform: Platform) {
 		this.isAndroid = platform.is('android');
+		console.log("state=", this.state);
 	}
 
 
@@ -85,7 +115,7 @@ export class HomePage {
 			{
 				id: 1,
 				name: 'Seacoast Waldorf School',
-				abbreviatedName: 'Waldorf',
+				abbreviatedName: 'Waldorf School',
 				address: '403 Harold Dow Highway (Route 236)',
 				city: 'Eliot',
 				stateCode: 'ME',
@@ -114,6 +144,23 @@ export class HomePage {
 				pickupEndTime: '2017-05-18 6pm',
 				available: true,
 				unavailableReason: null,
+				selected: false
+			},
+			{
+				id: 3,
+				name: 'Home Delivery',
+				abbreviatedName: 'Home Delivery',
+				address: '100 South Street',
+				city: 'Portsmouth',
+				stateCode: 'NH',
+				zipCode: '03903',
+				lat: 43.1412688,
+				lng: -70.7883459,
+				nextPickup: 'Tues May 18, 6-8am',
+				pickupStartTime: '2017-05-18 6am',
+				pickupEndTime: '2017-05-18 8am',
+				available: false,
+				unavailableReason: 'past_order_cutoff',
 				selected: false
 			}
 		],
