@@ -1,33 +1,40 @@
 <ion-header>
 	<ion-navbar>
 		<ion-title>
-			Account
+			Testing Scenarios
 		</ion-title>
 	</ion-navbar>
 </ion-header>
 
 <ion-content>
-	<ion-card>
-		<ion-card-header>
-			Buy Credit
-		</ion-card-header>
-		<ion-card-content>
-			<ion-row>
-				<ion-col text-center>
-					<button ion-button color="secondary" round> $100 </button>
-				</ion-col>
-			</ion-row>
-			<ion-row>
-				<ion-col text-center>
-					<button ion-button color="secondary" round> $200 </button>
-				</ion-col>
-			</ion-row>
-			<ion-row>
-				<ion-col text-center>
-					<button ion-button color="secondary" round> $500 </button>
-				</ion-col>
-			</ion-row>
-
-		</ion-card-content>
-	</ion-card>
+	<ion-list radio-group>
+		<ion-item>
+			<ion-label>First Time</ion-label>
+			<ion-radio value="first_time"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Payment low</ion-label>
+			<ion-radio value="payment_low"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Payment 0</ion-label>
+			<ion-radio value="payment_zero"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Order placed</ion-label>
+			<ion-radio value="order_placed"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>New order (no standing)</ion-label>
+			<ion-radio value="new_order_no_standing"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>New order (standing)</ion-label>
+			<ion-radio value="new_order_standing"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Order in progress</ion-label>
+			<ion-radio value="order_in_progress"></ion-radio>
+		</ion-item>
+	</ion-list>
 </ion-content>

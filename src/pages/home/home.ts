@@ -6,6 +6,9 @@ import { OrderModal } from '../../modals/order/order';
 
 import _ from "lodash";
 
+import { ItemSliding } from 'ionic-angular';
+import { Item } from 'ionic-angular';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -64,11 +67,13 @@ export class HomePage {
 		foodCategory.expanded = !foodCategory.expanded;
 	}
 
-	openModal(slidingItem): void {
+	openModal(slidingItem: ItemSliding): void {
 		slidingItem.close();
 		let modal = this.modalCtrl.create(OrderModal);
 		modal.present();
 	}
+
+
 	add(category, item, slidingItem): void {
 		category.amt = category.amt + 1;
 		item.quantity = item.quantity + 1;
@@ -88,12 +93,10 @@ export class HomePage {
 			location.selected = false;
 		});
 		loc.selected = true;
-		console.log("pl=", this.state.pickupLocations);
-		this.checkout();
+//		this.checkout();
 	}
 
 	goToSegment(segmentTitle): void {
-		console.log("going to ", segmentTitle, " state=", this.state);
 		this.userHasSuccessfullyCompletedShoppingStep = this.userHasSelectedAtLeastOneItem();
 		this.userHasSuccessfullyCompletedPickupStep = this.userHasSelectedAPickupLocation();
 		this.segmentTitle = segmentTitle;
@@ -101,7 +104,6 @@ export class HomePage {
 
 	constructor(public navCtrl: NavController, public modalCtrl: ModalController, platform: Platform) {
 		this.isAndroid = platform.is('android');
-		console.log("state=", this.state);
 	}
 
 
