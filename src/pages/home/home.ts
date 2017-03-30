@@ -19,9 +19,10 @@ export class HomePage implements OnInit {
 		this.getData();
 	}
 
-ionViewWillEnter() {
-	this.getData();
-}
+	ionViewWillEnter() {
+		this.getData();
+	}
+
 	getData(): void {
 		this.state = this.dataService.getData();
 	}

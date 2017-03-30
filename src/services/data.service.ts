@@ -5,40 +5,51 @@ import _ from "lodash";
 @Injectable()
 export class DataService {
 
-	private scenario: string;
+	private scenario: string = 'first_time';
+	private cache: any = {};
+
 	setScenario(scenario: string): void {
 		this.scenario = scenario;
 	}
 
 	getData(): State {
-		if (this.scenario === 'first_time') {
-			var state: State = _.cloneDeep(this.defaultState);
-			state.account.balance = 0;
-			state.outstandingOrder = {};
-			state.standingOrder = {};
-			return state;
+		if (this.cache[this.scenario]) {
+			return this.cache[this.scenario];
 		}
-		return this.defaultState;
+
+		var state: State = _.cloneDeep(this.defaultState);
+		if (this.scenario === 'balance_low') {
+			state.account.balance = 20;
+			state.account.balanceIsLow = true;
+		}
+		this.cache[this.scenario] = state;
+		return state;
 	}
 
 
 	defaultState:State = {
 		account: {
-			firstName: 'Cyrus',
-			lastName: 'Beer',
-			balance: 220
+			owner: {
+				firstName: 'Cyrus',
+				lastName: 'Beer'
+			},
+			balance: 0,
+			homeDelivery: true,
+			balanceIsLow: false
 		},
 		pickupLocations: [
 			{
 				id: 1,
 				name: 'Seacoast Waldorf School',
 				abbreviatedName: 'Waldorf School',
-				address: '403 Harold Dow Highway (Route 236)',
-				city: 'Eliot',
-				stateCode: 'ME',
-				zipCode: '03903',
-				lat: 43.1412688,
-				lng: -70.7883459,
+				location: {
+					address1: '403 Harold Dow Highway (Route 236)',
+					city: 'Eliot',
+					stateCode: 'ME',
+					zipCode: '03903',
+					lat: 43.1412688,
+					lng: -70.7883459
+				},
 				nextPickup: 'Tues May 18, 3-6pm',
 				pickupStartTime: '2017-05-18 3pm',
 				pickupEndTime: '2017-05-18 6pm',
@@ -50,12 +61,14 @@ export class DataService {
 				id: 2,
 				name: 'Little Harbour School',
 				abbreviatedName: 'Little Harbour',
-				address: '50 Clough Drive',
-				city: 'Portsmouth',
-				stateCode: 'NH',
-				zipCode: '03801',
-				lat: 43.0667763,
-				lng: -70.7541994,
+				location: {
+					address1: '50 Clough Drive',
+					city: 'Portsmouth',
+					stateCode: 'NH',
+					zipCode: '03801',
+					lat: 43.0667763,
+					lng: -70.7541994
+				},
 				nextPickup: 'Fri May 21, 3-6pm',
 				pickupStartTime: '2017-05-18 3pm',
 				pickupEndTime: '2017-05-18 6pm',
@@ -67,12 +80,14 @@ export class DataService {
 				id: 3,
 				name: 'Home Delivery',
 				abbreviatedName: 'Home Delivery',
-				address: '100 South Street',
-				city: 'Portsmouth',
-				stateCode: 'NH',
-				zipCode: '03903',
-				lat: 43.1412688,
-				lng: -70.7883459,
+				location: {
+					address1: '100 South Street',
+					city: 'Portsmouth',
+					stateCode: 'NH',
+					zipCode: '03903',
+					lat: 43.1412688,
+					lng: -70.7883459
+				},
 				nextPickup: 'Tues May 18, 6-8am',
 				pickupStartTime: '2017-05-18 6am',
 				pickupEndTime: '2017-05-18 8am',
@@ -81,48 +96,8 @@ export class DataService {
 				selected: false
 			}
 		],
-		outstandingOrder: {
-			items: [
-				{
-					name: 'Oma\'s Best',
-					quantity: 0,
-					unitLabelSingular: 'loaf',
-					unitLabelPlural: 'loaves',
-					unitCost: 8,
-					description: 'A traditional Danish / northern German-style pan loaf with a complex hearty flavor.',
-					ingredients: 'Organic dark rye flour, organic whole spelt flour, water, organic sunflower seeds, organic flax seeds, organic sesame seeds, sea salt',
-					producer: 'Juniper Cottage Bake Shop'
-				}
-			],
-			pickup: {
-				id: 1,
-				name: 'Seacoast Waldorf School',
-				abbreviatedName: 'Waldorf',
-				address: '403 Harold Dow Highway (Route 236)',
-				city: 'Eliot',
-				stateCode: 'ME',
-				zipCode: '03903',
-				lat: 43.1412688,
-				lng: -70.7883459,
-				nextPickup: 'Tues May 18, 3-6pm',
-				startTime: '2017-05-18 3pm',
-				endTime: '2017-05-18 6pm'
-			},
-			totalCost: 20
-		},
-		standingOrder: {
-			items: [
-				{
-					id: 1,
-					quantity: 1
-				}
-			],
-			pickup: {
-				id: 1,
-				reminder: true
-			},
-			totalCost: 20
-		},
+		outstandingOrder: {},
+		standingOrder: {},
 		orderInProgress: {
 			items: [],
 			pickupLocation: null,

@@ -1,0 +1,18 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>
+			Testing Scenarios
+		</ion-title>
+	</ion-navbar>
+</ion-header>
+
+
+
+<ion-content>
+	<ion-list radio-group>
+		<ion-item *ngFor="let scenario of scenarios">
+			<ion-label>{{scenario.label}}</ion-label>
+			<ion-radio [value]="scenario.id" (ionSelect)="selectScenario(scenario.id)" [checked]="scenario === scenario.id"></ion-radio>
+		</ion-item>
+	</ion-list>
+</ion-content>
