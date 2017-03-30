@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, Platform, ModalController } from 'ionic-angular';
 
 import { OrderModal } from '../../modals/order/order';
+import { WelcomeModal } from '../../modals/welcome/welcome';
 
 import _ from "lodash";
 
@@ -21,6 +22,9 @@ export class HomePage implements OnInit {
 
 	ionViewWillEnter() {
 		this.getData();
+		if (this.state.account.firstTime) {
+			this.openWelcomeModal();
+		}
 	}
 
 	getData(): void {
@@ -79,9 +83,15 @@ export class HomePage implements OnInit {
 		foodCategory.expanded = !foodCategory.expanded;
 	}
 
-	openModal(slidingItem: ItemSliding): void {
+	openItemDetailsModal(slidingItem: ItemSliding): void {
 		slidingItem.close();
 		let modal = this.modalCtrl.create(OrderModal);
+		modal.present();
+	}
+
+	private openWelcomeModal(): void {
+		let modal = this.modalCtrl.create(WelcomeModal);
+		modal.isOverlay = true;
 		modal.present();
 	}
 

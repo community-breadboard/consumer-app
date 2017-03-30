@@ -6,4 +6,5 @@ export class Account {
 	balance: number;
 	homeDelivery: boolean;
 	balanceIsLow: boolean;
+	firstTime: boolean;
 }

@@ -21,6 +21,7 @@ export class DataService {
 		if (this.scenario === 'balance_low') {
 			state.account.balance = 20;
 			state.account.balanceIsLow = true;
+			state.account.firstTime = false;
 		}
 		this.cache[this.scenario] = state;
 		return state;
@@ -35,7 +36,8 @@ export class DataService {
 			},
 			balance: 0,
 			homeDelivery: true,
-			balanceIsLow: false
+			balanceIsLow: false,
+			firstTime: true
 		},
 		pickupLocations: [
 			{
