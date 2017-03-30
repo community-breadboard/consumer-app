@@ -9,17 +9,21 @@
 
 	<ion-grid no-padding class="step-progress-bar">
 		<ion-row justify-content-center>
+			<ion-col *ngIf="includePaySegment" color="gray" text-center col-sm [ngClass]="{'completed': userHasSuccessfullyCompletedPaymentStep, 'active': (segmentTitle === 'pay') }">
+				<div (click)="goToSegment('pay')">
+					<ion-icon [name]="userHasSuccessfullyCompletedPaymentStep ? 'checkmark' : 'cash'"></ion-icon>
+					<p>Buy Credits</p>
+				</div>
+			</ion-col>
 			<ion-col color="gray" text-center col-sm [ngClass]="{'completed': userHasSuccessfullyCompletedShoppingStep, 'active': (segmentTitle === 'shop') }">
 				<div (click)="goToSegment('shop')">
-					<ion-icon *ngIf="userHasSuccessfullyCompletedShoppingStep" name="checkmark"></ion-icon>
-					<ion-icon *ngIf="!userHasSuccessfullyCompletedShoppingStep" name="cart"></ion-icon>
+					<ion-icon [name]="userHasSuccessfullyCompletedShoppingStep ? 'checkmark' : 'cart'"></ion-icon>
 					<p>Shop</p>
 				</div>
 			</ion-col>
 			<ion-col color="gray" text-center col-sm [ngClass]="{'completed': (state.orderInProgress.pickupLocation !== null), 'active': (segmentTitle === 'pickup') }">
 				<div (click)="goToSegment('pickup')">
-					<ion-icon *ngIf="state.orderInProgress.pickupLocation !== null" name="checkmark"></ion-icon>
-					<ion-icon *ngIf="state.orderInProgress.pickupLocation === null" name="walk"></ion-icon>
+					<ion-icon [name]="state.orderInProgress.pickupLocation === null ? 'walk' : 'checkmark'"></ion-icon>
 					<p>Pickup</p>
 				</div>
 			</ion-col>
@@ -34,9 +38,11 @@
 
 
 
-	<div [ngSwitch]="segmentTitle">
-
-		<ion-list *ngSwitchCase="'shop'">
+	<div>
+		<div *ngIf="segmentTitle === 'pay' && includePaySegment">
+			Buy Credits
+		</div>
+		<div *ngIf="segmentTitle === 'shop'">
 
 			<div *ngFor="let foodCategory of state.foodCategories">
 
@@ -84,9 +90,9 @@
 
 				</ion-item>
 			</div>
-		</ion-list>
+		</div>
 
-		<div *ngSwitchCase="'pickup'">
+		<div *ngIf="segmentTitle === 'pickup'">
 
 			<ion-list radio-group>
 				<ion-item *ngFor="let loc of state.pickupLocations">
@@ -99,7 +105,7 @@
 			</ion-list>
 
 		</div>
-		<div *ngSwitchCase="'checkout'">
+		<div *ngIf="segmentTitle === 'checkout'">
 
 			<ion-card>
 				<ion-card-header>

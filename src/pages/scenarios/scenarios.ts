@@ -54,6 +54,5 @@ export class ScenariosPage {
 		this.scenario = scenario;
 		this.dataService.setScenario(scenario);
 		this.events.publish('account:changed');
-		this.navCtrl.setRoot(HomePage);
 	}
 }

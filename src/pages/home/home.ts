@@ -24,19 +24,27 @@ export class HomePage implements OnInit {
 		this.getData();
 		if (this.state.account.firstTime) {
 			this.openWelcomeModal();
+			this.includePaySegment = true;
+			this.segmentTitle = 'pay';
+		} else {
+			this.segmentTitle = 'shop';
+			this.includePaySegment = false;
 		}
+		console.log("include=", this.includePaySegment);
 	}
 
 	getData(): void {
 		this.state = this.dataService.getData();
 	}
 
-	segmentTitle: string = "shop";
+	segmentTitle: string;
 	isAndroid: boolean = false;
 	showOrderPreview: boolean = true;
 	showTotalPreview: boolean = true;
+	includePaySegment: boolean = false;
 
 	userHasSuccessfullyCompletedShoppingStep: boolean = false;
+	userHasSuccessfullyCompletedPaymentStep: boolean = false;
 	userHasSuccessfullyCompletedPickupStep: boolean = false;
 	state:State;
 
@@ -115,7 +123,6 @@ export class HomePage implements OnInit {
 			location.selected = false;
 		});
 		loc.selected = true;
-//		this.checkout();
 	}
 
 	goToSegment(segmentTitle): void {
