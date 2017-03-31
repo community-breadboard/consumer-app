@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { ScenariosPage } from '../pages/scenarios/scenarios';
 import { OrderModal } from '../modals/order/order';
 import { WelcomeModal } from '../modals/welcome/welcome';
+import { StartModal } from '../modals/start/start';
 import { TabsPage } from '../pages/tabs/tabs';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 	ScenariosPage,
 	OrderModal,
 	WelcomeModal,
+	StartModal,
     TabsPage
   ],
   imports: [
@@ -32,6 +34,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 	ScenariosPage,
 	OrderModal,
 	WelcomeModal,
+	StartModal,
     TabsPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]

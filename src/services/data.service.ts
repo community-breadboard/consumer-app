@@ -23,12 +23,12 @@ export class DataService {
 			state.account.balanceIsLow = true;
 			state.account.firstTime = false;
 		}
-		if (this.scenario === 'balance_zero') {
+		else if (this.scenario === 'balance_zero') {
 			state.account.balance = 0;
 			state.account.balanceIsLow = true;
 			state.account.firstTime = false;
 		}
-		if (this.scenario === 'outstanding_order') {
+		else if (this.scenario === 'outstanding_order') {
 			state.account.balance = 100;
 			state.account.balanceIsLow = false;
 			state.account.firstTime = false;
@@ -42,21 +42,44 @@ export class DataService {
 				alertSet: false,
 				addedToCalendar: false
 			}
-			_.forEach(state.outstandingOrder.foodItems, function(foodItem) {
-				foodItem.quantity = 1;
+			_.each(state.outstandingOrder.foodItems, function(foodItem) {
+				foodItem.quantityOrdered = 1;
 			});
 		}
-		if (this.scenario === "order_in_progress") {
+		else if (this.scenario === 'order_in_progress') {
 			state.account.balance = 100;
 			state.account.balanceIsLow = false;
 			state.account.firstTime = false;
-			state.foodCategories[0].amount = 1;
-			state.foodCategories[0].foodItems[0].quantity = 1;
-			state.foodCategories[2].amount = 1;
-			state.foodCategories[2].foodItems[0].quantity = 1;
-			state.foodCategories[4].amount = 1;
-			state.foodCategories[4].foodItems[0].quantity = 1;
+			state.foodCategories[0].quantityOrdered = 1;
+			state.foodCategories[0].foodItems[0].quantityOrdered = 1;
+			state.foodCategories[2].quantityOrdered = 1;
+			state.foodCategories[2].foodItems[0].quantityOrdered = 1;
+			state.foodCategories[4].quantityOrdered = 1;
+			state.foodCategories[4].foodItems[0].quantityOrdered = 1;
 		}
+		else if (this.scenario === 'new_order_no_standing') {
+			state.account.balance = 100;
+			state.account.balanceIsLow = false;
+			state.account.firstTime = false;
+		}
+		else if (this.scenario === 'new_order_standing') {
+			state.account.balance = 100;
+			state.account.balanceIsLow = false;
+			state.account.firstTime = false;
+			state.standingOrder = {
+				pickupLocation: _.cloneDeep(state.pickupLocations[0]),
+				foodItems: [
+					_.cloneDeep(state.foodCategories[0].foodItems[0]),
+					_.cloneDeep(state.foodCategories[2].foodItems[0]),
+					_.cloneDeep(state.foodCategories[5].foodItems[0])
+				],
+			}
+			_.each(state.standingOrder.foodItems, function(item) {
+				item.quantityOrdered = 1;
+			});
+			state.standingOrder.pickupLocation.selected === true;
+		}
+
 		this.cache[this.scenario] = state;
 		return state;
 	}
@@ -133,7 +156,7 @@ export class DataService {
 			}
 		],
 		outstandingOrder: null,
-		standingOrder: {},
+		standingOrder: null,
 		orderInProgress: {
 			foodItems: [],
 			pickupLocation: null,
@@ -144,13 +167,13 @@ export class DataService {
 				id: 1,
 				label: 'Bread',
 				image: 'bread.jpeg',
-				amount: 0,
+				quantityOrdered: 0,
 				expanded: false,
 				foodItems: [
 					{
 						id: 1,
 						name: 'Oma\'s Best',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'loaf',
 						unitLabelPlural: 'loaves',
 						unitCost: 8,
@@ -161,7 +184,7 @@ export class DataService {
 					{
 						id: 2,
 						name: 'Sourdough',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'loaf',
 						unitLabelPlural: 'loaves',
 						unitCost: 8,
@@ -172,7 +195,7 @@ export class DataService {
 					{
 						id: 3,
 						name: 'Spent Grain',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'loaf',
 						unitLabelPlural: 'loaves',
 						unitCost: 8,
@@ -186,13 +209,13 @@ export class DataService {
 				id: 2,
 				label: 'Dairy / Eggs',
 				image: 'dairy.jpeg',
-				amount: 0,
+				quantityOrdered: 0,
 				expanded: false,
 				foodItems: [
 					{
 						id: 4,
 						name: 'Milk',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'gallon',
 						unitLabelPlural: 'gallons',
 						unitCost: 5,
@@ -203,7 +226,7 @@ export class DataService {
 					{
 						id: 5,
 						name: 'Eggs',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'dozen',
 						unitLabelPlural: 'dozen',
 						unitCost: 6,
@@ -217,13 +240,13 @@ export class DataService {
 				id: 3,
 				label: 'Dry Goods',
 				image: 'drygoods.jpeg',
-				amount: 0,
+				quantityOrdered: 0,
 				expanded: false,
 				foodItems: [
 					{
 						id: 6,
 						name: 'Rolled Oats',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'bag',
 						unitLabelPlural: 'bags',
 						unitCost: 8,
@@ -234,7 +257,7 @@ export class DataService {
 					{
 						id: 7,
 						name: 'Brown Rice',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'bag',
 						unitLabelPlural: 'bags',
 						unitCost: 8,
@@ -249,13 +272,13 @@ export class DataService {
 				id: 4,
 				label: 'Ferments',
 				image: 'ferments.jpeg',
-				amount: 0,
+				quantityOrdered: 0,
 				expanded: false,
 				foodItems: [
 					{
 						id: 8,
 						name: 'Sauerkraut',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'jar',
 						unitLabelPlural: 'jars',
 						unitCost: 8,
@@ -266,7 +289,7 @@ export class DataService {
 					{
 						id: 9,
 						name: 'Ruby Kraut',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'jar',
 						unitLabelPlural: 'jars',
 						unitCost: 8,
@@ -281,13 +304,13 @@ export class DataService {
 				id: 5,
 				label: 'Flowers',
 				image: 'flowers.jpeg',
-				amount: 0,
+				quantityOrdered: 0,
 				expanded: false,
 				foodItems: [
 					{
 						id: 10,
 						name: 'Assortment',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'bunch',
 						unitLabelPlural: 'bunches',
 						unitCost: 8,
@@ -301,13 +324,13 @@ export class DataService {
 				id: 6,
 				label: 'Meat',
 				image: 'meat.jpeg',
-				amount: 0,
+				quantityOrdered: 0,
 				expanded: false,
 				foodItems: [
 					{
 						id: 11,
 						name: 'Ground Beef',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'pound',
 						unitLabelPlural: 'pounds',
 						unitCost: 8,
@@ -318,7 +341,7 @@ export class DataService {
 					{
 						id: 12,
 						name: 'Hot Dogs',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'pack',
 						unitLabelPlural: 'packs',
 						unitCost: 8,
@@ -333,13 +356,13 @@ export class DataService {
 				id: 7,
 				label: 'Roots / Storage',
 				image: 'roots.jpeg',
-				amount: 0,
+				quantityOrdered: 0,
 				expanded: false,
 				foodItems: [
 					{
 						id: 13,
 						name: 'Assortment',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'bunch',
 						unitLabelPlural: 'bunches',
 						unitCost: 8,
@@ -353,13 +376,13 @@ export class DataService {
 				id: 8,
 				label: 'Sweets',
 				image: 'sweets.jpeg',
-				amount: 0,
+				quantityOrdered: 0,
 				expanded: false,
 				foodItems: [
 					{
 						id: 14,
 						name: 'Honey',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'jar',
 						unitLabelPlural: 'jars',
 						unitCost: 5,
@@ -370,7 +393,7 @@ export class DataService {
 					{
 						id: 15,
 						name: 'Jam',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'jar',
 						unitLabelPlural: 'jars',
 						unitCost: 8,
@@ -381,7 +404,7 @@ export class DataService {
 					{
 						id: 16,
 						name: 'Maple Syrup',
-						quantity: 0,
+						quantityOrdered: 0,
 						unitLabelSingular: 'jar',
 						unitLabelPlural: 'jars',
 						unitCost: 8,

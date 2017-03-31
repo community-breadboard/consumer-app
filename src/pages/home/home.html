@@ -35,11 +35,11 @@
 			<ion-card-content *ngIf="showOutstandingOrderPreview">
 				<ion-list>
 					<ion-item *ngFor="let item of state.outstandingOrder.foodItems">
-						<span>{{item.quantity}}
-							<span *ngIf="item.quantity === 1">{{item.unitLabelSingular}}</span>
-							<span *ngIf="item.quantity > 1">{{item.unitLabelPlural}}</span>
+						<span>{{item.quantityOrdered}}
+							<span *ngIf="item.quantityOrdered === 1">{{item.unitLabelSingular}}</span>
+							<span *ngIf="item.quantityOrdered > 1">{{item.unitLabelPlural}}</span>
 							{{item.name}}</span>
-						<span style="float:right">{{item.unitCost * item.quantity | currency:'USD':true:'1.0-2'}}</span>
+						<span style="float:right">{{item.unitCost * item.quantityOrdered | currency:'USD':true:'1.0-2'}}</span>
 					</ion-item>
 				</ion-list>
 			</ion-card-content>
@@ -72,7 +72,7 @@
 			</ion-col>
 			<ion-col color="gray" text-center col-sm [ngClass]="{'completed': (state.orderInProgress.pickupLocation !== null), 'active': (segmentTitle === 'pickup') }">
 				<div (click)="goToSegment('pickup')">
-					<ion-icon [name]="state.orderInProgress.pickupLocation === null ? 'walk' : 'checkmark'"></ion-icon>
+					<ion-icon [name]="userHasSuccessfullyCompletedPickupStep ? 'checkmark' : 'walk'"></ion-icon>
 					<p>Pickup</p>
 				</div>
 			</ion-col>
@@ -102,7 +102,7 @@
 			</ion-row>
 			<p>* Custom amounts can be purchased in the Account tab below.</p>
 		</div>
-		<div *ngIf="segmentTitle === 'shop'">
+		<ion-list *ngIf="segmentTitle === 'shop'">
 
 			<div *ngFor="let foodCategory of state.foodCategories">
 
@@ -117,10 +117,10 @@
 					<ion-item-sliding #slidingItem *ngFor="let item of foodCategory.foodItems">
 						<ion-item>
 							<span style="margin-left:12px;"> </span>
-							<ion-icon *ngIf="item.quantity > 0" ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>
+							<ion-icon *ngIf="item.quantityOrdered > 0" ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>
 							{{item.name}}
-							<span *ngIf="item.quantity === 1" style="padding-left:4px;"> ({{item.quantity}} {{item.unitLabelSingular}})</span>
-							<span *ngIf="item.quantity > 1"> ({{item.quantity}} {{item.unitLabelPlural}})</span>
+							<span *ngIf="item.quantityOrdered === 1" style="padding-left:4px;"> ({{item.quantityOrdered}} {{item.unitLabelSingular}})</span>
+							<span *ngIf="item.quantityOrdered > 1"> ({{item.quantityOrdered}} {{item.unitLabelPlural}})</span>
 							<span style="padding-left:4px;">{{item.unitCost | currency:'USD':true:'1.0-2'}} / {{item.unitLabelSingular}}</span>
 							<ion-icon class="swipe-left" name="return-left"></ion-icon>
 						</ion-item>
@@ -129,7 +129,7 @@
 								<ion-icon ios="ios-add" md="md-add"></ion-icon>
 								Add
 							</button>
-							<button *ngIf="item.quantity > 0" ion-button color="primary" icon-left (click)="subtract(foodCategory, item, slidingItem)">
+							<button *ngIf="item.quantityOrdered > 0" ion-button color="primary" icon-left (click)="subtract(foodCategory, item, slidingItem)">
 								<ion-icon ios="ios-remove" md="md-remove"></ion-icon>
 								Subtract
 							</button>
@@ -145,12 +145,12 @@
 						<img src="assets/images/{{foodCategory.image}}">
 					</ion-avatar>
 					{{ foodCategory.label }}
-					<ion-badge *ngIf="foodCategory.amount > 0" style="margin-left:20px">{{foodCategory.amount}}</ion-badge>
+					<ion-badge *ngIf="foodCategory.quantityOrdered > 0" style="margin-left:20px">{{foodCategory.quantityOrdered}}</ion-badge>
 					<ion-icon style="float:right" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
 
 				</ion-item>
 			</div>
-		</div>
+		</ion-list>
 
 		<div *ngIf="segmentTitle === 'pickup'">
 
@@ -198,11 +198,11 @@
 				<ion-card-content *ngIf="state.orderInProgress.foodItems.length > 0 && showOrderPreview">
 					<ion-list>
 						<ion-item *ngFor="let item of state.orderInProgress.foodItems">
-							<span>{{item.quantity}}
-								<span *ngIf="item.quantity === 1">{{item.unitLabelSingular}}</span>
-								<span *ngIf="item.quantity > 1">{{item.unitLabelPlural}}</span>
+							<span>{{item.quantityOrdered}}
+								<span *ngIf="item.quantityOrdered === 1">{{item.unitLabelSingular}}</span>
+								<span *ngIf="item.quantityOrdered > 1">{{item.unitLabelPlural}}</span>
 								{{item.name}}</span>
-							<span style="float:right">{{item.unitCost * item.quantity | currency:'USD':true:'1.0-2'}}</span>
+							<span style="float:right">{{item.unitCost * item.quantityOrdered | currency:'USD':true:'1.0-2'}}</span>
 						</ion-item>
 					</ion-list>
 				</ion-card-content>

@@ -4,8 +4,11 @@ import _ from "lodash";
 
 import { OrderModal } from '../../modals/order/order';
 import { WelcomeModal } from '../../modals/welcome/welcome';
+import { StartModal } from '../../modals/start/start';
 import { State } from '../../models/state';
 import { DataService } from '../../services/data.service';
+import { FoodItem } from '../../models/food-item';
+import { FoodCategory } from '../../models/food-category';
 
 
 @Component({
@@ -23,15 +26,26 @@ export class HomePage implements OnInit {
 			this.openWelcomeModal();
 			this.includePaySegment = true;
 			this.segmentTitle = 'pay';
+
+		// not first time
 		} else {
+
+			if (this.showUserStartModal()) {
+				this.openStartModal();
+				this.userHasSeenStartModal = true;
+			}
 			this.segmentTitle = 'shop';
 			this.includePaySegment = false;
 		}
 	}
 
-	getData(): void {
+	private getData(): void {
 		this.state = this.dataService.getData();
 		this.orderIsOutstanding = this.state.outstandingOrder !== null;
+	}
+
+	private showUserStartModal(): boolean {
+		return (!this.userHasSeenStartModal && !this.orderIsOutstanding && !this.userHasSelectedAtLeastOneItem() && !this.userHasSelectedAPickupLocation());
 	}
 
 	segmentTitle: string;
@@ -44,18 +58,19 @@ export class HomePage implements OnInit {
 	userHasSuccessfullyCompletedShoppingStep: boolean = false;
 	userHasSuccessfullyCompletedPaymentStep: boolean = false;
 	userHasSuccessfullyCompletedPickupStep: boolean = false;
+	userHasSeenStartModal: boolean = false;
 	state:State;
 	orderIsOutstanding: boolean;
 
-	userHasSelectedAtLeastOneItem(): boolean {
+	private userHasSelectedAtLeastOneItem(): boolean {
 
 		return _.some(this.state.foodCategories, function(foodCategory) {
 			return _.some(foodCategory.foodItems, function(foodItem) {
-				return foodItem.quantity > 0;
+				return foodItem.quantityOrdered > 0;
 			});
 		});
 	}
-	userHasSelectedAPickupLocation(): boolean {
+	private userHasSelectedAPickupLocation(): boolean {
 		return _.some(this.state.pickupLocations, function(location) {
 			return location.selected === true;
 		});
@@ -71,9 +86,9 @@ export class HomePage implements OnInit {
 		var self = this;
 		_.each(this.state.foodCategories, function(foodCategory) {
 			_.each(foodCategory.foodItems, function(item) {
-				if (item.quantity > 0) {
+				if (item.quantityOrdered > 0) {
 					self.state.orderInProgress.foodItems.push(_.cloneDeep(item));
-					self.state.orderInProgress.totalCost += (item.quantity * item.unitCost);
+					self.state.orderInProgress.totalCost += (item.quantityOrdered * item.unitCost);
 				}
 			});
 		});
@@ -98,23 +113,61 @@ export class HomePage implements OnInit {
 
 	private openWelcomeModal(): void {
 		let modal = this.modalCtrl.create(WelcomeModal);
-		modal.isOverlay = true;
+		modal.isOverlay = false;
+		modal.present();
+	}
+	private openStartModal(): void {
+		let modal = this.modalCtrl.create(StartModal);
+		modal.isOverlay = false;
+		modal.onDidDismiss(data => {
+			if (data.useStandingOrder === true) {
+				this.copyStandingOrderIntoOrder();
+			}
+		});
 		modal.present();
 	}
 
+	private setFoodCategoryQuantityOrderedFromFoodItemQuantityOrdered() {
+		_.each(this.state.foodCategories, function(foodCategory) {
+			foodCategory.quantityOrdered = _.reduce(foodCategory.foodItems, function(sum, foodItem) {
+				return (sum + foodItem.quantityOrdered);
+			}, 0);
+		});
+	}
+	private copyStandingOrderIntoOrder() {
+		let self = this;
+		_.each(self.state.foodCategories, function(foodCategory) {
+			_.each(foodCategory.foodItems, function(item) {
+				let itemFromStandingOrder: FoodItem = _.find(self.state.standingOrder.foodItems, function(fi: FoodItem) { return fi.id === item.id; });
+				if ( itemFromStandingOrder ) {
+					item.quantityOrdered = itemFromStandingOrder.quantityOrdered;
+					self.userHasSuccessfullyCompletedShoppingStep = true;
+				}
+			});
+		});
+		self.setFoodCategoryQuantityOrderedFromFoodItemQuantityOrdered();
+		if (this.state.standingOrder.pickupLocation) {
+			_.each(self.state.pickupLocations, function(location) {
+				if (location.id === self.state.standingOrder.pickupLocation.id) {
+					location.selected = true;
+					self.userHasSuccessfullyCompletedPickupStep = true;
+				}
+			});
+		}
+	}
 	addCredit(amount: number): void {
 		this.state.account.balance += amount;
 		this.events.publish('account:changed');
 	}
 
-	add(category, item, slidingItem): void {
-		category.amount = category.amount + 1;
-		item.quantity = item.quantity + 1;
+	add(category: FoodCategory, item: FoodItem, slidingItem: ItemSliding): void {
+		category.quantityOrdered = category.quantityOrdered + 1;
+		item.quantityOrdered = item.quantityOrdered + 1;
 		slidingItem.close();
 	}
-	subtract(category, item, slidingItem): void {
-		category.amount = category.amount - 1;
-		item.quantity = item.quantity - 1;
+	subtract(category: FoodCategory, item: FoodItem, slidingItem: ItemSliding): void {
+		category.quantityOrdered = category.quantityOrdered - 1;
+		item.quantityOrdered = item.quantityOrdered - 1;
 		if (!this.userHasSelectedAtLeastOneItem()) {
 			this.userHasSuccessfullyCompletedShoppingStep = false;
 		}

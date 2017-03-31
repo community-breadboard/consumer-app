@@ -4,7 +4,7 @@ export class FoodCategory {
 	id: number;
 	label: string;
 	image: string;
-	amount: number = 0;
+	quantityOrdered: number = 0;
 	expanded: boolean = false;
 	foodItems: FoodItem[];
 }
