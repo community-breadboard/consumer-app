@@ -1,12 +1,14 @@
 import { FoodCategory } from './food-category';
 import { Account } from './account';
 import { PickupLocation } from './pickup-location';
+import { OutstandingOrder } from './outstanding-order';
+import { OrderInProgress } from './order-in-progress';
 
 export class State {
 	account: Account;
 	pickupLocations: [PickupLocation];
-	outstandingOrder: any;
+	outstandingOrder: OutstandingOrder;
 	standingOrder: any;
-	orderInProgress: any;
+	orderInProgress: OrderInProgress;
 	foodCategories: [FoodCategory];
 }

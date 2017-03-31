@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 import { DataService } from '../../services/data.service';
-import { HomePage } from '../home/home';
 import { Events } from 'ionic-angular';
 
 @Component({
@@ -28,7 +27,7 @@ export class ScenariosPage {
 			label: 'Balance Zero'
 		},
 		{
-			id:'order_placed',
+			id:'outstanding_order',
 			label: 'Order Placed'
 		},
 		{
@@ -46,7 +45,7 @@ export class ScenariosPage {
 
 	];
 
-	constructor(public navCtrl: NavController, private dataService: DataService, public events: Events) {
+	constructor(public navCtrl: NavController, private dataService: DataService, private events: Events) {
 
 	}
 

@@ -23,6 +23,40 @@ export class DataService {
 			state.account.balanceIsLow = true;
 			state.account.firstTime = false;
 		}
+		if (this.scenario === 'balance_zero') {
+			state.account.balance = 0;
+			state.account.balanceIsLow = true;
+			state.account.firstTime = false;
+		}
+		if (this.scenario === 'outstanding_order') {
+			state.account.balance = 100;
+			state.account.balanceIsLow = false;
+			state.account.firstTime = false;
+			state.outstandingOrder = {
+				pickupLocation: _.cloneDeep(state.pickupLocations[0]),
+				foodItems: [
+					_.cloneDeep(state.foodCategories[0].foodItems[0]),
+					_.cloneDeep(state.foodCategories[2].foodItems[0]),
+					_.cloneDeep(state.foodCategories[5].foodItems[0])
+				],
+				alertSet: false,
+				addedToCalendar: false
+			}
+			_.forEach(state.outstandingOrder.foodItems, function(foodItem) {
+				foodItem.quantity = 1;
+			});
+		}
+		if (this.scenario === "order_in_progress") {
+			state.account.balance = 100;
+			state.account.balanceIsLow = false;
+			state.account.firstTime = false;
+			state.foodCategories[0].amount = 1;
+			state.foodCategories[0].foodItems[0].quantity = 1;
+			state.foodCategories[2].amount = 1;
+			state.foodCategories[2].foodItems[0].quantity = 1;
+			state.foodCategories[4].amount = 1;
+			state.foodCategories[4].foodItems[0].quantity = 1;
+		}
 		this.cache[this.scenario] = state;
 		return state;
 	}
@@ -98,10 +132,10 @@ export class DataService {
 				selected: false
 			}
 		],
-		outstandingOrder: {},
+		outstandingOrder: null,
 		standingOrder: {},
 		orderInProgress: {
-			items: [],
+			foodItems: [],
 			pickupLocation: null,
 			totalCost: 0
 		},
@@ -110,9 +144,9 @@ export class DataService {
 				id: 1,
 				label: 'Bread',
 				image: 'bread.jpeg',
-				amt: 0,
+				amount: 0,
 				expanded: false,
-				items: [
+				foodItems: [
 					{
 						id: 1,
 						name: 'Oma\'s Best',
@@ -152,9 +186,9 @@ export class DataService {
 				id: 2,
 				label: 'Dairy / Eggs',
 				image: 'dairy.jpeg',
-				amt: 0,
+				amount: 0,
 				expanded: false,
-				items: [
+				foodItems: [
 					{
 						id: 4,
 						name: 'Milk',
@@ -183,9 +217,9 @@ export class DataService {
 				id: 3,
 				label: 'Dry Goods',
 				image: 'drygoods.jpeg',
-				amt: 0,
+				amount: 0,
 				expanded: false,
-				items: [
+				foodItems: [
 					{
 						id: 6,
 						name: 'Rolled Oats',
@@ -215,9 +249,9 @@ export class DataService {
 				id: 4,
 				label: 'Ferments',
 				image: 'ferments.jpeg',
-				amt: 0,
+				amount: 0,
 				expanded: false,
-				items: [
+				foodItems: [
 					{
 						id: 8,
 						name: 'Sauerkraut',
@@ -247,9 +281,9 @@ export class DataService {
 				id: 5,
 				label: 'Flowers',
 				image: 'flowers.jpeg',
-				amt: 0,
+				amount: 0,
 				expanded: false,
-				items: [
+				foodItems: [
 					{
 						id: 10,
 						name: 'Assortment',
@@ -267,9 +301,9 @@ export class DataService {
 				id: 6,
 				label: 'Meat',
 				image: 'meat.jpeg',
-				amt: 0,
+				amount: 0,
 				expanded: false,
-				items: [
+				foodItems: [
 					{
 						id: 11,
 						name: 'Ground Beef',
@@ -299,9 +333,9 @@ export class DataService {
 				id: 7,
 				label: 'Roots / Storage',
 				image: 'roots.jpeg',
-				amt: 0,
+				amount: 0,
 				expanded: false,
-				items: [
+				foodItems: [
 					{
 						id: 13,
 						name: 'Assortment',
@@ -319,9 +353,9 @@ export class DataService {
 				id: 8,
 				label: 'Sweets',
 				image: 'sweets.jpeg',
-				amt: 0,
+				amount: 0,
 				expanded: false,
-				items: [
+				foodItems: [
 					{
 						id: 14,
 						name: 'Honey',

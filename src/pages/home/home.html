@@ -6,8 +6,57 @@
 </ion-header>
 
 <ion-content padding>
+	<div *ngIf="orderIsOutstanding">
+		<h2 style="padding-left:14px;">Your order has been placed!</h2>
+		<ion-card>
+			<ion-card-header>
+				Pickup
+			</ion-card-header>
+			<ion-card-content>
+				<p>
+					{{state.outstandingOrder.pickupLocation.abbreviatedName}}
+					<ion-icon ios="ios-navigate-outline" md="md-navigate" style="padding-left:20px;"></ion-icon>
+				</p>
+				<p>
+					{{state.outstandingOrder.pickupLocation.nextPickup}}
+				</p>
+			</ion-card-content>
+		</ion-card>
 
-	<ion-grid no-padding class="step-progress-bar">
+		<ion-card>
+			<ion-card-header>
+				Order
+				<span style="float:right" *ngIf="state.outstandingOrder.foodItems.length > 0">
+					<span *ngIf="showOutstandingOrderPreview === false">{{state.outstandingOrder.foodItems.length}} items</span>
+					<ion-icon (click)="showOutstandingOrderPreview = true" *ngIf="showOutstandingOrderPreview === false" style="margin-left:4px;" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
+					<ion-icon (click)="showOutstandingOrderPreview = false" *ngIf="showOutstandingOrderPreview === true" style="margin-left:4px;" ios="ios-arrow-up" md="md-arrow-up"></ion-icon>
+				</span>
+			</ion-card-header>
+			<ion-card-content *ngIf="showOutstandingOrderPreview">
+				<ion-list>
+					<ion-item *ngFor="let item of state.outstandingOrder.foodItems">
+						<span>{{item.quantity}}
+							<span *ngIf="item.quantity === 1">{{item.unitLabelSingular}}</span>
+							<span *ngIf="item.quantity > 1">{{item.unitLabelPlural}}</span>
+							{{item.name}}</span>
+						<span style="float:right">{{item.unitCost * item.quantity | currency:'USD':true:'1.0-2'}}</span>
+					</ion-item>
+				</ion-list>
+			</ion-card-content>
+		</ion-card>
+		<p style="padding-left:14px;"> All orders are final</p>
+		<ion-row>
+			<ion-col text-center>
+				<button ion-button color="light" round>Add Alert</button>
+				<button ion-button color="light" round>Add to Calendar</button>
+			</ion-col>
+		</ion-row>
+
+
+
+	</div>
+
+	<ion-grid *ngIf="!orderIsOutstanding" no-padding class="step-progress-bar">
 		<ion-row justify-content-center>
 			<ion-col *ngIf="includePaySegment" color="gray" text-center col-sm [ngClass]="{'completed': userHasSuccessfullyCompletedPaymentStep, 'active': (segmentTitle === 'pay') }">
 				<div (click)="goToSegment('pay')">
@@ -38,9 +87,20 @@
 
 
 
-	<div>
-		<div *ngIf="segmentTitle === 'pay' && includePaySegment">
-			Buy Credits
+	<div *ngIf="!orderIsOutstanding">
+		<div class="pay" *ngIf="segmentTitle === 'pay' && includePaySegment">
+			<p>Purchase Credits *</p>
+			<ion-row>
+				<ion-col text-center>
+					<button ion-button color="secondary" round (click)="addCredit(25)">$25</button>
+				</ion-col>
+			</ion-row>
+			<ion-row>
+				<ion-col text-center>
+					<button ion-button color="light" round (click)="addCredit(50)">$50</button>
+				</ion-col>
+			</ion-row>
+			<p>* Custom amounts can be purchased in the Account tab below.</p>
 		</div>
 		<div *ngIf="segmentTitle === 'shop'">
 
@@ -54,7 +114,7 @@
 						{{foodCategory.label}}
 						<ion-icon style="float:right" ios="ios-arrow-up" md="md-arrow-up"></ion-icon>
 					</ion-list-header>
-					<ion-item-sliding #slidingItem *ngFor="let item of foodCategory.items">
+					<ion-item-sliding #slidingItem *ngFor="let item of foodCategory.foodItems">
 						<ion-item>
 							<span style="margin-left:12px;"> </span>
 							<ion-icon *ngIf="item.quantity > 0" ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>
@@ -85,7 +145,7 @@
 						<img src="assets/images/{{foodCategory.image}}">
 					</ion-avatar>
 					{{ foodCategory.label }}
-					<ion-badge *ngIf="foodCategory.amt > 0" style="margin-left:20px">{{foodCategory.amt}}</ion-badge>
+					<ion-badge *ngIf="foodCategory.amount > 0" style="margin-left:20px">{{foodCategory.amount}}</ion-badge>
 					<ion-icon style="float:right" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
 
 				</ion-item>
@@ -129,15 +189,15 @@
 			<ion-card>
 				<ion-card-header>
 					Order
-					<span style="float:right" *ngIf="state.orderInProgress.items.length > 0">
-						<span *ngIf="showOrderPreview === false">{{state.orderInProgress.items.length}} items</span>
+					<span style="float:right" *ngIf="state.orderInProgress.foodItems.length > 0">
+						<span *ngIf="showOrderPreview === false">{{state.orderInProgress.foodItems.length}} items</span>
 						<ion-icon (click)="showOrderPreview = true" *ngIf="showOrderPreview === false" style="margin-left:4px;" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
 						<ion-icon (click)="showOrderPreview = false" *ngIf="showOrderPreview === true" style="margin-left:4px;" ios="ios-arrow-up" md="md-arrow-up"></ion-icon>
 					</span>
 				</ion-card-header>
-				<ion-card-content *ngIf="state.orderInProgress.items.length > 0 && showOrderPreview">
+				<ion-card-content *ngIf="state.orderInProgress.foodItems.length > 0 && showOrderPreview">
 					<ion-list>
-						<ion-item *ngFor="let item of state.orderInProgress.items">
+						<ion-item *ngFor="let item of state.orderInProgress.foodItems">
 							<span>{{item.quantity}}
 								<span *ngIf="item.quantity === 1">{{item.unitLabelSingular}}</span>
 								<span *ngIf="item.quantity > 1">{{item.unitLabelPlural}}</span>
@@ -146,7 +206,7 @@
 						</ion-item>
 					</ion-list>
 				</ion-card-content>
-				<ion-card-content *ngIf="state.orderInProgress.items.length === 0">
+				<ion-card-content *ngIf="state.orderInProgress.foodItems.length === 0">
 					<p ion-text color="danger">Please click on SHOP above to items to your order.</p>
 				</ion-card-content>
 
@@ -178,7 +238,7 @@
 					</ion-list>
 				</ion-card-content>
 			</ion-card>
-			<ion-row *ngIf="state.orderInProgress.items.length > 0 && state.orderInProgress.pickupLocation">
+			<ion-row *ngIf="state.orderInProgress.foodItems.length > 0 && state.orderInProgress.pickupLocation">
 				<ion-col text-center>
 					<button ion-button color="secondary" round>Place Order</button>
 				</ion-col>

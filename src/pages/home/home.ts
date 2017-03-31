@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-
-import { NavController, Platform, ModalController } from 'ionic-angular';
+import { NavController, Platform, ModalController, Events, ItemSliding } from 'ionic-angular';
+import _ from "lodash";
 
 import { OrderModal } from '../../modals/order/order';
 import { WelcomeModal } from '../../modals/welcome/welcome';
-
-import _ from "lodash";
-
-import { ItemSliding } from 'ionic-angular';
 import { State } from '../../models/state';
 import { DataService } from '../../services/data.service';
+
 
 @Component({
 	selector: 'page-home',
@@ -30,16 +27,17 @@ export class HomePage implements OnInit {
 			this.segmentTitle = 'shop';
 			this.includePaySegment = false;
 		}
-		console.log("include=", this.includePaySegment);
 	}
 
 	getData(): void {
 		this.state = this.dataService.getData();
+		this.orderIsOutstanding = this.state.outstandingOrder !== null;
 	}
 
 	segmentTitle: string;
 	isAndroid: boolean = false;
 	showOrderPreview: boolean = true;
+	showOutstandingOrderPreview: boolean = false;
 	showTotalPreview: boolean = true;
 	includePaySegment: boolean = false;
 
@@ -47,12 +45,13 @@ export class HomePage implements OnInit {
 	userHasSuccessfullyCompletedPaymentStep: boolean = false;
 	userHasSuccessfullyCompletedPickupStep: boolean = false;
 	state:State;
+	orderIsOutstanding: boolean;
 
 	userHasSelectedAtLeastOneItem(): boolean {
 
 		return _.some(this.state.foodCategories, function(foodCategory) {
-			return _.some(foodCategory.items, function(item) {
-				return item.quantity > 0;
+			return _.some(foodCategory.foodItems, function(foodItem) {
+				return foodItem.quantity > 0;
 			});
 		});
 	}
@@ -65,15 +64,15 @@ export class HomePage implements OnInit {
 	checkout(): void {
 
 		this.state.orderInProgress = {
-			items: [],
+			foodItems: [],
 			pickupLocation: null,
 			totalCost: 0
 		};
 		var self = this;
 		_.each(this.state.foodCategories, function(foodCategory) {
-			_.each(foodCategory.items, function(item) {
+			_.each(foodCategory.foodItems, function(item) {
 				if (item.quantity > 0) {
-					self.state.orderInProgress.items.push(_.cloneDeep(item));
+					self.state.orderInProgress.foodItems.push(_.cloneDeep(item));
 					self.state.orderInProgress.totalCost += (item.quantity * item.unitCost);
 				}
 			});
@@ -103,14 +102,18 @@ export class HomePage implements OnInit {
 		modal.present();
 	}
 
+	addCredit(amount: number): void {
+		this.state.account.balance += amount;
+		this.events.publish('account:changed');
+	}
 
 	add(category, item, slidingItem): void {
-		category.amt = category.amt + 1;
+		category.amount = category.amount + 1;
 		item.quantity = item.quantity + 1;
 		slidingItem.close();
 	}
 	subtract(category, item, slidingItem): void {
-		category.amt = category.amt - 1;
+		category.amount = category.amount - 1;
 		item.quantity = item.quantity - 1;
 		if (!this.userHasSelectedAtLeastOneItem()) {
 			this.userHasSuccessfullyCompletedShoppingStep = false;
@@ -131,7 +134,13 @@ export class HomePage implements OnInit {
 		this.segmentTitle = segmentTitle;
 	}
 
-	constructor(public navCtrl: NavController, public modalCtrl: ModalController, platform: Platform, private dataService: DataService) {
+	constructor(
+		public navCtrl: NavController,
+		public modalCtrl: ModalController,
+		platform: Platform,
+		private dataService: DataService,
+		private events: Events) {
+
 		this.isAndroid = platform.is('android');
 	}
 
