@@ -10,7 +10,7 @@
 		<button ion-button color="secondary" round (click)="useStandingOrder()">Your standing order</button>
 	</div>
 	<div class="start" *ngIf="!userHasAStandingOrder">
-		<button ion-button color="secondary" round (click)="useBlankSlate()">Start with a Blank slate</button>
-		<button ion-button color="secondary" round>create a standing order</button>
+		<button ion-button color="secondary" round (click)="useBlankSlate()">Start with a blank slate</button>
+		<button ion-button color="secondary" round (click)="createStandingOrder()">Create a standing order</button>
 	</div>
 </ion-content>

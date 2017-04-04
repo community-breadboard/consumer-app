@@ -25,4 +25,7 @@ export class StartModal implements OnInit {
 	useStandingOrder() {
 		this.viewCtrl.dismiss({useStandingOrder:true});
 	}
+	createStandingOrder() {
+		this.viewCtrl.dismiss({createStandingOrder:true});
+	}
 }

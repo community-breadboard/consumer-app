@@ -6,6 +6,7 @@ import { AccountPage } from '../pages/account/account';
 import { HomePage } from '../pages/home/home';
 import { ScenariosPage } from '../pages/scenarios/scenarios';
 import { OrderModal } from '../modals/order/order';
+import { ItemModal } from '../modals/item/item';
 import { WelcomeModal } from '../modals/welcome/welcome';
 import { StartModal } from '../modals/start/start';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -18,6 +19,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     HomePage,
 	ScenariosPage,
 	OrderModal,
+	ItemModal,
 	WelcomeModal,
 	StartModal,
     TabsPage
@@ -33,6 +35,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     HomePage,
 	ScenariosPage,
 	OrderModal,
+	ItemModal,
 	WelcomeModal,
 	StartModal,
     TabsPage

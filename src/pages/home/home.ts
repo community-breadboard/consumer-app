@@ -3,6 +3,7 @@ import { NavController, Platform, ModalController, Events, ItemSliding } from 'i
 import _ from "lodash";
 
 import { OrderModal } from '../../modals/order/order';
+import { ItemModal } from '../../modals/item/item';
 import { WelcomeModal } from '../../modals/welcome/welcome';
 import { StartModal } from '../../modals/start/start';
 import { State } from '../../models/state';
@@ -62,6 +63,8 @@ export class HomePage implements OnInit {
 	state:State;
 	orderIsOutstanding: boolean;
 
+	mode: String = "place-order";
+
 	private userHasSelectedAtLeastOneItem(): boolean {
 
 		return _.some(this.state.foodCategories, function(foodCategory) {
@@ -107,7 +110,7 @@ export class HomePage implements OnInit {
 
 	openItemDetailsModal(slidingItem: ItemSliding): void {
 		slidingItem.close();
-		let modal = this.modalCtrl.create(OrderModal);
+		let modal = this.modalCtrl.create(ItemModal);
 		modal.present();
 	}
 
@@ -122,10 +125,21 @@ export class HomePage implements OnInit {
 		modal.onDidDismiss(data => {
 			if (data.useStandingOrder === true) {
 				this.copyStandingOrderIntoOrder();
+			} else if (data.createStandingOrder === true) {
+				this.mode = 'create-standing-order';
 			}
 		});
 		modal.present();
 	}
+
+	placeOrder() {
+		let modal = this.modalCtrl.create(OrderModal);
+		modal.present();
+	}
+	createStandingOrder() {
+//		this.navCtrl.
+	}
+
 
 	private setFoodCategoryQuantityOrderedFromFoodItemQuantityOrdered() {
 		_.each(this.state.foodCategories, function(foodCategory) {
@@ -179,10 +193,12 @@ export class HomePage implements OnInit {
 			location.selected = false;
 		});
 		loc.selected = true;
+		this.checkout();
 	}
 
 	goToSegment(segmentTitle): void {
 		this.userHasSuccessfullyCompletedShoppingStep = this.userHasSelectedAtLeastOneItem();
+		this.userHasSuccessfullyCompletedPaymentStep = this.state.account.balance > 0;
 		this.userHasSuccessfullyCompletedPickupStep = this.userHasSelectedAPickupLocation();
 		this.segmentTitle = segmentTitle;
 	}

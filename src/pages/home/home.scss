@@ -21,35 +21,54 @@ page-home {
 	ion-grid.step-progress-bar {
 		border-bottom: 3px solid lightgray;
 
-		ion-col p {
-			margin-top: 0px;
-			text-transform: uppercase;
+		ion-col {
+			p {
+				margin-top: 0px;
+				text-transform: uppercase;
+				color: lightgray;
+			}
+			div {
+				cursor: pointer;
+			}
+			ion-icon {
+				font-size: 1.6em;
+				color: lightgray;
+			}
 		}
-		ion-col div {
-			cursor: pointer;
+
+		ion-col.active {
+
+			ion-icon {
+				color: #55b776;
+			}
+			p {
+				font-weight: bold;
+				color: black;
+			}
 		}
-		ion-col ion-icon {
-			font-size: 1.6em;
-		}
-		ion-col.active ion-icon {
-			color: green; //#55b776;
-		}
-		ion-col.active p {
-			font-weight: bold;
+		ion-col.completed {
+
+			ion-icon {
+				color: black;
+			}
+			p {
+				font-weight: normal;
+				color: gray;
+			}
 		}
 
 		ion-col:before {
-			width: -webkit-calc(100% - 34px);
-			width:    -moz-calc(100% - 34px);
-			width:         calc(100% - 34px);
+			width: -webkit-calc(100% - 64px);
+			width:    -moz-calc(100% - 64px);
+			width:         calc(100% - 64px);
 			height: 2px;
 			content: '';
 			position: absolute;
-			background-color: #7d7d7d; //gray;   #55b776; //green //
+			background-color: lightgray; //#7d7d7d; //gray;   #55b776; //green //
 			top: 17px;
-			left: -webkit-calc(-50% + 17px);
-			left:    -moz-calc(-50% + 17px);
-			left:         calc(-50% + 17px);
+			left: -webkit-calc(-50% + 32px);
+			left:    -moz-calc(-50% + 32px);
+			left:         calc(-50% + 32px);
 		}
 
 		ion-col:first-child:before {
@@ -62,7 +81,7 @@ page-home {
 			width: 34px;
 			height: 34px;
 			line-height: 34px;
-			border: 2px solid #7d7d7d;
+			border: 2px solid lightgray;
 			display: block;
 			text-align: center;
 			margin: 0 auto 10px auto;
@@ -71,7 +90,10 @@ page-home {
 		}
 
 		ion-col.active ion-icon:before {
-			border: 2px solid green;
+			border: 2px solid #55b776;
+		}
+		ion-col.completed ion-icon:before {
+			border: 2px solid gray;
 		}
 	}
 }

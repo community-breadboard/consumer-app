@@ -1,23 +1,18 @@
 <ion-header>
 	<ion-toolbar>
-		<ion-buttons start>
+		<ion-buttons end>
 			<button ion-button icon-only color="royal" (click)="dismiss()">
-				<ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
-				Bread
+				<ion-icon name="close"></ion-icon>
 			</button>
 		</ion-buttons>
-		<ion-title>Oma's Best</ion-title>
+		<ion-title>Order Placed</ion-title>
 	</ion-toolbar>
 </ion-header>
 <ion-content>
-	<img src="assets/images/oma.png" width="100%">
 	<div style="padding: 10px 10px">
-		<p>$8 Whole Loaf</p>
-		<h3>Description</h3>
-		<p>A traditional Danish / northern German-style pan loaf with a complex hearty flavor.</p>
-		<h3>Ingredients</h3>
-		<p>Organic dark rye flour, organic whole spelt flour, water, organic sunflower seeds, organic flax seeds, organic sesame seeds, sea salt
-		<h3>Producer</h3>
-		<p>Juniper Cottage Bake Shop</p>
+		<p>Thank you.  Your order has been placed.<p>
+		<button ion-button color="secondary" round>Add to calendar</button>
+		<button ion-button color="secondary" round>Add an alert</button>
+
 	</div>
 </ion-content>
