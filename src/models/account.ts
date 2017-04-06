@@ -5,6 +5,7 @@ export class Account {
 	owner: Person;
 	balance: number;
 	homeDelivery: boolean;
-	balanceIsLow: boolean;
+	balanceIsLowThreshold: number;
 	firstTime: boolean;
+
 }

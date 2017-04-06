@@ -7,7 +7,8 @@ import { AccountPage } from '../account/account';
 import { ScenariosPage } from '../scenarios/scenarios';
 import { DataService } from '../../services/data.service';
 import { Account } from '../../models/account';
-import { Events } from 'ionic-angular';
+import { Events, ModalController } from 'ionic-angular';
+import { WelcomeModal } from '../../modals/welcome/welcome';
 
 @Component({
 	templateUrl: 'tabs.html'
@@ -21,19 +22,34 @@ export class TabsPage implements OnInit {
 	tab4Root: any = ScenariosPage;
 
 	account: Account;
+	selectedIndex: number = 0;
 
 	getData() {
 		this.account = this.dataService.getData().account;
 	}
 
-	constructor(private dataService: DataService, public events: Events) {}
+	constructor(
+		private dataService: DataService,
+		public events: Events,
+		public modalCtrl: ModalController) {}
+
 
 	ngOnInit() {
 		this.getData();
+		if (this.account.firstTime === true) {
+			this.selectedIndex = 2;
+			this.openWelcomeModal();
+		}
 		var self = this;
 		this.events.subscribe('account:changed', function() {
 			self.getData();
 		});
+	}
+
+	private openWelcomeModal(): void {
+		let modal = this.modalCtrl.create(WelcomeModal);
+		modal.isOverlay = false;
+		modal.present();
 	}
 
 

@@ -4,7 +4,6 @@ import _ from "lodash";
 
 import { OrderModal } from '../../modals/order/order';
 import { ItemModal } from '../../modals/item/item';
-import { WelcomeModal } from '../../modals/welcome/welcome';
 import { StartModal } from '../../modals/start/start';
 import { State } from '../../models/state';
 import { DataService } from '../../services/data.service';
@@ -23,21 +22,8 @@ export class HomePage implements OnInit {
 
 	ionViewWillEnter() {
 		this.getData();
-		if (this.state.account.firstTime) {
-			this.openWelcomeModal();
-			this.includePaySegment = true;
-			this.segmentTitle = 'pay';
-
-		// not first time
-		} else {
-
-			if (this.showUserStartModal()) {
-				this.openStartModal();
-				this.userHasSeenStartModal = true;
-			}
-			this.segmentTitle = 'shop';
-			this.includePaySegment = false;
-		}
+		this.segmentTitle = 'shop';
+		this.includePaySegment = false;
 	}
 
 	private getData(): void {
@@ -114,11 +100,6 @@ export class HomePage implements OnInit {
 		modal.present();
 	}
 
-	private openWelcomeModal(): void {
-		let modal = this.modalCtrl.create(WelcomeModal);
-		modal.isOverlay = false;
-		modal.present();
-	}
 	private openStartModal(): void {
 		let modal = this.modalCtrl.create(StartModal);
 		modal.isOverlay = false;

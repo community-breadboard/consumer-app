@@ -1,3 +1,10 @@
 page-account {
-
+	ion-card-content.alert {
+		p.danger {
+			color: map-get($colors, danger);;
+		}
+		p.secondary {
+			color: map-get($colors, secondary);
+		}
+	}
 }

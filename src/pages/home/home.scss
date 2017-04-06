@@ -58,17 +58,17 @@ page-home {
 		}
 
 		ion-col:before {
-			width: -webkit-calc(100% - 64px);
-			width:    -moz-calc(100% - 64px);
-			width:         calc(100% - 64px);
+			width: -webkit-calc(100% - 54px);
+			width:    -moz-calc(100% - 54px);
+			width:         calc(100% - 54px);
 			height: 2px;
 			content: '';
 			position: absolute;
 			background-color: lightgray; //#7d7d7d; //gray;   #55b776; //green //
 			top: 17px;
-			left: -webkit-calc(-50% + 32px);
-			left:    -moz-calc(-50% + 32px);
-			left:         calc(-50% + 32px);
+			left: -webkit-calc(-50% + 27px);
+			left:    -moz-calc(-50% + 27px);
+			left:         calc(-50% + 27px);
 		}
 
 		ion-col:first-child:before {

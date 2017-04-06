@@ -58,12 +58,14 @@
 
 	<ion-grid *ngIf="!orderIsOutstanding" no-padding class="step-progress-bar">
 		<ion-row justify-content-center>
+			<!--
 			<ion-col *ngIf="mode === 'place-order' && includePaySegment" text-center col-sm [ngClass]="{'completed': userHasSuccessfullyCompletedPaymentStep, 'active': (segmentTitle === 'pay') }">
 				<div (click)="goToSegment('pay')">
 					<ion-icon [name]="userHasSuccessfullyCompletedPaymentStep ? 'checkmark' : 'cash'"></ion-icon>
 					<p>Add</p>
 				</div>
 			</ion-col>
+			-->
 			<ion-col text-center col-sm [ngClass]="{'completed': userHasSuccessfullyCompletedShoppingStep, 'active': (segmentTitle === 'shop') }">
 				<div (click)="goToSegment('shop')">
 					<ion-icon [name]="userHasSuccessfullyCompletedShoppingStep ? 'checkmark' : 'cart'"></ion-icon>
@@ -90,6 +92,7 @@
 
 
 	<div *ngIf="!orderIsOutstanding">
+<!--
 		<div class="pay" *ngIf="segmentTitle === 'pay' && includePaySegment">
 			<p>Purchase Credits *</p>
 			<ion-row>
@@ -104,6 +107,7 @@
 			</ion-row>
 			<p>* Custom amounts can be purchased in the Account tab below.</p>
 		</div>
+	-->
 		<ion-list *ngIf="segmentTitle === 'shop'">
 
 			<div *ngFor="let foodCategory of state.foodCategories">

@@ -5,7 +5,7 @@ import _ from "lodash";
 @Injectable()
 export class DataService {
 
-	private scenario: string = 'first_time';
+	private scenario: string = 'balance_low';
 	private cache: any = {};
 
 	setScenario(scenario: string): void {
@@ -20,17 +20,14 @@ export class DataService {
 		var state: State = _.cloneDeep(this.defaultState);
 		if (this.scenario === 'balance_low') {
 			state.account.balance = 20;
-			state.account.balanceIsLow = true;
 			state.account.firstTime = false;
 		}
 		else if (this.scenario === 'balance_zero') {
 			state.account.balance = 0;
-			state.account.balanceIsLow = true;
 			state.account.firstTime = false;
 		}
 		else if (this.scenario === 'outstanding_order') {
 			state.account.balance = 100;
-			state.account.balanceIsLow = false;
 			state.account.firstTime = false;
 			state.outstandingOrder = {
 				pickupLocation: _.cloneDeep(state.pickupLocations[0]),
@@ -48,7 +45,6 @@ export class DataService {
 		}
 		else if (this.scenario === 'order_in_progress') {
 			state.account.balance = 100;
-			state.account.balanceIsLow = false;
 			state.account.firstTime = false;
 			state.foodCategories[0].quantityOrdered = 1;
 			state.foodCategories[0].foodItems[0].quantityOrdered = 1;
@@ -59,12 +55,10 @@ export class DataService {
 		}
 		else if (this.scenario === 'new_order_no_standing') {
 			state.account.balance = 100;
-			state.account.balanceIsLow = false;
 			state.account.firstTime = false;
 		}
 		else if (this.scenario === 'new_order_standing') {
 			state.account.balance = 100;
-			state.account.balanceIsLow = false;
 			state.account.firstTime = false;
 			state.standingOrder = {
 				pickupLocation: _.cloneDeep(state.pickupLocations[0]),
@@ -93,7 +87,7 @@ export class DataService {
 			},
 			balance: 0,
 			homeDelivery: true,
-			balanceIsLow: false,
+			balanceIsLowThreshold: 50,
 			firstTime: true
 		},
 		pickupLocations: [
