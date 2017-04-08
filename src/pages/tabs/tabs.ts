@@ -37,7 +37,7 @@ export class TabsPage implements OnInit {
 	ngOnInit() {
 		this.getData();
 		if (this.account.firstTime === true) {
-			this.selectedIndex = 2;
+			this.selectedIndex = 0;
 			this.openWelcomeModal();
 		}
 		var self = this;

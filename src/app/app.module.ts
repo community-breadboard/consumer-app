@@ -4,6 +4,7 @@ import { MyApp } from './app.component';
 import { ProducersPage } from '../pages/producers/producers';
 import { AccountPage } from '../pages/account/account';
 import { HomePage } from '../pages/home/home';
+import { CreditPage } from '../pages/credit/credit';
 import { ScenariosPage } from '../pages/scenarios/scenarios';
 import { OrderModal } from '../modals/order/order';
 import { ItemModal } from '../modals/item/item';
@@ -18,6 +19,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     AccountPage,
     HomePage,
 	ScenariosPage,
+	CreditPage,
 	OrderModal,
 	ItemModal,
 	WelcomeModal,
@@ -34,6 +36,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     AccountPage,
     HomePage,
 	ScenariosPage,
+	CreditPage,
 	OrderModal,
 	ItemModal,
 	WelcomeModal,

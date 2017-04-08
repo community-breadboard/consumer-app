@@ -1,6 +1,6 @@
 <ion-tabs [selectedIndex]="selectedIndex">
 	<ion-tab [root]="tab1Root" tabTitle="Place Order" tabIcon="cart"></ion-tab>
 	<ion-tab [root]="tab2Root" tabTitle="Meet Producers" tabIcon="contacts"></ion-tab>
-	<ion-tab [root]="tab3Root" tabTitle="Account" tabIcon="cash" [tabBadge]="(account.balance === 0 && !account.firstTime) ? '0' : account.balance" [tabBadgeStyle]="((account.balance <= account.balanceIsLowThreshold) && !account.firstTime) ? 'danger' : 'dark'"></ion-tab>
-	<ion-tab [root]="tab4Root" tabTitle="Testing" tabIcon="cog"></ion-tab>
+	<ion-tab [root]="tab3Root" tabTitle="Account" tabIcon="cash" [tabBadge]="account.balance" tabBadgeStyle="dark"></ion-tab>
+<!--	<ion-tab [root]="tab4Root" tabTitle="Testing" tabIcon="cog"></ion-tab>-->
 </ion-tabs>

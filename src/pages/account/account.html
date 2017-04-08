@@ -9,31 +9,15 @@
 
 
 <ion-content>
-	<ion-card *ngIf="showAlertMessage">
-		<ion-card-content class="alert">
-			<p [class]="alertClass">{{ alertMessage }}</p>
-		</ion-card-content>
-	</ion-card>
 
-
-	<ion-card>
-		<ion-card-header>
-			Purchase Credits
-		</ion-card-header>
-		<ion-card-content>
-			<ion-list radio-group [(ngModel)]="amountToAdd">
-				<ion-item *ngFor="let amt of predefinedAmounts">
-					<ion-label>{{amt | currency:'USD':true:'1.0-2'}}</ion-label>
-					<ion-radio value="{{amt}}" [checked]="amountToAdd === amt"></ion-radio>
-				</ion-item>
-			</ion-list>
-			<ion-row>
-				<ion-col text-center>
-					<button ion-button color="light" round (click)="addCredit()">Pay with PayPal</button>
-				</ion-col>
-			</ion-row>
-
-		</ion-card-content>
-	</ion-card>
+	<ion-list>
+		<button ion-item (click)="buyCredit()">
+			Buy credit
+		</button>
+		<button ion-item (click)="createStandingOrder()">
+			<span *ngIf="state.standingOrder">Modify standing order</span>
+			<span *ngIf="!state.standingOrder">Create standing order</span>
+		</button>
+	</ion-list>
 
 </ion-content>

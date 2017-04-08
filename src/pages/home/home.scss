@@ -46,7 +46,7 @@ page-home {
 				color: black;
 			}
 		}
-		ion-col.completed {
+		ion-col.completed,.passed {
 
 			ion-icon {
 				color: black;
@@ -93,6 +93,9 @@ page-home {
 			border: 2px solid #55b776;
 		}
 		ion-col.completed ion-icon:before {
+			border: 2px solid gray;
+		}
+		ion-col.passed ion-icon:before {
 			border: 2px solid gray;
 		}
 	}

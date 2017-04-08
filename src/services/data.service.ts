@@ -5,7 +5,7 @@ import _ from "lodash";
 @Injectable()
 export class DataService {
 
-	private scenario: string = 'balance_low';
+	private scenario: string = 'first_time';
 	private cache: any = {};
 
 	setScenario(scenario: string): void {

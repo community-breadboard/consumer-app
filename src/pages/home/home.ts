@@ -22,7 +22,7 @@ export class HomePage implements OnInit {
 
 	ionViewWillEnter() {
 		this.getData();
-		this.segmentTitle = 'shop';
+		this.segmentTitle = 'pickup';
 		this.includePaySegment = false;
 	}
 
@@ -37,9 +37,9 @@ export class HomePage implements OnInit {
 
 	segmentTitle: string;
 	isAndroid: boolean = false;
-	showOrderPreview: boolean = true;
+	showOrderPreview: boolean = false;
 	showOutstandingOrderPreview: boolean = false;
-	showTotalPreview: boolean = true;
+	showTotalPreview: boolean = false;
 	includePaySegment: boolean = false;
 
 	userHasSuccessfullyCompletedShoppingStep: boolean = false;
@@ -50,6 +50,7 @@ export class HomePage implements OnInit {
 	orderIsOutstanding: boolean;
 
 	mode: String = "place-order";
+	setDefaultLocation: boolean = true;
 
 	private userHasSelectedAtLeastOneItem(): boolean {
 
@@ -174,7 +175,27 @@ export class HomePage implements OnInit {
 			location.selected = false;
 		});
 		loc.selected = true;
-		this.checkout();
+
+		if (this.setDefaultLocation) {
+			if (this.state.standingOrder) {
+				this.state.standingOrder.pickupLocation = loc;
+			} else {
+				this.state.standingOrder = {
+					pickupLocation: loc,
+					foodItems: []
+				}
+			}
+		}
+	}
+
+	payWithPaypal() {
+		this.state.outstandingOrder = {
+			pickupLocation: _.cloneDeep(this.state.orderInProgress.pickupLocation),
+			foodItems: _.cloneDeep(this.state.orderInProgress.foodItems),
+			alertSet: false,
+			addedToCalendar: false
+		}
+		this.orderIsOutstanding = true;
 	}
 
 	goToSegment(segmentTitle): void {
