@@ -12,11 +12,10 @@
 
 	<ion-list>
 		<button ion-item (click)="buyCredit()">
-			Buy credit
+			Pre-pay
 		</button>
 		<button ion-item (click)="createStandingOrder()">
-			<span *ngIf="state.standingOrder">Modify standing order</span>
-			<span *ngIf="!state.standingOrder">Create standing order</span>
+			<span>Create / update standing order</span>
 		</button>
 	</ion-list>
 

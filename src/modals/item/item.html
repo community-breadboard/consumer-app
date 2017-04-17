@@ -6,18 +6,18 @@
 				Bread
 			</button>
 		</ion-buttons>
-		<ion-title>Oma's Best</ion-title>
+		<ion-title>{{item.name}}</ion-title>
 	</ion-toolbar>
 </ion-header>
 <ion-content>
-	<img src="assets/images/oma.png" width="100%">
+	<img src="assets/images/{{item.image}}" width="100%">
 	<div style="padding: 10px 10px">
-		<p>$8 Whole Loaf</p>
+		<p>${{item.unitCost}} {{item.unitLabelSingular}}</p>
 		<h3>Description</h3>
-		<p>A traditional Danish / northern German-style pan loaf with a complex hearty flavor.</p>
+		<p>{{item.description}}</p>
 		<h3>Ingredients</h3>
-		<p>Organic dark rye flour, organic whole spelt flour, water, organic sunflower seeds, organic flax seeds, organic sesame seeds, sea salt
+		<p>{{item.ingredients}}</p>
 		<h3>Producer</h3>
-		<p>Juniper Cottage Bake Shop</p>
+		<p>{{item.producer}}</p>
 	</div>
 </ion-content>

@@ -7,5 +7,6 @@ export class FoodItem {
 	unitCost: number;
 	description: string;
 	ingredients: string;
+	image?: string;
 	producer: string;
 }

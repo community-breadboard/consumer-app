@@ -10,13 +10,13 @@
 
 <ion-content padding>
 	<div *ngIf="mode === 'place-order' && orderIsOutstanding">
-		<h3 style="padding-left:14px;">Your order has been placed</h3>
+		<p style="padding-left:14px;">Your order has been placed</p>
 		<ion-card>
 			<ion-card-header>
 				Pickup
 			</ion-card-header>
 			<ion-card-content>
-				<p>
+				<p style="font-weight:bold">
 					{{state.outstandingOrder.pickupLocation.nextPickup}}
 				</p>
 				<p>
@@ -123,7 +123,7 @@
 							<span *ngIf="item.quantityOrdered === 1" style="padding-left:4px;"> ({{item.quantityOrdered}} {{item.unitLabelSingular}})</span>
 							<span *ngIf="item.quantityOrdered > 1"> ({{item.quantityOrdered}} {{item.unitLabelPlural}})</span>
 							<span style="padding-left:4px;">{{item.unitCost | currency:'USD':true:'1.0-2'}} / {{item.unitLabelSingular}}</span>
-							<span *ngIf="state.account.firstTime" class="swipe-left">swipe left</span>
+							<span *ngIf="!userHasSelectedAtLeastOneItem()" class="swipe-left">swipe left</span>
 						</ion-item>
 						<ion-item-options>
 							<button ion-button color="secondary" icon-left (click)="add(foodCategory, item, slidingItem)">
@@ -134,7 +134,7 @@
 								<ion-icon ios="ios-remove" md="md-remove"></ion-icon>
 								Subtract
 							</button>
-							<button ion-button color="light" icon-left (click)="openItemDetailsModal(slidingItem)">
+							<button ion-button color="light" icon-left (click)="openItemDetailsModal(slidingItem, item)">
 								<ion-icon ios="ios-eye" md="md-eye"></ion-icon>
 								Details
 							</button>
@@ -191,18 +191,12 @@
 		</ion-list>
 
 		<div *ngIf="segmentTitle === 'pickup'">
-			<ion-list>
-				<ion-item>
-				  <ion-label>Select a pickup time and location</ion-label>
-				</ion-item>
-			</ion-list>
+			<p style="padding-left:16px;">Select a pickup time and location</p>
 
-			<ion-list>
-				<ion-item>
-				  <ion-label>Make this my default location</ion-label>
-				  <ion-toggle [(ngModel)]="setDefaultLocation"></ion-toggle>
-				</ion-item>
-			</ion-list>
+			<ion-item>
+			  <ion-label>Make this my default location</ion-label>
+			  <ion-toggle [(ngModel)]="setDefaultLocation"></ion-toggle>
+			</ion-item>
 			<ion-list radio-group>
 				<ion-item *ngFor="let loc of state.pickupLocations">
 					<ion-label>

@@ -95,9 +95,9 @@ export class HomePage implements OnInit {
 		foodCategory.expanded = !foodCategory.expanded;
 	}
 
-	openItemDetailsModal(slidingItem: ItemSliding): void {
+	openItemDetailsModal(slidingItem: ItemSliding, item: FoodItem): void {
 		slidingItem.close();
-		let modal = this.modalCtrl.create(ItemModal);
+		let modal = this.modalCtrl.create(ItemModal, {item: item});
 		modal.present();
 	}
 
