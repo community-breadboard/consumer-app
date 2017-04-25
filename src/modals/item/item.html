@@ -9,15 +9,21 @@
 		<ion-title>{{item.name}}</ion-title>
 	</ion-toolbar>
 </ion-header>
-<ion-content>
-	<img src="assets/images/{{item.image}}" width="100%">
-	<div style="padding: 10px 10px">
-		<p>${{item.unitCost}} {{item.unitLabelSingular}}</p>
-		<h3>Description</h3>
+<ion-content class="item-details">
+	<img class="item-image" src="assets/images/{{item.image}}" width="100%">
+	<div class="container">
+		<p>${{item.unitCost}} / {{item.unitLabelSingular}}</p>
+
+		<ion-item>
+		  <ion-label> Add by default each week?</ion-label>
+		  <ion-toggle checked="false"></ion-toggle>
+		</ion-item>
+
+		<h5>Description</h5>
 		<p>{{item.description}}</p>
-		<h3>Ingredients</h3>
+		<h5>Ingredients</h5>
 		<p>{{item.ingredients}}</p>
-		<h3>Producer</h3>
+		<h5>Producer</h5>
 		<p>{{item.producer}}</p>
 	</div>
 </ion-content>

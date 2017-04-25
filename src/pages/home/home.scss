@@ -18,6 +18,17 @@ page-home {
 		}
 	}
 
+	div.order-is-outstanding {
+		p {
+			padding-left: 14px;
+		}
+		button {
+			margin-left:10px;
+			padding-left:4px;
+			margin-top: 20px;
+			display: block;
+		}
+	}
 	ion-grid.step-progress-bar {
 		border-bottom: 3px solid lightgray;
 
@@ -31,7 +42,7 @@ page-home {
 				cursor: pointer;
 			}
 			ion-icon {
-				font-size: 1.6em;
+				font-size: 1.4em;
 				color: lightgray;
 			}
 		}
@@ -49,6 +60,7 @@ page-home {
 		ion-col.completed,.passed {
 
 			ion-icon {
+				font-size: 1.6em;
 				color: black;
 			}
 			p {
@@ -78,9 +90,9 @@ page-home {
 
 		// circle
 	 	ion-col ion-icon:before {
-			width: 34px;
-			height: 34px;
-			line-height: 34px;
+			width: 30px;
+			height: 30px;
+			line-height: 30px;
 			border: 2px solid lightgray;
 			display: block;
 			text-align: center;

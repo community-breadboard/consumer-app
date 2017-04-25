@@ -9,8 +9,8 @@
 </ion-header>
 
 <ion-content padding>
-	<div *ngIf="mode === 'place-order' && orderIsOutstanding">
-		<p style="padding-left:14px;">Your order has been placed</p>
+	<div *ngIf="mode === 'place-order' && orderIsOutstanding" class="order-is-outstanding">
+		<p>Your order has been placed!</p>
 		<ion-card>
 			<ion-card-header>
 				Pickup
@@ -46,13 +46,9 @@
 				</ion-list>
 			</ion-card-content>
 		</ion-card>
-		<p style="padding-left:14px;"> All orders are final</p>
-		<ion-row>
-			<ion-col text-center>
-				<button ion-button color="secondary" round>Add Alert</button>
-				<button ion-button color="secondary" round>Add to Calendar</button>
-			</ion-col>
-		</ion-row>
+		<p>All orders are final</p>
+		<button style="padding-left:14px;" ion-button color="light" round>Add Alert</button>
+		<button style="padding-left:14px;" ion-button color="light" round>Add to Calendar</button>
 	</div>
 
 	<ion-grid *ngIf="!orderIsOutstanding" no-padding class="step-progress-bar">

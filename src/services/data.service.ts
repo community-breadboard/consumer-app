@@ -371,7 +371,7 @@ export class DataService {
 			},
 			{
 				id: 8,
-				label: 'Sweets',
+				label: 'Honey / Jam / Syrup',
 				image: 'sweets.jpeg',
 				quantityOrdered: 0,
 				expanded: false,
