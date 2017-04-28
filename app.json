@@ -1,0 +1,8 @@
+{
+  "name": "Community Breadboard",
+  "description": "An online store for local food",
+  "repository": "https://github.com/community-breadboard/consumer-app",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["local", "seacoast"],
+  "image": "heroku/nodejs"
+}
