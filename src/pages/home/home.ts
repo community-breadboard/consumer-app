@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, Platform, ModalController, Events, ItemSliding } from 'ionic-angular';
 import _ from "lodash";
-
 import { OrderModal } from '../../modals/order/order';
 import { ItemModal } from '../../modals/item/item';
-import { StartModal } from '../../modals/start/start';
 import { State } from '../../models/state';
 import { DataService } from '../../services/data.service';
 import { FoodItem } from '../../models/food-item';
@@ -31,10 +29,6 @@ export class HomePage implements OnInit {
 		this.orderIsOutstanding = this.state.outstandingOrder !== null;
 	}
 
-	private showUserStartModal(): boolean {
-		return (!this.userHasSeenStartModal && !this.orderIsOutstanding && !this.userHasSelectedAtLeastOneItem() && !this.userHasSelectedAPickupLocation());
-	}
-
 	segmentTitle: string;
 	isAndroid: boolean = false;
 	showOrderPreview: boolean = false;
@@ -49,7 +43,6 @@ export class HomePage implements OnInit {
 	state:State;
 	orderIsOutstanding: boolean;
 
-	mode: String = "place-order";
 	setDefaultLocation: boolean = true;
 
 	private userHasSelectedAtLeastOneItem(): boolean {
@@ -91,6 +84,7 @@ export class HomePage implements OnInit {
 
 		this.goToSegment('checkout');
 	}
+
 	toggle(foodCategory: any): void {
 		foodCategory.expanded = !foodCategory.expanded;
 	}
@@ -101,56 +95,12 @@ export class HomePage implements OnInit {
 		modal.present();
 	}
 
-	private openStartModal(): void {
-		let modal = this.modalCtrl.create(StartModal);
-		modal.isOverlay = false;
-		modal.onDidDismiss(data => {
-			if (data.useStandingOrder === true) {
-				this.copyStandingOrderIntoOrder();
-			} else if (data.createStandingOrder === true) {
-				this.mode = 'create-standing-order';
-			}
-		});
-		modal.present();
-	}
-
 	placeOrder() {
 		let modal = this.modalCtrl.create(OrderModal);
 		modal.present();
 	}
-	createStandingOrder() {
-//		this.navCtrl.
-	}
 
 
-	private setFoodCategoryQuantityOrderedFromFoodItemQuantityOrdered() {
-		_.each(this.state.foodCategories, function(foodCategory) {
-			foodCategory.quantityOrdered = _.reduce(foodCategory.foodItems, function(sum, foodItem) {
-				return (sum + foodItem.quantityOrdered);
-			}, 0);
-		});
-	}
-	private copyStandingOrderIntoOrder() {
-		let self = this;
-		_.each(self.state.foodCategories, function(foodCategory) {
-			_.each(foodCategory.foodItems, function(item) {
-				let itemFromStandingOrder: FoodItem = _.find(self.state.standingOrder.foodItems, function(fi: FoodItem) { return fi.id === item.id; });
-				if ( itemFromStandingOrder ) {
-					item.quantityOrdered = itemFromStandingOrder.quantityOrdered;
-					self.userHasSuccessfullyCompletedShoppingStep = true;
-				}
-			});
-		});
-		self.setFoodCategoryQuantityOrderedFromFoodItemQuantityOrdered();
-		if (this.state.standingOrder.pickupLocation) {
-			_.each(self.state.pickupLocations, function(location) {
-				if (location.id === self.state.standingOrder.pickupLocation.id) {
-					location.selected = true;
-					self.userHasSuccessfullyCompletedPickupStep = true;
-				}
-			});
-		}
-	}
 	addCredit(amount: number): void {
 		this.state.account.balance += amount;
 		this.events.publish('account:changed');
@@ -202,7 +152,13 @@ export class HomePage implements OnInit {
 		this.userHasSuccessfullyCompletedShoppingStep = this.userHasSelectedAtLeastOneItem();
 		this.userHasSuccessfullyCompletedPaymentStep = this.state.account.balance > 0;
 		this.userHasSuccessfullyCompletedPickupStep = this.userHasSelectedAPickupLocation();
-		this.segmentTitle = segmentTitle;
+		if (segmentTitle === 'shop' && !this.userHasSuccessfullyCompletedPickupStep) {
+			// do nothing
+		} else if (segmentTitle === 'checkout' && !this.userHasSuccessfullyCompletedShoppingStep) {
+			// do nothing
+		} else {
+			this.segmentTitle = segmentTitle;
+		}
 	}
 
 	constructor(

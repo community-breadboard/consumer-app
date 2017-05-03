@@ -13,46 +13,43 @@ import { ScenariosPage } from '../pages/scenarios/scenarios';
 import { OrderModal } from '../modals/order/order';
 import { ItemModal } from '../modals/item/item';
 import { WelcomeModal } from '../modals/welcome/welcome';
-import { StartModal } from '../modals/start/start';
 import { TabsPage } from '../pages/tabs/tabs';
 
 @NgModule({
-  declarations: [
-    MyApp,
-    ProducersPage,
-    AccountPage,
-    HomePage,
-	ScenariosPage,
-	CreditPage,
-	OrderModal,
-	ItemModal,
-	WelcomeModal,
-	StartModal,
-    TabsPage
-  ],
-  imports: [
-	BrowserModule,
-	HttpModule,
-    IonicModule.forRoot(MyApp)
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    ProducersPage,
-    AccountPage,
-    HomePage,
-	ScenariosPage,
-	CreditPage,
-	OrderModal,
-	ItemModal,
-	WelcomeModal,
-	StartModal,
-    TabsPage
-  ],
-  providers: [
-	  StatusBar,
-  	  SplashScreen,
-      {provide: ErrorHandler, useClass: IonicErrorHandler}
-  ]
+	declarations: [
+		MyApp,
+		ProducersPage,
+		AccountPage,
+		HomePage,
+		ScenariosPage,
+		CreditPage,
+		OrderModal,
+		ItemModal,
+		WelcomeModal,
+		TabsPage
+	],
+	imports: [
+		BrowserModule,
+		HttpModule,
+		IonicModule.forRoot(MyApp)
+	],
+	bootstrap: [IonicApp],
+	entryComponents: [
+		MyApp,
+		ProducersPage,
+		AccountPage,
+		HomePage,
+		ScenariosPage,
+		CreditPage,
+		OrderModal,
+		ItemModal,
+		WelcomeModal,
+		TabsPage
+	],
+	providers: [
+		StatusBar,
+		SplashScreen,
+		{provide: ErrorHandler, useClass: IonicErrorHandler}
+	]
 })
 export class AppModule {}

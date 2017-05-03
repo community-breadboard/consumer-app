@@ -14,10 +14,16 @@
 	<div class="container">
 		<p>${{item.unitCost}} / {{item.unitLabelSingular}}</p>
 
-		<ion-item>
-		  <ion-label> Add by default each week?</ion-label>
-		  <ion-toggle checked="false"></ion-toggle>
-		</ion-item>
+		<ion-grid>
+			<ion-row>
+				<ion-col col-9 text-wrap class="add-label">
+					<span> Add by default each week?</span>
+				</ion-col>
+				<ion-col col-3 text-wrap>
+					<ion-toggle checked="false"></ion-toggle>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
 
 		<h5>Description</h5>
 		<p>{{item.description}}</p>

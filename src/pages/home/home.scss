@@ -12,6 +12,21 @@ page-home {
 		float:right;
 	}
 
+	.qty-details {
+		font-size: 1.4rem;
+		color: gray;
+		padding-top:4px;
+	}
+	.qty-ordered {
+		padding-right: 4px;
+		color:black
+	}
+	.indent {
+		margin-left:12px;
+	}
+	.no-indent {
+		margin-left:0px;
+	}
 	div.pay {
 		p {
 			padding: 20px;
@@ -42,33 +57,37 @@ page-home {
 				cursor: pointer;
 			}
 			ion-icon {
-				font-size: 1.4em;
+				font-size: 1.2em;
 				color: lightgray;
 			}
 		}
 
-		ion-col.active {
-
+		ion-col.passed {
 			ion-icon {
-				color: #55b776;
+				font-size: 1.8em;
+				color: green;
+			}
+			p {
+				font-weight: bold;
+				color: gray;
+			}
+		}
+		ion-col.completed {
+			ion-icon {
+				font-size: 1.8em;
+			}
+		}
+		ion-col.active {
+			ion-icon {
+				color: gray;
 			}
 			p {
 				font-weight: bold;
 				color: black;
 			}
 		}
-		ion-col.completed,.passed {
 
-			ion-icon {
-				font-size: 1.6em;
-				color: black;
-			}
-			p {
-				font-weight: normal;
-				color: gray;
-			}
-		}
-
+		// connecting lines
 		ion-col:before {
 			width: -webkit-calc(100% - 54px);
 			width:    -moz-calc(100% - 54px);
@@ -77,10 +96,16 @@ page-home {
 			content: '';
 			position: absolute;
 			background-color: lightgray; //#7d7d7d; //gray;   #55b776; //green //
-			top: 17px;
+			top: 15px;
 			left: -webkit-calc(-50% + 27px);
 			left:    -moz-calc(-50% + 27px);
 			left:         calc(-50% + 27px);
+		}
+		ion-col.active:before {
+			background-color: green;
+		}
+		ion-col.passed:before {
+			background-color: green;
 		}
 
 		ion-col:first-child:before {
@@ -90,10 +115,10 @@ page-home {
 
 		// circle
 	 	ion-col ion-icon:before {
-			width: 30px;
-			height: 30px;
-			line-height: 30px;
-			border: 2px solid lightgray;
+			width: 26px;
+			height: 26px;
+			line-height: 26px;
+			border: 2px dotted lightgray;
 			display: block;
 			text-align: center;
 			margin: 0 auto 10px auto;
@@ -101,14 +126,14 @@ page-home {
 			background-color: white;
 		}
 
+//		ion-col.completed ion-icon:before {
+//			border: 2px solid green;
+//		}
 		ion-col.active ion-icon:before {
-			border: 2px solid #55b776;
-		}
-		ion-col.completed ion-icon:before {
-			border: 2px solid gray;
+			border: 2px solid gray; //#7AC084   #55b776;
 		}
 		ion-col.passed ion-icon:before {
-			border: 2px solid gray;
+			border: 2px solid green;
 		}
 	}
 }
