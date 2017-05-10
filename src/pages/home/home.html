@@ -98,12 +98,16 @@
 							<div>
 								<span *ngIf="item.quantityOrdered === 0" class="indent"> </span>
 								<ion-icon *ngIf="item.quantityOrdered > 0" class="no-indent" name="checkmark"></ion-icon>
+
 								{{item.name}}
+								<span *ngIf="item.quantityOrdered > 0">({{item.quantityOrdered}})</span>
 								<span class="swipe-left">swipe left</span>
 							</div>
 							<div class="qty-details indent">
+								<!--
 								<span *ngIf="item.quantityOrdered === 1" class="qty-ordered"> ({{item.quantityOrdered}} {{item.unitLabelSingular}})</span>
 								<span *ngIf="item.quantityOrdered > 1" class="qty-ordered"> ({{item.quantityOrdered}} {{item.unitLabelPlural}})</span>
+								-->
 								<span>{{item.unitCost | currency:'USD':true:'1.0-2'}} / {{item.unitLabelSingular}}</span>
 							</div>
 						</ion-item>
@@ -263,7 +267,7 @@
 						</ion-item>
 						<ion-item>
 							<span>Order Total</span>
-							<span style="float:right">{{state.orderInProgress.totalCost | currency:'USD':true:'1.0-2'}}</span>
+							<span class="order-total">{{state.orderInProgress.totalCost | currency:'USD':true:'1.0-2'}}</span>
 						</ion-item>
 						<ion-item>
 							<span>Projected Balance</span>
