@@ -8,7 +8,7 @@ import { ScenariosPage } from '../scenarios/scenarios';
 import { DataService } from '../../services/data.service';
 import { Account } from '../../models/account';
 import { Events, ModalController } from 'ionic-angular';
-import { WelcomeModal } from '../../modals/welcome/welcome';
+//import { WelcomeModal } from '../../modals/welcome/welcome';
 
 @Component({
 	templateUrl: 'tabs.html'
@@ -38,7 +38,7 @@ export class TabsPage implements OnInit {
 		this.getData();
 		if (this.account.firstTime === true) {
 			this.selectedIndex = 0;
-			this.openWelcomeModal();
+//			this.openWelcomeModal();
 		}
 		var self = this;
 		this.events.subscribe('account:changed', function() {
@@ -46,11 +46,12 @@ export class TabsPage implements OnInit {
 		});
 	}
 
+/*
 	private openWelcomeModal(): void {
 		let modal = this.modalCtrl.create(WelcomeModal);
 		modal.isOverlay = false;
 		modal.present();
 	}
-
+*/
 
 }

@@ -82,8 +82,41 @@ export class DataService {
 	defaultState:State = {
 		account: {
 			owner: {
+				id: 12,
 				firstName: 'Cyrus',
 				lastName: 'Beer'
+			},
+			group: {
+				members: [
+					{
+						id: 12,
+						firstName: 'Cyrus',
+						lastName: 'Beer',
+						isResponsibleForPickup: false,
+						hasPlacedOrder: false
+					},
+					{
+						id: 13,
+						firstName: 'Ruth',
+						lastName: 'Ganev',
+						isResponsibleForPickup: false,
+						hasPlacedOrder: true
+					},
+					{
+						id: 14,
+						firstName: 'Sonke',
+						lastName: 'Dornblut',
+						isResponsibleForPickup: true,
+						hasPlacedOrder: false
+					},
+					{
+						id: 15,
+						firstName: 'Sarah',
+						lastName: 'Cox',
+						isResponsibleForPickup: false,
+						hasPlacedOrder: true
+					}
+				]
 			},
 			balance: 0,
 			homeDelivery: true,
@@ -165,6 +198,7 @@ export class DataService {
 				expanded: false,
 				foodItems: [
 					{
+
 						id: 1,
 						name: 'Country Levain',
 						quantityOrdered: 0,

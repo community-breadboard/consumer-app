@@ -14,6 +14,7 @@ import { OrderModal } from '../modals/order/order';
 import { ItemModal } from '../modals/item/item';
 import { WelcomeModal } from '../modals/welcome/welcome';
 import { TabsPage } from '../pages/tabs/tabs';
+import { LoginPage } from '../pages/login/login';
 
 @NgModule({
 	declarations: [
@@ -26,7 +27,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 		OrderModal,
 		ItemModal,
 		WelcomeModal,
-		TabsPage
+		TabsPage,
+		LoginPage
 	],
 	imports: [
 		BrowserModule,
@@ -44,7 +46,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 		OrderModal,
 		ItemModal,
 		WelcomeModal,
-		TabsPage
+		TabsPage,
+		LoginPage
 	],
 	providers: [
 		StatusBar,

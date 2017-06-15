@@ -138,7 +138,18 @@ page-home {
 	}
 	.order-total {
 		float:right;
-		padding: 0px 4px 2px 4px;
+		padding: 0px 0px 2px 10px;
 		border-bottom: 1px solid black;
+	}
+
+	.checkmark_underline {
+		border-bottom: 1px solid black;
+	}
+	table.pickup {
+		margin-left: 30px;
+		margin-top: 20px;
+		td {
+			padding: 10px 10px 0px 10px;
+		}
 	}
 }

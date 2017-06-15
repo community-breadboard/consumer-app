@@ -1,5 +1,6 @@
 
 import { Person } from './person';
+import { ConsumerGroup } from './consumer-group';
 
 export class Account {
 	owner: Person;
@@ -7,5 +8,5 @@ export class Account {
 	homeDelivery: boolean;
 	balanceIsLowThreshold: number;
 	firstTime: boolean;
-
+	group: ConsumerGroup;
 }

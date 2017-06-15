@@ -20,7 +20,7 @@ export class HomePage implements OnInit {
 
 	ionViewWillEnter() {
 		this.getData();
-		this.segmentTitle = 'pickup';
+		this.segmentTitle = this.orderIsOutstanding? 'pickup': 'shop';
 		this.includePaySegment = false;
 	}
 
@@ -39,7 +39,8 @@ export class HomePage implements OnInit {
 	userHasSuccessfullyCompletedShoppingStep: boolean = false;
 	userHasSuccessfullyCompletedPaymentStep: boolean = false;
 	userHasSuccessfullyCompletedPickupStep: boolean = false;
-	userHasSeenStartModal: boolean = false;
+	userHasSuccessfullyCompletedCheckoutStep: boolean = false;
+	//userHasSeenStartModal: boolean = false;
 	state:State;
 	orderIsOutstanding: boolean;
 
@@ -53,17 +54,18 @@ export class HomePage implements OnInit {
 			});
 		});
 	}
+	/*
 	private userHasSelectedAPickupLocation(): boolean {
 		return _.some(this.state.pickupLocations, function(location) {
 			return location.selected === true;
 		});
 	}
-
+*/
 	checkout(): void {
 
 		this.state.orderInProgress = {
 			foodItems: [],
-			pickupLocation: null,
+//			pickupLocation: null,
 			totalCost: 0
 		};
 		var self = this;
@@ -75,13 +77,13 @@ export class HomePage implements OnInit {
 				}
 			});
 		});
-
+/*
 		_.each(this.state.pickupLocations, function(loc) {
 			if (loc.selected === true) {
 				self.state.orderInProgress.pickupLocation = _.cloneDeep(loc);
 			}
 		});
-
+*/
 		this.goToSegment('checkout');
 	}
 
@@ -119,7 +121,7 @@ export class HomePage implements OnInit {
 		}
 		slidingItem.close();
 	}
-
+/*
 	selectPickupLocation(loc): void {
 		_.each(this.state.pickupLocations, function(location) {
 			location.selected = false;
@@ -137,25 +139,28 @@ export class HomePage implements OnInit {
 			}
 		}
 	}
-
+*/
 	payWithPaypal() {
 		this.state.outstandingOrder = {
-			pickupLocation: _.cloneDeep(this.state.orderInProgress.pickupLocation),
+//			pickupLocation: _.cloneDeep(this.state.orderInProgress.pickupLocation),
 			foodItems: _.cloneDeep(this.state.orderInProgress.foodItems),
 			alertSet: false,
 			addedToCalendar: false
 		}
-		this.orderIsOutstanding = true;
+		this.userHasSuccessfullyCompletedCheckoutStep = true;
+//		this.orderIsOutstanding = true;
+		this.goToSegment('pickup');
 	}
 
 	goToSegment(segmentTitle): void {
 		this.userHasSuccessfullyCompletedShoppingStep = this.userHasSelectedAtLeastOneItem();
 		this.userHasSuccessfullyCompletedPaymentStep = this.state.account.balance > 0;
-		this.userHasSuccessfullyCompletedPickupStep = this.userHasSelectedAPickupLocation();
-		if (segmentTitle === 'shop' && !this.userHasSuccessfullyCompletedPickupStep) {
-			// do nothing
+//		this.userHasSuccessfullyCompletedPickupStep = this.userHasSelectedAPickupLocation();
+		if (this.segmentTitle === 'pickup') {
+			// once an order is placed, it is final.   They can't go back and edit an order
+			this.segmentTitle = 'pickup';
 		} else if (segmentTitle === 'checkout' && !this.userHasSuccessfullyCompletedShoppingStep) {
-			// do nothing
+			this.segmentTitle = 'shop';
 		} else {
 			this.segmentTitle = segmentTitle;
 		}

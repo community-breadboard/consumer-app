@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { DataService } from '../../services/data.service';
 import { CreditPage } from '../credit/credit';
+import { LoginPage } from '../login/login';
 import { State } from '../../models/state';
 @Component({
 	selector: 'page-account',
@@ -20,7 +21,8 @@ export class AccountPage implements OnInit {
 	buyCredit() {
 		this.navCtrl.push(CreditPage);
 	}
-	createStandingOrder() {
+	logout() {
+		this.navCtrl.setRoot(LoginPage);
 	}
 
 	ngOnInit() {

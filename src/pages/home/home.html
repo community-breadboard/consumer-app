@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content padding>
+<!--
 	<div *ngIf="orderIsOutstanding" class="order-is-outstanding">
 		<p>Your order has been placed!</p>
 		<ion-card>
@@ -49,33 +50,35 @@
 		<button style="padding-left:14px;" ion-button color="light" round>Add Alert</button>
 		<button style="padding-left:14px;" ion-button color="light" round>Add to Calendar</button>
 	</div>
-
-	<ion-grid *ngIf="!orderIsOutstanding" no-padding class="step-progress-bar">
+-->
+<!--*ngIf="!orderIsOutstanding"-->
+	<ion-grid no-padding class="step-progress-bar">
 		<ion-row justify-content-center>
-			<ion-col text-center col-sm [ngClass]="{'passed': (segmentTitle === 'checkout' || segmentTitle === 'shop'), 'completed': (userHasSuccessfullyCompletedPickupStep), 'active': (segmentTitle === 'pickup') }">
-				<div (click)="goToSegment('pickup')">
-					<ion-icon [name]="userHasSuccessfullyCompletedPickupStep ? 'checkmark' : 'navigate'"></ion-icon>
-					<p>Plan</p>
-				</div>
-			</ion-col>
-			<ion-col text-center col-sm [ngClass]="{'passed': (segmentTitle === 'checkout'), 'completed': userHasSuccessfullyCompletedShoppingStep, 'active': (segmentTitle === 'shop') }">
+			<ion-col text-center col-sm [ngClass]="{'passed': (segmentTitle === 'checkout' || segmentTitle === 'pickup'), 'completed': userHasSuccessfullyCompletedShoppingStep, 'active': (segmentTitle === 'shop') }">
 				<div (click)="goToSegment('shop')">
 					<ion-icon [name]="userHasSuccessfullyCompletedShoppingStep ? 'checkmark' : 'cart'"></ion-icon>
 					<p>Shop</p>
 				</div>
 			</ion-col>
-			<ion-col text-center col-sm [ngClass]="{'active': (segmentTitle === 'checkout') }">
+			<ion-col text-center col-sm [ngClass]="{'passed': (segmentTitle === 'pickup'), 'completed': userHasSuccessfullyCompletedCheckoutStep, 'active': (segmentTitle === 'checkout') }">
 				<div (click)="checkout()">
-					<ion-icon [name]="'card'"></ion-icon>
+					<ion-icon [name]="userHasSuccessfullyCompletedCheckoutStep ? 'checkmark' :'card'"></ion-icon>
 					<p>Checkout</p>
 				</div>
 			</ion-col>
+			<ion-col text-center col-sm [ngClass]="{'active': (segmentTitle === 'pickup') }">
+				<div>
+					<ion-icon [name]="'walk'"></ion-icon>
+					<p>Pickup</p>
+				</div>
+			</ion-col>
+
 		</ion-row>
 	</ion-grid>
 
 
 
-	<div *ngIf="!orderIsOutstanding">
+	<div>
 		<ion-list *ngIf="segmentTitle === 'shop'">
 
 			<div *ngFor="let foodCategory of state.foodCategories">
@@ -91,23 +94,19 @@
 					</ion-list-header>
 
 
-
-
 					<ion-item-sliding #slidingItem *ngFor="let item of foodCategory.foodItems">
 						<ion-item text-wrap>
 							<div>
 								<span *ngIf="item.quantityOrdered === 0" class="indent"> </span>
 								<ion-icon *ngIf="item.quantityOrdered > 0" class="no-indent" name="checkmark"></ion-icon>
-
 								{{item.name}}
-								<span *ngIf="item.quantityOrdered > 0">({{item.quantityOrdered}})</span>
 								<span class="swipe-left">swipe left</span>
 							</div>
 							<div class="qty-details indent">
-								<!--
+
 								<span *ngIf="item.quantityOrdered === 1" class="qty-ordered"> ({{item.quantityOrdered}} {{item.unitLabelSingular}})</span>
 								<span *ngIf="item.quantityOrdered > 1" class="qty-ordered"> ({{item.quantityOrdered}} {{item.unitLabelPlural}})</span>
-								-->
+								
 								<span>{{item.unitCost | currency:'USD':true:'1.0-2'}} / {{item.unitLabelSingular}}</span>
 							</div>
 						</ion-item>
@@ -177,8 +176,34 @@
 		</ion-list>
 
 		<div *ngIf="segmentTitle === 'pickup'">
-			<p style="padding-left:16px; font-size:1.6rem;">Select a pickup time and location</p>
+			<p style="margin-top:40px; padding-left:20px; margin-bottom:24px; font-size:1.6rem;" color="secondary">Beer family will pick up this week</p>
+			<!--
+			<p style="padding-left:16px; font-size:1.3rem;">Order Placed?</p>
 
+			<ion-list no-lines inset>
+				<ion-item *ngFor="let member of state.account.group.members">
+					<ion-label>
+						<span item-left>{{member.firstName}} {{member.lastName}}</span>
+						<ion-icon class="checkmark_underline"[name]="'checkmark'"></ion-icon>
+					</ion-label>
+				</ion-item>
+			</ion-list>
+-->
+			<table class="pickup">
+				<thead>
+					<tr>
+						<td></td>
+						<td>Order Placed</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let member of state.account.group.members">
+						<td>{{member.firstName}} {{member.lastName}}</td>
+						<td align="center"><ion-icon style="font-size: 2rem;" [name]="'checkmark'"></ion-icon></td>
+					</tr>
+				</tbody>
+			</table>
+<!--
 			<ion-item  text-wrap>
 			  <ion-label>Make this my default location</ion-label>
 			  <ion-toggle [(ngModel)]="setDefaultLocation"></ion-toggle>
@@ -197,10 +222,10 @@
 					<button ion-button [color]="userHasSelectedAPickupLocation() ? 'secondary' : 'light'" (click)="goToSegment('shop')" round>Next</button>
 				</ion-col>
 			</ion-row>
-
+-->
 		</div>
 		<div *ngIf="segmentTitle === 'checkout'">
-
+<!--
 			<ion-card>
 				<ion-card-header>
 					Pickup
@@ -221,7 +246,7 @@
 					<p ion-text color="danger">Please click on PICKUP above to select a pickup location</p>
 				</ion-card-content>
 			</ion-card>
-
+-->
 			<ion-card>
 				<ion-card-header>
 					Order
@@ -276,7 +301,7 @@
 					</ion-list>
 				</ion-card-content>
 			</ion-card>
-			<ion-row *ngIf="state.orderInProgress.foodItems.length > 0 && state.orderInProgress.pickupLocation">
+			<ion-row *ngIf="state.orderInProgress.foodItems.length > 0">
 				<ion-col text-center>
 					<button *ngIf="(state.account.balance - state.orderInProgress.totalCost < 0)" ion-button color="secondary" round (click)="payWithPaypal()">Pay with paypal</button>
 					<button *ngIf="(state.account.balance - state.orderInProgress.totalCost >= 0)" ion-button color="secondary" round (click)="placeOrder()">Place order</button>
