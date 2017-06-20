@@ -106,7 +106,7 @@
 
 								<span *ngIf="item.quantityOrdered === 1" class="qty-ordered"> ({{item.quantityOrdered}} {{item.unitLabelSingular}})</span>
 								<span *ngIf="item.quantityOrdered > 1" class="qty-ordered"> ({{item.quantityOrdered}} {{item.unitLabelPlural}})</span>
-								
+
 								<span>{{item.unitCost | currency:'USD':true:'1.0-2'}} / {{item.unitLabelSingular}}</span>
 							</div>
 						</ion-item>

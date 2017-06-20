@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 import { DataService } from '../../services/data.service';
+import { AuthService } from '../../services/auth.service';
 import { CreditPage } from '../credit/credit';
 import { LoginPage } from '../login/login';
 import { State } from '../../models/state';
@@ -15,7 +16,8 @@ export class AccountPage implements OnInit {
 
 	constructor(
 		public navCtrl: NavController,
-		private dataService: DataService) {
+		private dataService: DataService,
+		private authService: AuthService) {
 	}
 
 	buyCredit() {
@@ -23,10 +25,15 @@ export class AccountPage implements OnInit {
 	}
 	logout() {
 		this.navCtrl.setRoot(LoginPage);
+		this.authService.logout();
 	}
 
 	ngOnInit() {
 		this.state = this.dataService.getData();
 	}
+	ionViewCanEnter() {
+		return this.authService.isAuthenticated();
+	}
+
 
 }

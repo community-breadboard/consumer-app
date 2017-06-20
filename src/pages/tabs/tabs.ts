@@ -6,6 +6,7 @@ import { ProducersPage } from '../producers/producers';
 import { AccountPage } from '../account/account';
 import { ScenariosPage } from '../scenarios/scenarios';
 import { DataService } from '../../services/data.service';
+import { AuthService } from '../../services/auth.service';
 import { Account } from '../../models/account';
 import { Events, ModalController } from 'ionic-angular';
 //import { WelcomeModal } from '../../modals/welcome/welcome';
@@ -31,7 +32,12 @@ export class TabsPage implements OnInit {
 	constructor(
 		private dataService: DataService,
 		public events: Events,
-		public modalCtrl: ModalController) {}
+		public modalCtrl: ModalController,
+		private authService: AuthService) {}
+
+	ionViewCanEnter() {
+		return this.authService.isAuthenticated();
+	}
 
 
 	ngOnInit() {

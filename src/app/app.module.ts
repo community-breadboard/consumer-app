@@ -15,6 +15,28 @@ import { ItemModal } from '../modals/item/item';
 import { WelcomeModal } from '../modals/welcome/welcome';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
+import { IonicStorageModule } from '@ionic/storage';
+import { AuthService } from '../services/auth.service';
+import { DataService } from '../services/data.service';
+import { HelperService } from '../services/helper.service';
+
+import { AuthHttp, AuthConfig, JwtHelper } from 'angular2-jwt';
+import { Http } from '@angular/http';
+import { Storage } from '@ionic/storage';
+
+
+export function getAuthHttp(http) {
+
+	let storage = new Storage({});
+
+	return new AuthHttp(new AuthConfig({
+		headerPrefix: 'Bearer',
+		noJwtError: true,
+		globalHeaders: [{'Accept': 'application/json'}],
+		tokenGetter: (() => storage.get('token')),
+	}), http);
+}
+
 
 @NgModule({
 	declarations: [
@@ -33,7 +55,8 @@ import { LoginPage } from '../pages/login/login';
 	imports: [
 		BrowserModule,
 		HttpModule,
-		IonicModule.forRoot(MyApp)
+		IonicModule.forRoot(MyApp),
+		IonicStorageModule.forRoot()
 	],
 	bootstrap: [IonicApp],
 	entryComponents: [
@@ -51,8 +74,20 @@ import { LoginPage } from '../pages/login/login';
 	],
 	providers: [
 		StatusBar,
+		AuthService,
+		DataService,
+		HelperService,
+		JwtHelper,
 		SplashScreen,
-		{provide: ErrorHandler, useClass: IonicErrorHandler}
+		{
+			provide: ErrorHandler,
+			useClass: IonicErrorHandler
+		},
+		{
+			provide: AuthHttp,
+			useFactory: getAuthHttp,
+			deps: [Http]
+		}
 	]
 })
 export class AppModule {}

@@ -1,19 +1,38 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { AuthHttp, JwtHelper } from 'angular2-jwt';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/throw';
 import { Http, Response, RequestOptions, Headers }  from '@angular/http';
-
+import { DataService } from './data.service';
+import { HelperService } from './helper.service';
+import { Storage } from "@ionic/storage";
+import { Consumer } from '../models/consumer';
 
 @Injectable()
 export class AuthService {
 
-	baseUrl: string = 'http://localhost:3000';
-	jwtJson: any;
+	private user: any;
 
-	public login(credentials) : Observable<{}> {
+	isAuthenticated(): Promise<boolean> {
+		return new Promise<boolean>((resolve, reject) => {
+			this.storage.get('token').then((val) => {
+				resolve(val && !this.jwtHelper.isTokenExpired(val));
+			});
+		});
+
+	}
+
+	public getUser() {
+		return this.user;
+	}
+	public setUser(user: Consumer): void {
+		this.user = user;
+	}
+
+	public login(credentials) : Observable<string> {
 
 		if (credentials.email === null || credentials.password === null) {
 
@@ -24,40 +43,31 @@ export class AuthService {
 			let headers = new Headers({ 'Content-Type': 'application/json' });
 			let options = new RequestOptions({ headers: headers });
 
-			return this.http.post(this.baseUrl + '/user_token', {auth: credentials}, options)
+			return this.http.post(this.dataService.baseUrl + '/user_token', {auth: credentials}, options)
 				.map((res: Response) => res.json())
-				.mergeMap((jwtJson) => {
-					let authHeaders = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jwtJson.jwt });
-					let authOptions = new RequestOptions({ headers: authHeaders });
+				.mergeMap((jwtObject) => {
+					this.storage.set('token', jwtObject.jwt);
 
-					return this.http.get(this.baseUrl + '/me.json', authOptions).map((res: Response) => res.json())
+					return this.authHttp.get(this.dataService.baseUrl + '/me.json').map((res: Response) => {
+						this.user = this.helperService.convertToCamelCase(res.json());
+						return 'success';
+					})
 				})
-				.catch(this.handleError)
+				.catch(this.dataService.handleError)
 
 		}
 	}
 
-	constructor(private http: Http) {}
 
-/*
-	private extractData(res: Response) {
-		let body = res.json();
-		this.currentUser = new User(body.jwt);
-		return this.currentUser;
-	}
-*/
-	private handleError (error: Response | any) {
-		// In a real world app, you might use a remote logging infrastructure
-		let errMsg: string;
-		if (error instanceof Response) {
-			const body = error.json() || '';
-			const err = body.error || JSON.stringify(body);
-			errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-		} else {
-			errMsg = error.message ? error.message : error.toString();
-		}
-		console.error(errMsg);
-		return Observable.throw(errMsg);
+	public logout() : void {
+		this.storage.remove('token');
 	}
 
+	constructor(
+		private http: Http,
+		private authHttp: AuthHttp,
+		private jwtHelper: JwtHelper,
+		private dataService: DataService,
+		private helperService: HelperService,
+		private storage: Storage) {}
 }

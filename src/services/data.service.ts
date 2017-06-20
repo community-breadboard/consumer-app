@@ -1,9 +1,31 @@
 import { Injectable } from '@angular/core';
 import { State } from '../models/state';
 import _ from "lodash";
+import {Observable} from 'rxjs/Observable';
+import { Response }  from '@angular/http';
+import { Storage } from "@ionic/storage";
 
 @Injectable()
 export class DataService {
+
+	baseUrl: string = 'http://localhost:3000';
+
+	public handleError (error: Response | any) {
+		// In a real world app, you might use a remote logging infrastructure
+		let errMsg: string;
+		if (error instanceof Response) {
+			const body = error.json() || '';
+			const err = JSON.stringify(body);
+			errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+		} else {
+			errMsg = error.message ? error.message : error.toString();
+		}
+		console.error(errMsg);
+		return Observable.throw(errMsg);
+	}
+
+	constructor(private storage: Storage) {}
+
 
 	private scenario: string = 'first_time';
 	private cache: any = {};
@@ -447,5 +469,4 @@ export class DataService {
 			}
 		],
 	}
-
 }

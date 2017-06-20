@@ -6,20 +6,27 @@ import { ItemModal } from '../../modals/item/item';
 import { State } from '../../models/state';
 import { DataService } from '../../services/data.service';
 import { FoodItem } from '../../models/food-item';
+import { Consumer } from '../../models/consumer';
 import { FoodCategory } from '../../models/food-category';
-
+import { AuthService } from '../../services/auth.service';
 
 @Component({
 	selector: 'page-home',
 	templateUrl: 'home.html'
 })
 export class HomePage implements OnInit {
+
 	ngOnInit(): void {
 		this.getData();
 	}
 
+	ionViewCanEnter() {
+		return this.authService.isAuthenticated();
+	}
+
 	ionViewWillEnter() {
 		this.getData();
+		console.log("user=", this.authService.getUser());
 		this.segmentTitle = this.orderIsOutstanding? 'pickup': 'shop';
 		this.includePaySegment = false;
 	}
@@ -171,6 +178,7 @@ export class HomePage implements OnInit {
 		public modalCtrl: ModalController,
 		platform: Platform,
 		private dataService: DataService,
+		private authService: AuthService,
 		private events: Events) {
 
 		this.isAndroid = platform.is('android');

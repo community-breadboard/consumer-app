@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'page-producers',
@@ -8,7 +9,7 @@ import { NavController } from 'ionic-angular';
 })
 export class ProducersPage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, authService: AuthService) {
 
   }
 
