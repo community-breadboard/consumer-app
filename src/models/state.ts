@@ -6,10 +6,10 @@ import { OrderInProgress } from './order-in-progress';
 import { StandingOrder } from './standing-order';
 
 export class State {
-	account: Account;
-	pickupLocations: [PickupLocation];
-	outstandingOrder: OutstandingOrder;
-	standingOrder: StandingOrder;
-	orderInProgress: OrderInProgress;
-	foodCategories: [FoodCategory];
+	account?: Account;
+	pickupLocations?: [PickupLocation];
+	outstandingOrder?: OutstandingOrder;
+	standingOrder?: StandingOrder;
+	orderInProgress?: OrderInProgress;
+	foodCategories?: FoodCategory[];
 }

@@ -29,7 +29,7 @@ export class AccountPage implements OnInit {
 	}
 
 	ngOnInit() {
-		this.state = this.dataService.getData();
+//		this.state = this.dataService.getData();
 	}
 	ionViewCanEnter() {
 		return this.authService.isAuthenticated();

@@ -17,7 +17,6 @@ export class LoginPage {
 		this.uiService.showLoading();
 
 		this.auth.login(this.registerCredentials).subscribe(status => {
-console.log("status=", status);
 			if ('success') {
 				this.nav.setRoot(TabsPage);
 			} else {

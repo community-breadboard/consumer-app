@@ -1,3 +1,5 @@
+import { ProducerEntity } from './producer-entity';
+
 export class FoodItem {
 	id: number;
 	name: string;
@@ -8,5 +10,18 @@ export class FoodItem {
 	description: string;
 	ingredients: string;
 	image?: string;
-	producer: string;
+	producerEntity: ProducerEntity;
+
+	constructor(json) {
+		this.id = json.id;
+		this.name = json.name;
+		this.quantityOrdered = json.quantity_ordered;
+		this.unitLabelSingular = json.unit_label_singular;
+		this.unitLabelPlural = json.unit_label_plural;
+		this.unitCost = json.unit_cost;
+		this.description = json.description;
+		this.ingredients = json.ingredients;
+		this.image = json.image;
+		this.producerEntity = new ProducerEntity(json.producer_entity);
+	}
 }

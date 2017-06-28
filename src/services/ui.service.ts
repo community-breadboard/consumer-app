@@ -21,7 +21,9 @@ export class UiService {
 	}
 
 	public showError(text) {
-		this.loading.dismiss();
+		if (this.loading) {
+			this.loading.dismiss();	
+		}
 
 		let alert = this.alertCtrl.create({
 			title: 'Fail',

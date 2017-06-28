@@ -45,7 +45,7 @@ export class CreditPage implements OnInit {
 	}
 
 	getData() {
-		this.account = this.dataService.getData().account;
+//		this.account = this.dataService.getData().account;
 	}
 
 	private determineAlert() {

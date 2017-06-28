@@ -9,6 +9,7 @@ import { FoodItem } from '../../models/food-item';
 import { Consumer } from '../../models/consumer';
 import { FoodCategory } from '../../models/food-category';
 import { AuthService } from '../../services/auth.service';
+import { UiService } from '../../services/ui.service';
 
 @Component({
 	selector: 'page-home',
@@ -18,6 +19,7 @@ export class HomePage implements OnInit {
 
 	ngOnInit(): void {
 		this.getData();
+		this.segmentTitle = 'shop';
 	}
 
 	ionViewCanEnter() {
@@ -25,15 +27,24 @@ export class HomePage implements OnInit {
 	}
 
 	ionViewWillEnter() {
-		this.getData();
-		console.log("user=", this.authService.getUser());
-		this.segmentTitle = this.orderIsOutstanding? 'pickup': 'shop';
-		this.includePaySegment = false;
+//		this.getData();
+//		console.log("user=", this.authService.getUser());
+//		this.segmentTitle = this.orderIsOutstanding? 'pickup': 'shop';
+//		this.includePaySegment = false;
 	}
 
 	private getData(): void {
-		this.state = this.dataService.getData();
-		this.orderIsOutstanding = this.state.outstandingOrder !== null;
+
+		this.dataService.getData().subscribe(state => {
+			this.state = state;
+			this.orderIsOutstanding = this.state.outstandingOrder !== null;
+		},
+		error => {
+			console.error(error);
+			this.uiService.showError("Server Error");
+		});
+
+//		this.state = this.dataService.getData();
 	}
 
 	segmentTitle: string;
@@ -48,7 +59,7 @@ export class HomePage implements OnInit {
 	userHasSuccessfullyCompletedPickupStep: boolean = false;
 	userHasSuccessfullyCompletedCheckoutStep: boolean = false;
 	//userHasSeenStartModal: boolean = false;
-	state:State;
+	state:State = {};
 	orderIsOutstanding: boolean;
 
 	setDefaultLocation: boolean = true;
@@ -179,6 +190,7 @@ export class HomePage implements OnInit {
 		platform: Platform,
 		private dataService: DataService,
 		private authService: AuthService,
+		private uiService: UiService,
 		private events: Events) {
 
 		this.isAndroid = platform.is('android');

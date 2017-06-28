@@ -26,7 +26,7 @@ export class TabsPage implements OnInit {
 	selectedIndex: number = 0;
 
 	getData() {
-		this.account = this.dataService.getData().account;
+		this.account = { balance: 0 }; //this.dataService.getData().account;
 	}
 
 	constructor(
@@ -42,10 +42,10 @@ export class TabsPage implements OnInit {
 
 	ngOnInit() {
 		this.getData();
-		if (this.account.firstTime === true) {
+//		if (this.account.firstTime === true) {
 			this.selectedIndex = 0;
 //			this.openWelcomeModal();
-		}
+//		}
 		var self = this;
 		this.events.subscribe('account:changed', function() {
 			self.getData();

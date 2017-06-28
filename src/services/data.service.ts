@@ -1,14 +1,37 @@
+
 import { Injectable } from '@angular/core';
 import { State } from '../models/state';
-import _ from "lodash";
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { Response }  from '@angular/http';
 import { Storage } from "@ionic/storage";
+import { AuthHttp } from 'angular2-jwt';
+import { FoodCategory } from '../models/food-category';
+import { HelperService } from './helper.service';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/observable/throw';
+
+
 
 @Injectable()
 export class DataService {
 
 	baseUrl: string = 'http://localhost:3000';
+	state: State;
+
+	public getData(): Observable<State> {
+		return this.authHttp.get(this.baseUrl + '/food_items_for_sale.json').map((res: Response) => {
+
+			let foodCategories: FoodCategory[] = [];
+			for (let foodCategoryJson of res.json()) {
+				foodCategories.push(new FoodCategory(foodCategoryJson));
+			}
+
+			this.state = {foodCategories: foodCategories};
+			return this.state;
+		});
+	}
 
 	public handleError (error: Response | any) {
 		// In a real world app, you might use a remote logging infrastructure
@@ -24,7 +47,11 @@ export class DataService {
 		return Observable.throw(errMsg);
 	}
 
-	constructor(private storage: Storage) {}
+	constructor (
+		private storage: Storage,
+		private authHttp: AuthHttp,
+		private helperService: HelperService
+	) {}
 
 
 	private scenario: string = 'first_time';
@@ -34,6 +61,8 @@ export class DataService {
 		this.scenario = scenario;
 	}
 
+
+/*
 	getData(): State {
 		if (this.cache[this.scenario]) {
 			return this.cache[this.scenario];
@@ -99,7 +128,7 @@ export class DataService {
 		this.cache[this.scenario] = state;
 		return state;
 	}
-
+*/
 
 	defaultState:State = {
 		account: {
@@ -215,7 +244,7 @@ export class DataService {
 			{
 				id: 1,
 				label: 'Bread',
-				image: 'bread.jpeg',
+				imageSvgName: 'bread.jpeg',
 				quantityOrdered: 0,
 				expanded: false,
 				foodItems: [
@@ -230,7 +259,9 @@ export class DataService {
 						description: 'A rustic levain blending three excellent flours.',
 						ingredients: 'Organic white wheat flour, water, organic whole rye flour, sifted whole wheat flour, sea salt',
 						image: 'country_levain.jpg',
-						producer: 'Juniper Cottage Bake Shop'
+						producerEntity: {
+							name: 'Juniper Cottage Bake Shop'
+						}
 					},
 					{
 						id: 2,
@@ -242,7 +273,9 @@ export class DataService {
 						description: 'Spelt flour gives this bread its great texture and slightly nutty flavor. Low gluten.',
 						ingredients: 'Organic white spelt flour, water, organic whole spelt flour, sea salt',
 						image: 'spelt_boule.jpg',
-						producer: 'Juniper Cottage Bake Shop'
+						producerEntity: {
+							name: 'Juniper Cottage Bake Shop'
+						}
 					},
 					{
 						id: 3,
@@ -254,14 +287,16 @@ export class DataService {
 						description: 'Hearty, nutritious and delicious. A mix of pumpkin, sunflower and sesame seeds encase a loaf baked with Maine grown heritage wheat. A beautiful bread',
 						ingredients: 'Organic white wheat flour, water, organic sifted whole wheat flour, organic pumpkin, sunflower and sesame seeds, sea salt',
 						image: 'mountain.jpg',
-						producer: 'Juniper Cottage Bake Shop'
+						producerEntity: {
+							name: 'Juniper Cottage Bake Shop'
+						}
 					}
 				]
 			},
 			{
 				id: 2,
 				label: 'Dairy / Eggs',
-				image: 'dairy.jpeg',
+				imageSvgName: 'dairy.jpeg',
 				quantityOrdered: 0,
 				expanded: false,
 				foodItems: [
@@ -274,7 +309,9 @@ export class DataService {
 						unitCost: 5,
 						description: '',
 						ingredients: '',
-						producer: ''
+						producerEntity: {
+							name: 'Benedikt Dairy'
+						}
 					},
 					{
 						id: 5,
@@ -285,10 +322,13 @@ export class DataService {
 						unitCost: 6,
 						description: '',
 						ingredients: '',
-						producer: ''
+						producerEntity: {
+							name: 'Tuckaway Farm'
+						}
 					}
 				]
-			},
+			}
+			/*,
 			{
 				id: 3,
 				label: 'Dry Goods',
@@ -467,6 +507,7 @@ export class DataService {
 					}
 				]
 			}
+			*/
 		],
 	}
 }
