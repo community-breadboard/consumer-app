@@ -1,6 +1,5 @@
 
 import { Component } from '@angular/core';
-import { AuthHttp } from 'angular2-jwt';
 import { HomePage } from '../home/home';
 import { AccountPage } from '../account/account';
 import { ServiceDaysPage } from '../serviceDays/serviceDays';
@@ -31,25 +30,22 @@ export class TabsPage {
 		private dataService: DataService,
 		public events: Events,
 		public modalCtrl: ModalController,
-		private authService: AuthService,
-		private authHttp: AuthHttp) {}
+		private authService: AuthService) {}
 
 
 	ionViewCanEnter() {
 		return this.authService.isAuthenticated();
 	}
 
+	getData(): void {
+		this.balance = this.dataService.state.consumer.balance;
+	}
 	ionViewWillEnter() {
-		this.authHttp.get(this.dataService.currentUserUrl)
-			.catch(this.dataService.handleError)
-			.subscribe((res: Response) => {
-				this.dataService.state.consumer = new Consumer(res.json());
-				this.balance = this.dataService.state.consumer.balance;
-			})
 
-		var self = this;
-		this.events.subscribe('balance:changed', (newBalance) => {
-			this.balance = self.dataService.state.consumer.balance;
+		this.getData();
+
+		this.events.subscribe('balance:changed', () => {
+			this.getData();
 		});
 
 		this.selectedIndex = 0;

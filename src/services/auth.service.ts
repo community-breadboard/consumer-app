@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { JwtHelper } from 'angular2-jwt';
+import { JwtHelper, AuthHttp } from 'angular2-jwt';
+import { DataService } from './data.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/throw';
 import { Http, Response, RequestOptions, Headers }  from '@angular/http';
-import { DataService } from './data.service';
 import { Storage } from "@ionic/storage";
 import { Consumer } from '../models/consumer';
 
@@ -37,12 +37,24 @@ export class AuthService {
 			let options = new RequestOptions({ headers: headers });
 
 			return this.http.post(this.dataService.authUrl, {auth: credentials}, options)
-				.map((res: Response) => {
-					this.storage.set('token', res.json().jwt);
+				.map((res: Response) => res.json())
+				.mergeMap((jwtObject) => {
+					this.storage.set('token', jwtObject.jwt);
+
+					return this.getUser();
 				})
 				.catch(this.dataService.handleError)
 
 		}
+	}
+
+	public getUser(): Observable<string> {
+		return this.authHttp.get(this.dataService.currentUserUrl)
+			.map((res: Response) => {
+				this.dataService.state.consumer = new Consumer(res.json());
+				return 'success';
+			})
+			.catch(this.dataService.handleError)
 	}
 
 
@@ -54,5 +66,6 @@ export class AuthService {
 		private http: Http,
 		private jwtHelper: JwtHelper,
 		private dataService: DataService,
-		private storage: Storage) {}
+		private storage: Storage,
+		private authHttp: AuthHttp) {}
 }
