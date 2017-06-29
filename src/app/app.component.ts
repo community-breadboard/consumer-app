@@ -21,16 +21,16 @@ export class MyApp {
 			statusBar: StatusBar,
 			splashScreen: SplashScreen,
 			private auth: AuthService ) {
-		platform.ready().then(() => {
-			// Okay, so the platform is ready and our plugins are available.
-			// Here you can do any higher level native things you might need.
-			statusBar.styleDefault();
-			splashScreen.hide();
+				platform.ready().then(() => {
+					// Okay, so the platform is ready and our plugins are available.
+					// Here you can do any higher level native things you might need.
+					statusBar.styleDefault();
+					splashScreen.hide();
 
-			this.auth.isAuthenticated().then((isValid) => {
-				this.rootPage = isValid ? TabsPage : LoginPage;
-			});
+					this.auth.isAuthenticated().then((isValid) => {
+						this.rootPage = isValid ? TabsPage : LoginPage;
+					});
 
-		});
-	}
+				});
+			}
 }

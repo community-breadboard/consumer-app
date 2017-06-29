@@ -5,11 +5,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { ProducersPage } from '../pages/producers/producers';
+import { ServiceDaysPage } from '../pages/serviceDays/serviceDays';
 import { AccountPage } from '../pages/account/account';
 import { HomePage } from '../pages/home/home';
 import { CreditPage } from '../pages/credit/credit';
-import { ScenariosPage } from '../pages/scenarios/scenarios';
 import { OrderModal } from '../modals/order/order';
 import { ItemModal } from '../modals/item/item';
 import { WelcomeModal } from '../modals/welcome/welcome';
@@ -18,7 +17,6 @@ import { LoginPage } from '../pages/login/login';
 import { IonicStorageModule } from '@ionic/storage';
 import { AuthService } from '../services/auth.service';
 import { DataService } from '../services/data.service';
-import { HelperService } from '../services/helper.service';
 
 import { AuthHttp, AuthConfig, JwtHelper } from 'angular2-jwt';
 import { Http } from '@angular/http';
@@ -41,10 +39,9 @@ export function getAuthHttp(http) {
 @NgModule({
 	declarations: [
 		MyApp,
-		ProducersPage,
+		ServiceDaysPage,
 		AccountPage,
 		HomePage,
-		ScenariosPage,
 		CreditPage,
 		OrderModal,
 		ItemModal,
@@ -61,10 +58,9 @@ export function getAuthHttp(http) {
 	bootstrap: [IonicApp],
 	entryComponents: [
 		MyApp,
-		ProducersPage,
+		ServiceDaysPage,
 		AccountPage,
 		HomePage,
-		ScenariosPage,
 		CreditPage,
 		OrderModal,
 		ItemModal,
@@ -76,7 +72,6 @@ export function getAuthHttp(http) {
 		StatusBar,
 		AuthService,
 		DataService,
-		HelperService,
 		JwtHelper,
 		SplashScreen,
 		{

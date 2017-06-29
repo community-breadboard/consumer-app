@@ -6,7 +6,6 @@ import { ItemModal } from '../../modals/item/item';
 import { State } from '../../models/state';
 import { DataService } from '../../services/data.service';
 import { FoodItem } from '../../models/food-item';
-import { Consumer } from '../../models/consumer';
 import { FoodCategory } from '../../models/food-category';
 import { AuthService } from '../../services/auth.service';
 import { UiService } from '../../services/ui.service';
@@ -43,8 +42,6 @@ export class HomePage implements OnInit {
 			console.error(error);
 			this.uiService.showError("Server Error");
 		});
-
-//		this.state = this.dataService.getData();
 	}
 
 	segmentTitle: string;
@@ -120,12 +117,6 @@ export class HomePage implements OnInit {
 		modal.present();
 	}
 
-
-	addCredit(amount: number): void {
-		this.state.account.balance += amount;
-		this.events.publish('account:changed');
-	}
-
 	add(category: FoodCategory, item: FoodItem, slidingItem: ItemSliding): void {
 		category.quantityOrdered = category.quantityOrdered + 1;
 		item.quantityOrdered = item.quantityOrdered + 1;
@@ -172,7 +163,6 @@ export class HomePage implements OnInit {
 
 	goToSegment(segmentTitle): void {
 		this.userHasSuccessfullyCompletedShoppingStep = this.userHasSelectedAtLeastOneItem();
-		this.userHasSuccessfullyCompletedPaymentStep = this.state.account.balance > 0;
 //		this.userHasSuccessfullyCompletedPickupStep = this.userHasSelectedAPickupLocation();
 		if (this.segmentTitle === 'pickup') {
 			// once an order is placed, it is final.   They can't go back and edit an order

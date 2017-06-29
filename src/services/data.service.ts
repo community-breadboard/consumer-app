@@ -6,7 +6,6 @@ import { Response }  from '@angular/http';
 import { Storage } from "@ionic/storage";
 import { AuthHttp } from 'angular2-jwt';
 import { FoodCategory } from '../models/food-category';
-import { HelperService } from './helper.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/mergeMap';
@@ -18,17 +17,21 @@ import 'rxjs/add/observable/throw';
 export class DataService {
 
 	baseUrl: string = 'http://localhost:3000';
-	state: State;
+	foodItemsForSaleUrl = this.baseUrl + '/current_user/food_items_for_sale.json';
+	authUrl = this.baseUrl + '/user_token';
+	currentUserUrl = this.baseUrl + '/current_user';
+
+	state: State = new State();
 
 	public getData(): Observable<State> {
-		return this.authHttp.get(this.baseUrl + '/food_items_for_sale.json').map((res: Response) => {
+		return this.authHttp.get(this.foodItemsForSaleUrl).map((res: Response) => {
 
 			let foodCategories: FoodCategory[] = [];
 			for (let foodCategoryJson of res.json()) {
 				foodCategories.push(new FoodCategory(foodCategoryJson));
 			}
 
-			this.state = {foodCategories: foodCategories};
+			this.state.foodCategories = foodCategories;
 			return this.state;
 		});
 	}
@@ -50,86 +53,10 @@ export class DataService {
 	constructor (
 		private storage: Storage,
 		private authHttp: AuthHttp,
-		private helperService: HelperService
 	) {}
 
 
-	private scenario: string = 'first_time';
-	private cache: any = {};
-
-	setScenario(scenario: string): void {
-		this.scenario = scenario;
-	}
-
-
 /*
-	getData(): State {
-		if (this.cache[this.scenario]) {
-			return this.cache[this.scenario];
-		}
-
-		var state: State = _.cloneDeep(this.defaultState);
-		if (this.scenario === 'balance_low') {
-			state.account.balance = 20;
-			state.account.firstTime = false;
-		}
-		else if (this.scenario === 'balance_zero') {
-			state.account.balance = 0;
-			state.account.firstTime = false;
-		}
-		else if (this.scenario === 'outstanding_order') {
-			state.account.balance = 100;
-			state.account.firstTime = false;
-			state.outstandingOrder = {
-				pickupLocation: _.cloneDeep(state.pickupLocations[0]),
-				foodItems: [
-					_.cloneDeep(state.foodCategories[0].foodItems[0]),
-					_.cloneDeep(state.foodCategories[2].foodItems[0]),
-					_.cloneDeep(state.foodCategories[5].foodItems[0])
-				],
-				alertSet: false,
-				addedToCalendar: false
-			}
-			_.each(state.outstandingOrder.foodItems, function(foodItem) {
-				foodItem.quantityOrdered = 1;
-			});
-		}
-		else if (this.scenario === 'order_in_progress') {
-			state.account.balance = 100;
-			state.account.firstTime = false;
-			state.foodCategories[0].quantityOrdered = 1;
-			state.foodCategories[0].foodItems[0].quantityOrdered = 1;
-			state.foodCategories[2].quantityOrdered = 1;
-			state.foodCategories[2].foodItems[0].quantityOrdered = 1;
-			state.foodCategories[4].quantityOrdered = 1;
-			state.foodCategories[4].foodItems[0].quantityOrdered = 1;
-		}
-		else if (this.scenario === 'new_order_no_standing') {
-			state.account.balance = 100;
-			state.account.firstTime = false;
-		}
-		else if (this.scenario === 'new_order_standing') {
-			state.account.balance = 100;
-			state.account.firstTime = false;
-			state.standingOrder = {
-				pickupLocation: _.cloneDeep(state.pickupLocations[0]),
-				foodItems: [
-					_.cloneDeep(state.foodCategories[0].foodItems[0]),
-					_.cloneDeep(state.foodCategories[2].foodItems[0]),
-					_.cloneDeep(state.foodCategories[5].foodItems[0])
-				],
-			}
-			_.each(state.standingOrder.foodItems, function(item) {
-				item.quantityOrdered = 1;
-			});
-			state.standingOrder.pickupLocation.selected === true;
-		}
-
-		this.cache[this.scenario] = state;
-		return state;
-	}
-*/
-
 	defaultState:State = {
 		account: {
 			owner: {
@@ -328,7 +255,7 @@ export class DataService {
 					}
 				]
 			}
-			/*,
+			,
 			{
 				id: 3,
 				label: 'Dry Goods',
@@ -507,7 +434,8 @@ export class DataService {
 					}
 				]
 			}
-			*/
+
 		],
 	}
+	*/
 }

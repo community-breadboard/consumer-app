@@ -24,8 +24,8 @@ export class AccountPage implements OnInit {
 		this.navCtrl.push(CreditPage);
 	}
 	logout() {
-		this.navCtrl.setRoot(LoginPage);
 		this.authService.logout();
+		this.navCtrl.setRoot(LoginPage);
 	}
 
 	ngOnInit() {

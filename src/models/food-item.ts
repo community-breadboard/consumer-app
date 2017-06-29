@@ -15,7 +15,7 @@ export class FoodItem {
 	constructor(json) {
 		this.id = json.id;
 		this.name = json.name;
-		this.quantityOrdered = json.quantity_ordered;
+		this.quantityOrdered = json.quantity_ordered || 0;
 		this.unitLabelSingular = json.unit_label_singular;
 		this.unitLabelPlural = json.unit_label_plural;
 		this.unitCost = json.unit_cost;

@@ -1,63 +1,59 @@
 
-import { Component, OnInit } from '@angular/core';
-
+import { Component } from '@angular/core';
+import { AuthHttp } from 'angular2-jwt';
 import { HomePage } from '../home/home';
-import { ProducersPage } from '../producers/producers';
 import { AccountPage } from '../account/account';
-import { ScenariosPage } from '../scenarios/scenarios';
+import { ServiceDaysPage } from '../serviceDays/serviceDays';
 import { DataService } from '../../services/data.service';
 import { AuthService } from '../../services/auth.service';
-import { Account } from '../../models/account';
+import { Consumer } from '../../models/consumer';
 import { Events, ModalController } from 'ionic-angular';
-//import { WelcomeModal } from '../../modals/welcome/welcome';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/observable/throw';
+import { Response }  from '@angular/http';
+
 
 @Component({
 	templateUrl: 'tabs.html'
 })
-export class TabsPage implements OnInit {
-	// this tells the tabs component which Pages
-	// should be each tab's root Page
+export class TabsPage {
+
 	tab1Root: any = HomePage;
-	tab2Root: any = ProducersPage;
+	tab2Root: any = ServiceDaysPage;
 	tab3Root: any = AccountPage;
-	tab4Root: any = ScenariosPage;
 
-	account: Account;
+	balance: number;
 	selectedIndex: number = 0;
-
-	getData() {
-		this.account = { balance: 0 }; //this.dataService.getData().account;
-	}
 
 	constructor(
 		private dataService: DataService,
 		public events: Events,
 		public modalCtrl: ModalController,
-		private authService: AuthService) {}
+		private authService: AuthService,
+		private authHttp: AuthHttp) {}
+
 
 	ionViewCanEnter() {
 		return this.authService.isAuthenticated();
 	}
 
+	ionViewWillEnter() {
+		this.authHttp.get(this.dataService.currentUserUrl)
+			.catch(this.dataService.handleError)
+			.subscribe((res: Response) => {
+				this.dataService.state.consumer = new Consumer(res.json());
+				this.balance = this.dataService.state.consumer.balance;
+			})
 
-	ngOnInit() {
-		this.getData();
-//		if (this.account.firstTime === true) {
-			this.selectedIndex = 0;
-//			this.openWelcomeModal();
-//		}
 		var self = this;
-		this.events.subscribe('account:changed', function() {
-			self.getData();
+		this.events.subscribe('balance:changed', (newBalance) => {
+			this.balance = self.dataService.state.consumer.balance;
 		});
-	}
 
-/*
-	private openWelcomeModal(): void {
-		let modal = this.modalCtrl.create(WelcomeModal);
-		modal.isOverlay = false;
-		modal.present();
+		this.selectedIndex = 0;
+
 	}
-*/
 
 }
