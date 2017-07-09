@@ -17,7 +17,6 @@ import { UiService } from '../../services/ui.service';
 export class HomePage implements OnInit {
 
 	ngOnInit(): void {
-		console.log("user=", this.dataService.state.consumer);
 		this.getData();
 		this.segmentTitle = 'shop';
 	}
