@@ -37,6 +37,7 @@ export class HomePage implements OnInit {
 
 		this.dataService.getData().subscribe(state => {
 			this.state = state;
+			console.log("state=", this.state);
 			this.orderIsOutstanding = this.state.outstandingOrder !== null;
 		},
 		error => {
