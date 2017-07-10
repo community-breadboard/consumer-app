@@ -152,13 +152,10 @@ export class HomePage implements OnInit {
 */
 	payWithPaypal() {
 		this.state.outstandingOrder = {
-//			pickupLocation: _.cloneDeep(this.state.orderInProgress.pickupLocation),
-			foodItems: _.cloneDeep(this.state.orderInProgress.foodItems),
-			alertSet: false,
-			addedToCalendar: false
+			foodItems: _.cloneDeep(this.state.orderInProgress.foodItems)
 		}
 		this.userHasSuccessfullyCompletedCheckoutStep = true;
-//		this.orderIsOutstanding = true;
+		this.orderIsOutstanding = true;
 		this.goToSegment('pickup');
 	}
 

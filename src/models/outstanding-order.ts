@@ -1,9 +1,7 @@
-import { PickupLocation } from './pickup-location';
+import { OrderPickupSchedule } from './order-pickup-schedule';
 import { FoodItem } from './food-item';
 
 export class OutstandingOrder {
-	pickupLocation?: PickupLocation;
+	orderPickupSchedule?: OrderPickupSchedule;
 	foodItems: FoodItem[];
-	alertSet: boolean;
-	addedToCalendar: boolean;
 }
