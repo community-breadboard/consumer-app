@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { NavController, Events, ToastController } from 'ionic-angular';
 import { DataService } from '../../services/data.service';
+import { UiService } from '../../services/ui.service';
 import { AuthService } from '../../services/auth.service';
 import { Consumer } from '../../models/consumer';
 
@@ -23,14 +24,21 @@ export class CreditPage implements OnInit {
 		private dataService: DataService,
 		private events: Events,
 		public toastCtrl: ToastController,
-		private authService: AuthService) {
+		private authService: AuthService,
+		private uiService: UiService) {
 
 	}
 
 	addCredit() {
 		this.dataService.state.consumer.balance = +this.dataService.state.consumer.balance + +this.amountToAdd;
-		this.showToast(this.amountToAdd);
-		this.events.publish('balance:changed');
+		this.dataService.addCredit(this.authService.currentUser, this.amountToAdd).subscribe(status => {
+			this.showToast(this.amountToAdd);
+			this.events.publish('balance:changed');
+		},
+		error => {
+			console.error(error);
+			this.uiService.showError("Server Error");
+		});
 	}
 	ionViewCanEnter() {
 		return this.authService.isAuthenticated();

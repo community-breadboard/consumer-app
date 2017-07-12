@@ -307,8 +307,7 @@
 			</ion-card>
 			<ion-row *ngIf="state.orderInProgress.foodItems.length > 0">
 				<ion-col text-center>
-					<button *ngIf="((state.consumer.balance - state.orderInProgress.totalCost) < 0)" ion-button color="secondary" round (click)="payWithPaypal()">Pay with paypal</button>
-					<button *ngIf="((state.consumer.balance - state.orderInProgress.totalCost) >= 0)" ion-button color="secondary" round (click)="payWithPaypal()">Place order</button>
+					<button ion-button color="secondary" round (click)="submitOrder()">Place order</button>
 				</ion-col>
 			</ion-row>
 

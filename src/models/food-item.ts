@@ -2,6 +2,7 @@ import { ProducerEntity } from './producer-entity';
 
 export class FoodItem {
 	id: number;
+	sellableFoodItemId: number;
 	name: string;
 	quantityOrdered: number = 0;
 	unitLabelSingular: string;
@@ -14,6 +15,7 @@ export class FoodItem {
 
 	constructor(json) {
 		this.id = json.id;
+		this.sellableFoodItemId = json.sellable_food_item_id;
 		this.name = json.name;
 		this.quantityOrdered = json.quantity_ordered || 0;
 		this.unitLabelSingular = json.unit_label_singular;

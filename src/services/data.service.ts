@@ -6,11 +6,12 @@ import { Response }  from '@angular/http';
 import { Storage } from "@ionic/storage";
 import { AuthHttp } from 'angular2-jwt';
 import { FoodCategory } from '../models/food-category';
+import { Consumer } from '../models/consumer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/throw';
-
+import _ from "lodash";
 
 
 @Injectable()
@@ -18,6 +19,8 @@ export class DataService {
 
 	baseUrl: string = 'http://localhost:3000';
 	foodItemsForSaleUrl = this.baseUrl + '/current_user/food_items_for_sale.json';
+	submitOrderUrl = this.baseUrl + '/current_user/submit_order';
+	addCreditUrl = this.baseUrl + '/current_user/add_credit';
 	authUrl = this.baseUrl + '/user_token';
 	currentUserUrl = this.baseUrl + '/current_user';
 
@@ -33,6 +36,21 @@ export class DataService {
 
 			this.state.foodCategories = foodCategories;
 			return this.state;
+		});
+	}
+
+	public submitOrder(state: State): Observable<string> {
+
+		let data: any = _.pick(state, ['consumer', 'outstandingOrder']);
+		
+		return this.authHttp.post(this.submitOrderUrl, data).map((res: Response) => {
+			return 'success';
+		});
+	}
+	public addCredit(consumer: Consumer, amount: number): Observable<string> {
+
+		return this.authHttp.post(this.addCreditUrl, {consumer: consumer, amount: amount}).map((res: Response) => {
+			return 'success';
 		});
 	}
 
@@ -54,6 +72,22 @@ export class DataService {
 		private storage: Storage,
 		private authHttp: AuthHttp,
 	) {}
+
+	private objectKeysToSnakeCase(obj: any): any {
+		console.log("objectKeysToSnakeCase obj=", obj);
+		var snakeCaseObject = {};
+		_.forEach(
+			obj,
+			(value, key) => {
+				console.log("v=", value);
+				if (_.isPlainObject(value) || _.isArray(value)) {
+					value = this.objectKeysToSnakeCase(value);
+				}
+				snakeCaseObject[_.snakeCase(key)] = value;
+			}
+		)
+		return snakeCaseObject;
+	}
 
 
 /*

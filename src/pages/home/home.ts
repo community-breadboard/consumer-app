@@ -36,7 +36,7 @@ export class HomePage implements OnInit {
 
 		this.dataService.getData().subscribe(state => {
 			this.state = state;
-			console.log("state=", this.state);
+//			console.log("state=", this.state);
 			this.orderIsOutstanding = this.state.outstandingOrder !== null;
 		},
 		error => {
@@ -150,13 +150,21 @@ export class HomePage implements OnInit {
 		}
 	}
 */
-	payWithPaypal() {
+	submitOrder() {
 		this.state.outstandingOrder = {
-			foodItems: _.cloneDeep(this.state.orderInProgress.foodItems)
+			foodItems: _.cloneDeep(this.state.orderInProgress.foodItems),
+			orderPickupSchedule: _.cloneDeep(this.state.consumer.family.orderPickupSchedule),
+			totalCost: this.state.orderInProgress.totalCost
 		}
-		this.userHasSuccessfullyCompletedCheckoutStep = true;
-		this.orderIsOutstanding = true;
-		this.goToSegment('pickup');
+		this.dataService.submitOrder(this.state).subscribe(status => {
+			this.userHasSuccessfullyCompletedCheckoutStep = true;
+			this.orderIsOutstanding = true;
+			this.goToSegment('pickup');
+		},
+		error => {
+			console.error(error);
+			this.uiService.showError("Server Error");
+		});
 	}
 
 	goToSegment(segmentTitle): void {
