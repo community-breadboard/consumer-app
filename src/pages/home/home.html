@@ -8,50 +8,6 @@
 </ion-header>
 
 <ion-content padding>
-<!--
-	<div *ngIf="orderIsOutstanding" class="order-is-outstanding">
-		<p>Your order has been placed!</p>
-		<ion-card>
-			<ion-card-header>
-				Pickup
-			</ion-card-header>
-			<ion-card-content>
-				<p style="font-weight:bold">
-					{{state.outstandingOrder.pickupLocation.nextPickup}}
-				</p>
-				<p>
-					{{state.outstandingOrder.pickupLocation.abbreviatedName}}
-				</p>
-			</ion-card-content>
-		</ion-card>
-
-		<ion-card>
-			<ion-card-header>
-				Order
-				<span style="float:right" *ngIf="state.outstandingOrder.foodItems.length > 0">
-					<span *ngIf="showOutstandingOrderPreview === false">{{state.outstandingOrder.foodItems.length}} items</span>
-					<ion-icon (click)="showOutstandingOrderPreview = true" *ngIf="showOutstandingOrderPreview === false" style="margin-left:4px;" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
-					<ion-icon (click)="showOutstandingOrderPreview = false" *ngIf="showOutstandingOrderPreview === true" style="margin-left:4px;" ios="ios-arrow-up" md="md-arrow-up"></ion-icon>
-				</span>
-			</ion-card-header>
-			<ion-card-content *ngIf="showOutstandingOrderPreview">
-				<ion-list>
-					<ion-item *ngFor="let item of state.outstandingOrder.foodItems">
-						<span>{{item.quantityOrdered}}
-							<span *ngIf="item.quantityOrdered === 1">{{item.unitLabelSingular}}</span>
-							<span *ngIf="item.quantityOrdered > 1">{{item.unitLabelPlural}}</span>
-							{{item.name}}</span>
-						<span style="float:right">{{item.unitCost * item.quantityOrdered | currency:'USD':true:'1.0-2'}}</span>
-					</ion-item>
-				</ion-list>
-			</ion-card-content>
-		</ion-card>
-		<p>All orders are final</p>
-		<button style="padding-left:14px;" ion-button color="light" round>Add Alert</button>
-		<button style="padding-left:14px;" ion-button color="light" round>Add to Calendar</button>
-	</div>
--->
-<!--*ngIf="!orderIsOutstanding"-->
 	<ion-grid no-padding class="step-progress-bar">
 		<ion-row justify-content-center>
 			<ion-col text-center col-sm [ngClass]="{'passed': (segmentTitle === 'checkout' || segmentTitle === 'pickup'), 'completed': userHasSuccessfullyCompletedShoppingStep, 'active': (segmentTitle === 'shop') }">
@@ -79,100 +35,79 @@
 
 
 	<div>
-		<ion-list *ngIf="segmentTitle === 'shop'">
-			<div *ngFor="let foodCategory of state.foodCategories">
+		<div *ngIf="segmentTitle === 'shop'">
+			<div *ngIf="!state.consumer.canPlaceOrder">
+				<div *ngIf="!state.consumer.family.orderPickupSchedule.isInSalePeriod" style="margin-top:20px;">
+					Next Sale Period begins on {{state.consumer.family.orderPickupSchedule.nextSaleStartDate | date : 'EEE MMM d, yyyy'}} at {{state.consumer.family.orderPickupSchedule.formattedSaleStartTime}}
+				</div>
+			</div>
+			<ion-list *ngIf="state.consumer.canPlaceOrder">
+			
+			
+				<div *ngFor="let foodCategory of state.foodCategories">
 
-				<div *ngIf="foodCategory.expanded === true">
-					<ion-list-header (click)="toggle(foodCategory)">
-						<ion-avatar item-left>
-							<img src="assets/images/{{foodCategory.imageSvgName}}.jpeg">
-						</ion-avatar>
-						{{foodCategory.label}}
-						<ion-badge *ngIf="foodCategory.quantityOrdered > 0" style="margin-left:20px">{{foodCategory.quantityOrdered}}</ion-badge>
-						<ion-icon style="float:right" ios="ios-arrow-up" md="md-arrow-up"></ion-icon>
-					</ion-list-header>
+					<div *ngIf="foodCategory.expanded === true">
+						<ion-list-header (click)="toggle(foodCategory)">
+							<ion-avatar item-left>
+								<img src="assets/images/{{foodCategory.imageSvgName}}.jpeg">
+							</ion-avatar>
+							{{foodCategory.label}}
+							<ion-badge *ngIf="foodCategory.quantityOrdered > 0" style="margin-left:20px">{{foodCategory.quantityOrdered}}</ion-badge>
+							<ion-icon style="float:right" ios="ios-arrow-up" md="md-arrow-up"></ion-icon>
+						</ion-list-header>
 
 
-					<ion-item-sliding #slidingItem *ngFor="let item of foodCategory.foodItems">
-						<ion-item text-wrap>
-							<div>
-								<span *ngIf="item.quantityOrdered === 0" class="indent"> </span>
-								<ion-icon *ngIf="item.quantityOrdered > 0" class="no-indent" name="checkmark"></ion-icon>
-								{{item.name}}
-								<span class="swipe-left">swipe left</span>
-							</div>
-							<div class="qty-details indent">
+						<ion-item-sliding #slidingItem *ngFor="let item of foodCategory.foodItems">
+							<ion-item text-wrap>
+								<div>
+									<span *ngIf="item.quantityOrdered === 0" class="indent"> </span>
+									<ion-icon *ngIf="item.quantityOrdered > 0" class="no-indent" name="checkmark"></ion-icon>
+									{{item.name}}
+									<span class="swipe-left">swipe left</span>
+								</div>
+								<div class="qty-details indent">
 
-								<span *ngIf="item.quantityOrdered === 1" class="qty-ordered"> ({{item.quantityOrdered}} {{item.unitLabelSingular}})</span>
-								<span *ngIf="item.quantityOrdered > 1" class="qty-ordered"> ({{item.quantityOrdered}} {{item.unitLabelPlural}})</span>
+									<span *ngIf="item.quantityOrdered === 1" class="qty-ordered"> ({{item.quantityOrdered}} {{item.unitLabelSingular}})</span>
+									<span *ngIf="item.quantityOrdered > 1" class="qty-ordered"> ({{item.quantityOrdered}} {{item.unitLabelPlural}})</span>
 
-								<span>{{item.unitCost | currency:'USD':true:'1.0-2'}} / {{item.unitLabelSingular}}</span>
-							</div>
-						</ion-item>
-						<ion-item-options>
-							<button ion-button color="secondary" icon-left (click)="add(foodCategory, item, slidingItem)">
-								<ion-icon ios="ios-add" md="md-add"></ion-icon>
-								Add
-							</button>
-							<button *ngIf="item.quantityOrdered > 0" ion-button color="primary" icon-left (click)="subtract(foodCategory, item, slidingItem)">
-								<ion-icon ios="ios-remove" md="md-remove"></ion-icon>
-								Subtract
-							</button>
-							<button ion-button color="light" icon-left (click)="openItemDetailsModal(slidingItem, item)">
-								<ion-icon ios="ios-eye" md="md-eye"></ion-icon>
-								Details
-							</button>
-						</ion-item-options>
-					</ion-item-sliding>
-<!--
-
-					<ion-item *ngFor="let item of foodCategory.foodItems">
-						<span style="margin-left:12px;"> </span>
-						<ion-icon *ngIf="item.quantityOrdered > 0" ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>
-						{{item.name}}
-						<span *ngIf="item.quantityOrdered === 1" style="padding-left:4px;"> ({{item.quantityOrdered}} {{item.unitLabelSingular}})</span>
-						<span *ngIf="item.quantityOrdered > 1"> ({{item.quantityOrdered}} {{item.unitLabelPlural}})</span>
-						<span style="padding-left:4px;">{{item.unitCost | currency:'USD':true:'1.0-2'}} / {{item.unitLabelSingular}}</span>
-						<ion-fab right bottom>
-						    <button ion-fab color="light"><ion-icon name="arrow-dropleft"></ion-icon></button>
-
-						    <ion-fab-list side="left">
-
-								<button ion-fab color="secondary" icon-left (click)="add(foodCategory, item, slidingItem)">
+									<span>{{item.unitCost | currency:'USD':true:'1.0-2'}} / {{item.unitLabelSingular}}</span>
+								</div>
+							</ion-item>
+							<ion-item-options>
+								<button ion-button color="secondary" icon-left (click)="add(foodCategory, item, slidingItem)">
 									<ion-icon ios="ios-add" md="md-add"></ion-icon>
 									Add
 								</button>
-								<button *ngIf="item.quantityOrdered > 0" ion-fab color="primary" icon-left (click)="subtract(foodCategory, item, slidingItem)">
+								<button *ngIf="item.quantityOrdered > 0" ion-button color="primary" icon-left (click)="subtract(foodCategory, item, slidingItem)">
 									<ion-icon ios="ios-remove" md="md-remove"></ion-icon>
 									Subtract
 								</button>
-								<button ion-fab color="light" icon-left (click)="openItemDetailsModal(slidingItem)">
+								<button ion-button color="light" icon-left (click)="openItemDetailsModal(slidingItem, item)">
 									<ion-icon ios="ios-eye" md="md-eye"></ion-icon>
 									Details
 								</button>
-							</ion-fab-list>
-						</ion-fab>
+							</ion-item-options>
+						</ion-item-sliding>
+
+					</div>
+					<ion-item *ngIf="foodCategory.expanded === false" (click)="toggle(foodCategory)">
+						<ion-avatar item-left>
+							<img src="assets/images/{{foodCategory.imageSvgName}}.jpeg">
+						</ion-avatar>
+						{{ foodCategory.label }}
+						<ion-badge *ngIf="foodCategory.quantityOrdered > 0" style="margin-left:20px">{{foodCategory.quantityOrdered}}</ion-badge>
+						<ion-icon style="float:right" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
+
 					</ion-item>
--->
-
 				</div>
-				<ion-item *ngIf="foodCategory.expanded === false" (click)="toggle(foodCategory)">
-					<ion-avatar item-left>
-						<img src="assets/images/{{foodCategory.imageSvgName}}.jpeg">
-					</ion-avatar>
-					{{ foodCategory.label }}
-					<ion-badge *ngIf="foodCategory.quantityOrdered > 0" style="margin-left:20px">{{foodCategory.quantityOrdered}}</ion-badge>
-					<ion-icon style="float:right" ios="ios-arrow-down" md="md-arrow-down"></ion-icon>
+				<ion-row style="margin-top:12px;">
+					<ion-col text-center>
+						<button ion-button [color]="userHasSelectedAtLeastOneItem() ? 'secondary' : 'light'" (click)="checkout()" round>Next</button>
+					</ion-col>
+				</ion-row>
+			</ion-list>
+		</div>
 
-				</ion-item>
-			</div>
-			<ion-row style="margin-top:12px;">
-				<ion-col text-center>
-					<button ion-button [color]="userHasSelectedAtLeastOneItem() ? 'secondary' : 'light'" (click)="checkout()" round>Next</button>
-				</ion-col>
-			</ion-row>
-
-		</ion-list>
 
 		<div *ngIf="segmentTitle === 'pickup'">
 			<p style="margin-top:40px; padding-left:20px; margin-bottom:24px; font-size:1.6rem;" color="secondary">Your order has been placed!</p>

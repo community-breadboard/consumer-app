@@ -42,7 +42,6 @@ export class DataService {
 	public submitOrder(state: State): Observable<string> {
 
 		let data: any = _.pick(state, ['consumer', 'outstandingOrder']);
-		
 		return this.authHttp.post(this.submitOrderUrl, data).map((res: Response) => {
 			return 'success';
 		});

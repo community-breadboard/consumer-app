@@ -14,30 +14,30 @@ import { UiService } from '../../services/ui.service';
 	selector: 'page-home',
 	templateUrl: 'home.html'
 })
+
 export class HomePage implements OnInit {
 
 	ngOnInit(): void {
 		this.getData();
-		this.segmentTitle = 'shop';
 	}
 
 	ionViewCanEnter() {
 		return this.authService.isAuthenticated();
 	}
 
-	ionViewWillEnter() {
-//		this.getData();
-//		console.log("user=", this.authService.getUser());
-//		this.segmentTitle = this.orderIsOutstanding? 'pickup': 'shop';
-//		this.includePaySegment = false;
-	}
 
 	private getData(): void {
 
 		this.dataService.getData().subscribe(state => {
 			this.state = state;
-//			console.log("state=", this.state);
-			this.orderIsOutstanding = this.state.outstandingOrder !== null;
+			console.log("state=", this.state);
+			
+			if (this.state.consumer.mostRecentOrder && this.state.consumer.mostRecentOrder.isOpen) {
+				this.segmentTitle = 'pickup';
+			} else {
+				this.segmentTitle = 'shop';
+			}
+
 		},
 		error => {
 			console.error(error);
@@ -50,17 +50,14 @@ export class HomePage implements OnInit {
 	showOrderPreview: boolean = false;
 	showOutstandingOrderPreview: boolean = false;
 	showTotalPreview: boolean = false;
-	includePaySegment: boolean = false;
 
 	userHasSuccessfullyCompletedShoppingStep: boolean = false;
 	userHasSuccessfullyCompletedPaymentStep: boolean = false;
 	userHasSuccessfullyCompletedPickupStep: boolean = false;
 	userHasSuccessfullyCompletedCheckoutStep: boolean = false;
-	//userHasSeenStartModal: boolean = false;
+	
 	state:State = {};
-	orderIsOutstanding: boolean;
-
-	setDefaultLocation: boolean = true;
+	
 
 	private userHasSelectedAtLeastOneItem(): boolean {
 
@@ -70,19 +67,15 @@ export class HomePage implements OnInit {
 			});
 		});
 	}
-	/*
-	private userHasSelectedAPickupLocation(): boolean {
-		return _.some(this.state.pickupLocations, function(location) {
-			return location.selected === true;
-		});
-	}
-*/
 	checkout(): void {
 
 		this.state.orderInProgress = {
 			foodItems: [],
-//			pickupLocation: null,
-			totalCost: 0
+			totalCost: 0,
+			isOpen: true,
+			datePlaced: null,
+			isPlaced: false,
+			orderPickupSchedule: _.cloneDeep(this.state.consumer.family.orderPickupSchedule)
 		};
 		var self = this;
 		_.each(this.state.foodCategories, function(foodCategory) {
@@ -93,13 +86,6 @@ export class HomePage implements OnInit {
 				}
 			});
 		});
-/*
-		_.each(this.state.pickupLocations, function(loc) {
-			if (loc.selected === true) {
-				self.state.orderInProgress.pickupLocation = _.cloneDeep(loc);
-			}
-		});
-*/
 		this.goToSegment('checkout');
 	}
 
@@ -131,34 +117,10 @@ export class HomePage implements OnInit {
 		}
 		slidingItem.close();
 	}
-/*
-	selectPickupLocation(loc): void {
-		_.each(this.state.pickupLocations, function(location) {
-			location.selected = false;
-		});
-		loc.selected = true;
-
-		if (this.setDefaultLocation) {
-			if (this.state.standingOrder) {
-				this.state.standingOrder.pickupLocation = loc;
-			} else {
-				this.state.standingOrder = {
-					pickupLocation: loc,
-					foodItems: []
-				}
-			}
-		}
-	}
-*/
 	submitOrder() {
-		this.state.outstandingOrder = {
-			foodItems: _.cloneDeep(this.state.orderInProgress.foodItems),
-			orderPickupSchedule: _.cloneDeep(this.state.consumer.family.orderPickupSchedule),
-			totalCost: this.state.orderInProgress.totalCost
-		}
+		this.state.outstandingOrder = _.cloneDeep(this.state.orderInProgress);
 		this.dataService.submitOrder(this.state).subscribe(status => {
 			this.userHasSuccessfullyCompletedCheckoutStep = true;
-			this.orderIsOutstanding = true;
 			this.goToSegment('pickup');
 		},
 		error => {
@@ -169,7 +131,6 @@ export class HomePage implements OnInit {
 
 	goToSegment(segmentTitle): void {
 		this.userHasSuccessfullyCompletedShoppingStep = this.userHasSelectedAtLeastOneItem();
-//		this.userHasSuccessfullyCompletedPickupStep = this.userHasSelectedAPickupLocation();
 		if (this.segmentTitle === 'pickup') {
 			// once an order is placed, it is final.   They can't go back and edit an order
 			this.segmentTitle = 'pickup';
