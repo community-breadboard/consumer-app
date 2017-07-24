@@ -114,78 +114,8 @@
 			<p style="margin-top:20px; padding-left:20px; margin-bottom:24px; font-size:1.6rem;" color="secondary">pickup: {{state.consumer.family.orderPickupSchedule.nextPickupDate | date:'EEE MMMM d, yyyy'}} &nbsp; {{state.consumer.family.orderPickupSchedule.formattedPickupTime}}</p>
 			<p style="margin-top:20px; padding-left:20px; margin-bottom:24px; font-size:1.6rem;" color="secondary">{{state.consumer.family.orderPickupSchedule.address.name}}</p>
 
-			<!--
-			<p style="padding-left:16px; font-size:1.3rem;">Order Placed?</p>
-
-			<ion-list no-lines inset>
-				<ion-item *ngFor="let member of state.account.group.members">
-					<ion-label>
-						<span item-left>{{member.firstName}} {{member.lastName}}</span>
-						<ion-icon class="checkmark_underline"[name]="'checkmark'"></ion-icon>
-					</ion-label>
-				</ion-item>
-			</ion-list>
--->
-<!--
-			<table class="pickup">
-				<thead>
-					<tr>
-						<td></td>
-						<td>Order Placed</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let member of state.account.group.members">
-						<td>{{member.firstName}} {{member.lastName}}</td>
-						<td align="center"><ion-icon style="font-size: 2rem;" [name]="'checkmark'"></ion-icon></td>
-					</tr>
-				</tbody>
-			</table>
-		-->
-<!--
-			<ion-item  text-wrap>
-			  <ion-label>Make this my default location</ion-label>
-			  <ion-toggle [(ngModel)]="setDefaultLocation"></ion-toggle>
-			</ion-item>
-			<ion-list radio-group>
-				<ion-item *ngFor="let loc of state.pickupLocations">
-					<ion-label>
-						<p>{{loc.abbreviatedName}} <ion-icon style="padding-left:10px;" name="pin"></ion-icon></p>
-						<strong>{{loc.nextPickup}}</strong>
-					</ion-label>
-					<ion-radio  (ionSelect)="selectPickupLocation(loc)" [checked]="loc.selected === true"></ion-radio>
-				</ion-item>
-			</ion-list>
-			<ion-row>
-				<ion-col text-center>
-					<button ion-button [color]="userHasSelectedAPickupLocation() ? 'secondary' : 'light'" (click)="goToSegment('shop')" round>Next</button>
-				</ion-col>
-			</ion-row>
--->
 		</div>
 		<div *ngIf="segmentTitle === 'checkout'">
-<!--
-			<ion-card>
-				<ion-card-header>
-					Pickup
-				</ion-card-header>
-				<ion-card-content *ngIf="state.orderInProgress.pickupLocation">
-					<ion-list>
-						<ion-item>
-							{{state.orderInProgress.pickupLocation.nextPickup}}
-							<ion-icon name="calendar" style="padding-left:20px;"></ion-icon>
-						</ion-item>
-						<ion-item>
-							{{state.orderInProgress.pickupLocation.abbreviatedName}}
-
-						</ion-item>
-					</ion-list>
-				</ion-card-content>
-				<ion-card-content *ngIf="!state.orderInProgress.pickupLocation">
-					<p ion-text color="danger">Please click on PICKUP above to select a pickup location</p>
-				</ion-card-content>
-			</ion-card>
--->
 			<ion-card>
 				<ion-card-header>
 					Order
