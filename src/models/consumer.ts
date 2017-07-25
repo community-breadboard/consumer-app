@@ -10,7 +10,7 @@ export class Consumer {
 	type?: string;
 	balance?: number;
   canPlaceOrder: boolean;
-  mostRecentOrder?: Order; 
+  mostRecentOrder?: Order;
 	family?: Family;
 
 	constructor(json: any) {

@@ -31,7 +31,7 @@ export class HomePage implements OnInit {
 		this.dataService.getData().subscribe(state => {
 			this.state = state;
 //			console.log("state=", this.state);
-			
+
 			if (this.state.consumer.mostRecentOrder && this.state.consumer.mostRecentOrder.isOpen) {
 				this.segmentTitle = 'pickup';
 			} else {
@@ -49,15 +49,15 @@ export class HomePage implements OnInit {
 	isAndroid: boolean = false;
 	showOrderPreview: boolean = false;
 	showOutstandingOrderPreview: boolean = false;
-	showTotalPreview: boolean = false;
+	showTotalPreview: boolean = true;
 
 	userHasSuccessfullyCompletedShoppingStep: boolean = false;
 	userHasSuccessfullyCompletedPaymentStep: boolean = false;
 	userHasSuccessfullyCompletedPickupStep: boolean = false;
 	userHasSuccessfullyCompletedCheckoutStep: boolean = false;
-	
+
 	state:State = {};
-	
+
 
 	private userHasSelectedAtLeastOneItem(): boolean {
 
@@ -91,7 +91,9 @@ export class HomePage implements OnInit {
 
 	toggle(foodCategory: any): void {
     _.each(this.state.foodCategories, function(cat) {
-      cat.expanded = false;
+      if (cat.id !== foodCategory.id) {
+        cat.expanded = false;
+      }
     });
 		foodCategory.expanded = !foodCategory.expanded;
 	}

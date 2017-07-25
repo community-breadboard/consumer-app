@@ -3,14 +3,15 @@ page-login {
 	.login-content {
 
 		.logo-row {
-			padding-top: 50px;
-			padding-bottom: 20px;
+			margin-top: 80px;
+			margin-bottom: 80px;
 		}
 
 		.login-box {
-			background: #399F8B;
+			background: #999;
 			padding: 20px 20px 0px 20px;
-			margin-top: 30px;
+			margin-top: 100px;
+      border-radius: 25px;
 		}
 
 		ion-row {
@@ -42,11 +43,12 @@ page-login {
 		}
 
 		.submit-btn {
-			background: #51CFB1;
+			background: #32db64;
 			border-radius: 30px !important;
 			border: 1px solid #ffffff;
 			span.button-inner {
 				font-size: 17px;
+        color: black;
 			}
 		}
 	}

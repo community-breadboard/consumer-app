@@ -9,6 +9,8 @@ export class Family {
 	constructor(json: any) {
 		this.name = json.name;
 		this.producerEntity = new ProducerEntity(json.producer_entity)
-		this.orderPickupSchedule = new OrderPickupSchedule(json.order_pickup_schedule)
+    if (json.order_pickup_schedule) {
+      this.orderPickupSchedule = new OrderPickupSchedule(json.order_pickup_schedule);
+    }
 	}
 }

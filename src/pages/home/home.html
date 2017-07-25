@@ -22,6 +22,7 @@
 					<p>Checkout</p>
 				</div>
 			</ion-col>
+
 			<ion-col text-center col-sm [ngClass]="{'active': (segmentTitle === 'pickup') }">
 				<div>
 					<ion-icon [name]="'walk'"></ion-icon>
@@ -37,13 +38,13 @@
 	<div>
 		<div *ngIf="segmentTitle === 'shop'">
 			<div *ngIf="!state.consumer.canPlaceOrder">
-				<div *ngIf="!state.consumer.family.orderPickupSchedule.isInSalePeriod" style="margin-top:20px;">
+				<div *ngIf="state.consumer.family.orderPickupSchedule && !state.consumer.family.orderPickupSchedule.isInSalePeriod" style="margin-top:20px;">
 					Next Sale Period begins on {{state.consumer.family.orderPickupSchedule.nextSaleStartDate | date : 'EEE MMM d, yyyy'}} at {{state.consumer.family.orderPickupSchedule.formattedSaleStartTime}}
 				</div>
 			</div>
 			<ion-list *ngIf="state.consumer.canPlaceOrder">
-			
-			
+
+
 				<div *ngFor="let foodCategory of state.foodCategories">
 
 					<div *ngIf="foodCategory.expanded === true">
@@ -111,8 +112,10 @@
 
 		<div *ngIf="segmentTitle === 'pickup'">
 			<p style="margin-top:40px; padding-left:20px; margin-bottom:24px; font-size:1.6rem;" color="secondary">Your order has been placed!</p>
-			<p style="margin-top:20px; padding-left:20px; margin-bottom:24px; font-size:1.6rem;" color="secondary">pickup: {{state.consumer.family.orderPickupSchedule.nextPickupDate | date:'EEE MMMM d, yyyy'}} &nbsp; {{state.consumer.family.orderPickupSchedule.formattedPickupTime}}</p>
-			<p style="margin-top:20px; padding-left:20px; margin-bottom:24px; font-size:1.6rem;" color="secondary">{{state.consumer.family.orderPickupSchedule.address.name}}</p>
+      <div *ngIf="state.consumer.family.orderPickupSchedule">
+  			<p style="margin-top:20px; padding-left:20px; margin-bottom:24px; font-size:1.6rem;" color="secondary">pickup: {{state.consumer.family.orderPickupSchedule.nextPickupDate | date:'EEE MMMM d, yyyy'}} &nbsp; {{state.consumer.family.orderPickupSchedule.formattedPickupTime}}</p>
+  			<p style="margin-top:20px; padding-left:20px; margin-bottom:24px; font-size:1.6rem;" color="secondary">{{state.consumer.family.orderPickupSchedule.address.name}}</p>
+      </div>
 
 		</div>
 		<div *ngIf="segmentTitle === 'checkout'">

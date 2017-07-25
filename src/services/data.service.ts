@@ -26,7 +26,6 @@ export class DataService {
 
 	public getData(): Observable<State> {
 		return this.authHttp.get(this.foodItemsForSaleUrl).map((res: Response) => {
-
 			let foodCategories: FoodCategory[] = [];
 			for (let foodCategoryJson of res.json()) {
 				foodCategories.push(new FoodCategory(foodCategoryJson));
@@ -44,7 +43,7 @@ export class DataService {
 			return 'success';
 		});
 	}
-	
+
 	public handleError (error: Response | any) {
 		// In a real world app, you might use a remote logging infrastructure
 		let errMsg: string;
