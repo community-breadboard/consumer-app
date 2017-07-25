@@ -30,6 +30,7 @@ export class CreditPage implements OnInit {
 	}
 
 	addCredit() {
+    /*
 		this.dataService.state.consumer.balance = +this.dataService.state.consumer.balance + +this.amountToAdd;
 		this.dataService.addCredit(this.authService.currentUser, +this.amountToAdd).subscribe(status => {
 			this.showToast(this.amountToAdd);
@@ -40,6 +41,7 @@ export class CreditPage implements OnInit {
 			console.error(error);
 			this.uiService.showError("Server Error");
 		});
+    */
 	}
 	ionViewCanEnter() {
 		return this.authService.isAuthenticated();

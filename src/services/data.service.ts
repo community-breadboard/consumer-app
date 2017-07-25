@@ -6,7 +6,6 @@ import { Response }  from '@angular/http';
 import { Storage } from "@ionic/storage";
 import { AuthHttp } from 'angular2-jwt';
 import { FoodCategory } from '../models/food-category';
-import { Consumer } from '../models/consumer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/mergeMap';
@@ -20,7 +19,6 @@ export class DataService {
 	baseUrl: string = 'http://localhost:3000';
 	foodItemsForSaleUrl = this.baseUrl + '/current_user/food_items_for_sale.json';
 	submitOrderUrl = this.baseUrl + '/current_user/submit_order';
-	addCreditUrl = this.baseUrl + '/current_user/add_credit';
 	authUrl = this.baseUrl + '/user_token';
 	currentUserUrl = this.baseUrl + '/current_user';
 
@@ -46,13 +44,7 @@ export class DataService {
 			return 'success';
 		});
 	}
-	public addCredit(consumer: Consumer, amount: number): Observable<string> {
-
-//		return this.authHttp.post(this.addCreditUrl, {consumer: consumer, amount: amount}).map((res: Response) => {
-//			return 'success';
-//		});
-	}
-
+	
 	public handleError (error: Response | any) {
 		// In a real world app, you might use a remote logging infrastructure
 		let errMsg: string;

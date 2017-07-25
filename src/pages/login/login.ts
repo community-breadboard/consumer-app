@@ -9,7 +9,7 @@ import { UiService } from '../../services/ui.service';
 	templateUrl: 'login.html',
 })
 export class LoginPage {
-	registerCredentials = { email: 'edbaker@gmail.com', password: 'eatlocal' };
+	registerCredentials = { email: '', password: '' };
 
 	constructor(private nav: NavController, private auth: AuthService, private uiService: UiService) { }
 

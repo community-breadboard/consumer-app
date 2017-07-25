@@ -18,7 +18,8 @@ export class AuthService {
 	isAuthenticated(): Promise<boolean> {
 		return new Promise<boolean>((resolve, reject) => {
 			this.storage.get('token').then((val) => {
-				resolve(val && !this.jwtHelper.isTokenExpired(val));
+        let isAuthenticated: boolean = (val && !this.jwtHelper.isTokenExpired(val));
+        resolve(isAuthenticated);
 			});
 		});
 
@@ -37,14 +38,14 @@ export class AuthService {
 			let options = new RequestOptions({ headers: headers });
 
 			return this.http.post(this.dataService.authUrl, {auth: credentials}, options)
-				.map((res: Response) => res.json())
-				.mergeMap((jwtObject) => {
-					this.storage.set('token', jwtObject.jwt);
-
-					return this.getUser();
-				})
-				.catch(this.dataService.handleError)
-
+        .map((res: Response) => {
+          return this.storage.set('token', res.json().jwt).then(function() { return; });
+        })
+        .mergeMap((promise) => Observable.fromPromise(promise))
+        .mergeMap(() => {
+          return this.getUser();
+        })
+  			.catch(this.dataService.handleError)
 		}
 	}
 
@@ -59,7 +60,7 @@ export class AuthService {
 
 
 	public logout() : void {
-		this.storage.remove('token');
+    this.storage.remove('token');
 	}
 
 	constructor(

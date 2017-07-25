@@ -30,7 +30,7 @@ export class HomePage implements OnInit {
 
 		this.dataService.getData().subscribe(state => {
 			this.state = state;
-			console.log("state=", this.state);
+//			console.log("state=", this.state);
 			
 			if (this.state.consumer.mostRecentOrder && this.state.consumer.mostRecentOrder.isOpen) {
 				this.segmentTitle = 'pickup';
@@ -90,6 +90,9 @@ export class HomePage implements OnInit {
 	}
 
 	toggle(foodCategory: any): void {
+    _.each(this.state.foodCategories, function(cat) {
+      cat.expanded = false;
+    });
 		foodCategory.expanded = !foodCategory.expanded;
 	}
 
